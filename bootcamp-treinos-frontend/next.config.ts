@@ -1,8 +1,8 @@
 import type { NextConfig } from "next";
-import withPWA from "@ducanh2912/next-pwa";
+import withSerwist from "@serwist/next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  turbopack: {},
   images: {
     remotePatterns: [
       {
@@ -11,17 +11,15 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-experimental: {
-  serverActions: {
-    allowedOrigins: [".nexux360.com.br"]
-  }
-}  
+  experimental: {
+    serverActions: {
+      allowedOrigins: [".nexux360.com.br"],
+    },
+  },
 };
 
-export default withPWA({
-  dest: "public",
-  cacheOnFrontEndNav: true,
-  aggressiveFrontEndNavCaching: true,
-  reloadOnOnline: true,
+export default withSerwist({
+  swSrc: "app/sw.ts",
+  swDest: "public/sw.js",
   disable: process.env.NODE_ENV === "development",
 })(nextConfig);
