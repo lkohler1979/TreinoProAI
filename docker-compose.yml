@@ -1,0 +1,77 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: treino-ai-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - treino-ai
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # Roda `prisma migrate deploy` contra o banco. Nao inicia junto com o stack,
+  # deve ser executado manualmente apos cada deploy que altere o schema:
+  #   docker compose run --rm api-migrate
+  api-migrate:
+    build:
+      context: ./bootcamp-treinos-api
+      target: build
+    container_name: treino-ai-api-migrate
+    profiles: ["tools"]
+    env_file:
+      - ./bootcamp-treinos-api/.env
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+    command: ["pnpm", "exec", "prisma", "migrate", "deploy"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - treino-ai
+
+  api:
+    build:
+      context: ./bootcamp-treinos-api
+    container_name: treino-ai-api
+    restart: unless-stopped
+    env_file:
+      - ./bootcamp-treinos-api/.env
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:8080:8080"
+    networks:
+      - treino-ai
+
+  frontend:
+    build:
+      context: ./bootcamp-treinos-frontend
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+        NEXT_PUBLIC_BASE_URL: ${NEXT_PUBLIC_BASE_URL}
+    container_name: treino-ai-frontend
+    restart: unless-stopped
+    depends_on:
+      - api
+    ports:
+      - "127.0.0.1:3000:3000"
+    networks:
+      - treino-ai
+
+networks:
+  treino-ai:
+    driver: bridge
+
+volumes:
+  postgres_data:
