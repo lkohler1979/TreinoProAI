@@ -251,19 +251,39 @@ com Google funciona.
 
 ## Atualizações futuras (novo deploy)
 
+Sempre que o código mudar, rode o script `deploy.sh` (já vem no repo, em
+`app/prod/deploy.sh`):
+
+```bash
+cd /var/www/treino
+./app/prod/deploy.sh
+```
+
+Ele faz, em ordem, parando no primeiro erro: `git pull` (recusa rodar se
+houver mudanças locais não commitadas em `app/`), instala e builda o
+backend, roda `prisma migrate deploy`, instala e builda o frontend,
+reinicia os dois processos no PM2 e testa se `127.0.0.1:8080` e
+`127.0.0.1:3000` respondem.
+
+Um deploy já em andamento é detectado (lock file em `/tmp/treino-deploy.lock`)
+e uma segunda execução simultânea é recusada.
+
+Equivalente manual, passo a passo (caso quira rodar sem o script):
+
 ```bash
 cd /var/www/treino/app
-sudo git pull
+git pull
 
 cd /var/www/treino/backend
-sudo pnpm install --frozen-lockfile
-sudo pnpm run build
-sudo pnpm exec prisma migrate deploy   # só se houver migration nova
+pnpm install --frozen-lockfile
+pnpm run build
+pnpm exec prisma migrate deploy   # só se houver migration nova
 
 cd /var/www/treino/frontend
-sudo pnpm install --frozen-lockfile
-sudo pnpm run build
+pnpm install --frozen-lockfile
+pnpm run build
 
+cd /var/www/treino
 pm2 restart ecosystem.config.js
 ```
 
