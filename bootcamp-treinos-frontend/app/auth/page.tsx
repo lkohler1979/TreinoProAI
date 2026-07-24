@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { authClient } from "@/app/_lib/auth-client";
 import { headers } from "next/headers";
 import { SignInWithGoogle } from "./_components/sign-in-with-google";
+import { SignInAnonymous } from "./_components/sign-in-anonymous";
 import { InstallPwaButton } from "./_components/install-pwa-button";
 
 export default async function AuthPage() {
@@ -39,6 +40,7 @@ export default async function AuthPage() {
           </h1>
 
           <SignInWithGoogle />
+          {process.env.NODE_ENV !== "production" && <SignInAnonymous />}
           <InstallPwaButton />
         </div>
 

@@ -4,7 +4,6 @@ import fastifyCors from "@fastify/cors";
 import fastifySwagger from "@fastify/swagger";
 import fastifyApiReference from "@scalar/fastify-api-reference";
 import Fastify from "fastify";
-
 //adicioando novos icones
 import {
   jsonSchemaTransform,
@@ -12,6 +11,8 @@ import {
   validatorCompiler,
   ZodTypeProvider,
 } from "fastify-type-provider-zod";
+import { pino } from "pino";
+import pinoPretty from "pino-pretty";
 import z from "zod";
 
 import { auth } from "./lib/auth.js";
@@ -22,23 +23,18 @@ import { meRoutes } from "./routes/me.js";
 import { statsRoutes } from "./routes/stats.js";
 import { workoutPlanRoutes } from "./routes/workout-plan.js";
 
-const envToLogger = {
-  development: {
-    transport: {
-      target: "pino-pretty",
-      options: {
-        translateTime: "HH:MM:ss Z",
-        ignore: "pid,hostname",
-      },
-    },
-  },
-  production: true,
-  test: false,
-};
-
-const app = Fastify({
-  logger: envToLogger[env.NODE_ENV],
-});
+const app = Fastify(
+  env.NODE_ENV === "development"
+    ? {
+        loggerInstance: pino(
+          pinoPretty({
+            translateTime: "HH:MM:ss Z",
+            ignore: "pid,hostname",
+          })
+        ),
+      }
+    : { logger: env.NODE_ENV === "production" }
+);
 
 app.setValidatorCompiler(validatorCompiler);
 app.setSerializerCompiler(serializerCompiler);

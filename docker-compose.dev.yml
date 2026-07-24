@@ -23,16 +23,19 @@ services:
       target: deps
     container_name: treino-ai-dev-api
     working_dir: /app
-    command: sh -c "pnpm exec prisma generate && pnpm exec prisma migrate deploy && pnpm dev"
+    command: sh -c "pnpm install --frozen-lockfile && pnpm exec prisma generate && pnpm exec prisma migrate deploy && pnpm dev"
     env_file:
       - ./bootcamp-treinos-api/.env
     environment:
+      CI: "true"
       DATABASE_URL: postgresql://postgres:password@postgres:5432/treino-ai
+      API_BASE_URL: http://localhost:${API_HOST_PORT:-8080}
+      WEB_APP_BASE_URL: http://localhost:${FRONTEND_HOST_PORT:-3000}
     depends_on:
       postgres:
         condition: service_healthy
     ports:
-      - "8080:8080"
+      - "${API_HOST_PORT:-8080}:8080"
     volumes:
       - ./bootcamp-treinos-api:/app
       - dev_api_node_modules:/app/node_modules
@@ -43,15 +46,16 @@ services:
       target: deps
     container_name: treino-ai-dev-frontend
     working_dir: /app
-    command: pnpm dev
+    command: sh -c "pnpm install --frozen-lockfile && pnpm dev"
     environment:
-      NEXT_PUBLIC_API_URL: http://localhost:8080
-      NEXT_PUBLIC_BASE_URL: http://localhost:3000
+      CI: "true"
+      NEXT_PUBLIC_API_URL: http://localhost:${API_HOST_PORT:-8080}
+      NEXT_PUBLIC_BASE_URL: http://localhost:${FRONTEND_HOST_PORT:-3000}
       API_INTERNAL_URL: http://api:8080
     depends_on:
       - api
     ports:
-      - "3000:3000"
+      - "${FRONTEND_HOST_PORT:-3000}:3000"
     volumes:
       - ./bootcamp-treinos-frontend:/app
       - dev_frontend_node_modules:/app/node_modules
