@@ -48,10 +48,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${interTight.variable} ${anton.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${interTight.variable} ${anton.variable} bg-canvas antialiased`}
       >
         <NuqsAdapter>
-          {children}
+          <div className="relative mx-auto min-h-svh max-w-[480px] bg-background">
+            {children}
+          </div>
           <Suspense>
             <Chat />
           </Suspense>

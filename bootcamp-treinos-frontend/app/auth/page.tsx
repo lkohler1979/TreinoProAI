@@ -22,6 +22,7 @@ export default async function AuthPage() {
           src="/login-bg.png"
           alt=""
           fill
+          sizes="100vw"
           className="object-cover"
           priority
         />

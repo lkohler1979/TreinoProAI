@@ -36,6 +36,7 @@ export function WorkoutDayCard({
           src={coverImageUrl}
           alt={name}
           fill
+          sizes="(max-width: 640px) 100vw, 640px"
           className="pointer-events-none object-cover"
         />
       )}

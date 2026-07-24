@@ -240,7 +240,7 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
   if (embedded) return chatContent;
 
   return (
-    <div className="fixed inset-0 z-[60]">
+    <div className="fixed inset-0 z-[60] mx-auto w-full max-w-[480px]">
       <div
         className="absolute inset-0 bg-foreground/30"
         onClick={handleClose}

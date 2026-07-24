@@ -63,6 +63,7 @@ export default async function WorkoutPlanPage({
             src="/workout-plan-banner.png"
             alt=""
             fill
+            sizes="100vw"
             className="object-cover"
             priority
           />

@@ -15,6 +15,7 @@ export function StreakBanner({ workoutStreak }: StreakBannerProps) {
           src="/stats-banner.png"
           alt=""
           fill
+          sizes="(max-width: 640px) 100vw, 640px"
           className={`object-cover ${isZero ? "grayscale" : ""}`}
           priority
         />
