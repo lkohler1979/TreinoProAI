@@ -1,11 +1,12 @@
 import { cookies } from "next/headers";
+import { getApiBaseUrl } from "./api-base-url";
 
 const getBody = <T>(c: Response | Request): Promise<T> => {
   return c.json() as Promise<T>;
 };
 
 const getUrl = (contextUrl: string): string => {
-  const newUrl = new URL(`${process.env.NEXT_PUBLIC_API_URL}${contextUrl}`);
+  const newUrl = new URL(`${getApiBaseUrl()}${contextUrl}`);
   const requestUrl = new URL(`${newUrl}`);
   return requestUrl.toString();
 };
