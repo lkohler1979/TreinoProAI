@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "treino-frontend",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--dir", "bootcamp-treinos-frontend", "run", "start"],
+      "port": 3000,
+      "autoPort": true
+    }
+  ]
+}

@@ -4,7 +4,7 @@ import { ConsistencySquare } from "./consistency-square";
 
 const WEEKDAY_SHORT = ["S", "T", "Q", "Q", "S", "S", "D"];
 
-function getWeekDates(today: dayjs.Dayjs) {
+export function getWeekDates(today: dayjs.Dayjs) {
   const monday =
     today.day() === 0
       ? today.subtract(6, "day")

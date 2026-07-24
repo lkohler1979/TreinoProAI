@@ -3,12 +3,33 @@ import { authClient } from "@/app/_lib/auth-client";
 import { headers } from "next/headers";
 import { getHomeData, getUserTrainData } from "./_lib/api/fetch-generated";
 import dayjs from "dayjs";
-import Image from "next/image";
 import Link from "next/link";
-import { Flame } from "lucide-react";
+import { Flame, Calendar } from "lucide-react";
 import { BottomNav } from "./_components/bottom-nav";
-import { ConsistencyTracker } from "./_components/consistency-tracker";
+import {
+  ConsistencyTracker,
+  getWeekDates,
+} from "./_components/consistency-tracker";
 import { WorkoutDayCard } from "./_components/workout-day-card";
+import { TipOfDay } from "./_components/tip-of-day";
+import { ShareStreakCard } from "./_components/share-streak-card";
+
+function getTipMessage(
+  todayWorkoutDay: { name: string; isRest: boolean } | undefined,
+  completedThisWeek: number
+) {
+  const timesLabel = completedThisWeek === 1 ? "vez" : "vezes";
+
+  if (todayWorkoutDay?.isRest) {
+    return `Hoje é dia de descanso. Você já treinou ${completedThisWeek} ${timesLabel} essa semana — aproveite pra recuperar.`;
+  }
+
+  if (todayWorkoutDay) {
+    return `Hoje é dia de ${todayWorkoutDay.name}. Você já treinou ${completedThisWeek} ${timesLabel} essa semana.`;
+  }
+
+  return `Você já treinou ${completedThisWeek} ${timesLabel} essa semana. Continue assim!`;
+}
 
 export default async function Home() {
   const session = await authClient.getSession({
@@ -37,87 +58,87 @@ export default async function Home() {
   const { todayWorkoutDay, workoutStreak, consistencyByDay } = homeData.data;
   const userName = session.data.user.name?.split(" ")[0] ?? "";
 
+  const completedThisWeek = getWeekDates(today).filter(
+    (date) => consistencyByDay[date.format("YYYY-MM-DD")]?.workoutDayCompleted
+  ).length;
+  const tipMessage = getTipMessage(todayWorkoutDay, completedThisWeek);
+
   return (
     <div className="flex min-h-svh flex-col bg-background pb-24">
-      <div className="relative flex h-[296px] shrink-0 flex-col items-start justify-between overflow-hidden rounded-b-[20px] px-5 pb-10 pt-5">
-        <div className="absolute inset-0" aria-hidden="true">
-          <Image
-            src="/home-banner.jpg"
-            alt=""
-            fill
-            className="object-cover"
-            priority
-          />
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage:
-                "linear-gradient(243deg, rgba(0,0,0,0) 34%, rgb(0,0,0) 100%)",
-            }}
-          />
-        </div>
-
+      <div
+        className="relative flex shrink-0 flex-col gap-6 px-5 pb-7 pt-6"
+        style={{
+          backgroundImage: "linear-gradient(160deg, #211c17 0%, #3a2c1e 100%)",
+        }}
+      >
         <p
-          className="relative text-[22px] uppercase leading-[1.15] text-background"
+          className="text-[15px] uppercase leading-[1.15] tracking-wide text-[#f2ede4]"
           style={{ fontFamily: "var(--font-anton)" }}
         >
           TreinoPro.AI
         </p>
 
-        <div className="relative flex w-full items-end justify-between">
-          <div className="flex flex-col gap-1.5">
-            <h1 className="font-heading text-2xl font-semibold leading-[1.05] text-background">
+        <div className="flex items-end justify-between">
+          <div className="flex flex-col gap-1">
+            <h1 className="font-heading text-2xl font-semibold leading-[1.05] text-[#f9f5ee]">
               Olá, {userName}
             </h1>
-            <p className="font-heading text-sm leading-[1.15] text-background/70">
+            <p className="font-heading text-sm leading-[1.15] text-[#d8cdbe]">
               Bora treinar hoje?
             </p>
           </div>
-          <div className="rounded-full bg-primary px-4 py-2">
+          <div className="flex items-center gap-1.5 rounded-full bg-primary px-3.5 py-2">
+            <Flame className="size-3.5 text-primary-foreground" />
             <span className="font-heading text-sm font-semibold text-primary-foreground">
-              Bora!
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <div className="flex flex-col gap-3 px-5 pt-5">
-        <div className="flex items-center justify-between">
-          <h2 className="font-heading text-lg font-semibold text-foreground">
-            Consistência
-          </h2>
-          <button className="font-heading text-xs text-primary">
-            Ver histórico
-          </button>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <div className="flex-1 rounded-xl border border-border p-5">
-            <ConsistencyTracker
-              consistencyByDay={consistencyByDay}
-              today={today}
-            />
-          </div>
-          <div className="flex items-center gap-2 self-stretch rounded-xl bg-streak px-5 py-2">
-            <Flame className="size-5 text-streak-foreground" />
-            <span className="font-heading text-base font-semibold text-foreground">
               {workoutStreak}
             </span>
           </div>
         </div>
       </div>
 
-      {todayWorkoutDay && (
-        <div className="flex flex-col gap-3 p-5">
-          <div className="flex items-center justify-between">
-            <h2 className="font-heading text-lg font-semibold text-foreground">
-              Treino de Hoje
-            </h2>
-            <button className="font-heading text-xs text-primary">
-              Ver treinos
-            </button>
-          </div>
+      <div className="px-5 pt-4">
+        <TipOfDay message={tipMessage} />
+      </div>
 
+      <div className="flex flex-col gap-3 px-5 pt-5">
+        <div className="flex items-center justify-between">
+          <h2 className="font-heading text-lg font-semibold text-foreground">
+            Sua semana
+          </h2>
+          <button className="font-heading text-xs text-primary">
+            Ver histórico
+          </button>
+        </div>
+
+        <div className="rounded-xl border border-border bg-card p-5">
+          <ConsistencyTracker
+            consistencyByDay={consistencyByDay}
+            today={today}
+          />
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-3 p-5">
+        <div className="flex items-center justify-between">
+          <h2 className="font-heading text-lg font-semibold text-foreground">
+            Treino de Hoje
+          </h2>
+          <button className="font-heading text-xs text-primary">
+            Ver treinos
+          </button>
+        </div>
+
+        {todayWorkoutDay?.isRest ? (
+          <div className="flex h-[120px] flex-col items-center justify-center gap-1 rounded-xl border border-border bg-card">
+            <Calendar className="size-5 text-muted-foreground" />
+            <p className="font-heading text-sm font-semibold text-foreground">
+              Dia de descanso
+            </p>
+            <p className="font-heading text-xs text-muted-foreground">
+              Aproveite pra recuperar
+            </p>
+          </div>
+        ) : todayWorkoutDay ? (
           <Link
             href={`/workout-plans/${todayWorkoutDay.workoutPlanId}/days/${todayWorkoutDay.id}`}
           >
@@ -131,8 +152,12 @@ export default async function Home() {
               coverImageUrl={todayWorkoutDay.coverImageUrl}
             />
           </Link>
-        </div>
-      )}
+        ) : null}
+      </div>
+
+      <div className="px-5 pb-2">
+        <ShareStreakCard streak={workoutStreak} userName={userName} />
+      </div>
 
       <BottomNav />
     </div>
