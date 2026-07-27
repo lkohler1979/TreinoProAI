@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 import { NotFoundError } from "../errors/index.js";
 import { WeekDay } from "../generated/prisma/enums.js";
 import { prisma } from "../lib/db.js";
@@ -5,7 +7,6 @@ import { prisma } from "../lib/db.js";
 // Data Transfer Object t
 interface InputDto {
   userId: string;
-  name: string;
   workoutDays: Array<{
     name: string;
     weekDay: WeekDay;
@@ -49,6 +50,7 @@ export class CreateWorkoutPlan {
         isActive: true,
       },
     });
+    const name = await this.generateName(dto.userId);
     // Transaction - Atomicidade
     return prisma.$transaction(async (tx) => {
       if (existingWorkoutPlan) {
@@ -60,7 +62,7 @@ export class CreateWorkoutPlan {
       const workoutPlan = await tx.workoutPlan.create({
         data: {
           id: crypto.randomUUID(),
-          name: dto.name,
+          name,
           userId: dto.userId,
           isActive: true,
           workoutDays: {
@@ -115,5 +117,20 @@ export class CreateWorkoutPlan {
         })),
       };
     });
+  }
+
+  private async generateName(userId: string): Promise<string> {
+    const now = dayjs();
+    const countThisMonth = await prisma.workoutPlan.count({
+      where: {
+        userId,
+        createdAt: {
+          gte: now.startOf("month").toDate(),
+          lte: now.endOf("month").toDate(),
+        },
+      },
+    });
+    const sequence = String(countThisMonth + 1).padStart(2, "0");
+    return `${now.format("YYYY")}_${now.format("MM")}_${sequence}`;
   }
 }

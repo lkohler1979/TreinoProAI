@@ -5,8 +5,8 @@ import { getWorkoutPlan, getHomeData, getUserTrainData } from "@/app/_lib/api/fe
 import dayjs from "dayjs";
 import Image from "next/image";
 import Link from "next/link";
-import { Goal } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { History } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { BottomNav } from "@/app/_components/bottom-nav";
 import { WorkoutDayCard } from "@/app/_components/workout-day-card";
 import { RestDayCard } from "./_components/rest-day-card";
@@ -84,15 +84,23 @@ export default async function WorkoutPlanPage({
         </p>
 
         <div className="relative flex w-full items-end justify-between">
-          <div className="flex flex-col gap-3">
-            <Badge className="gap-1 rounded-full px-2.5 py-1.5 font-heading text-xs font-semibold uppercase">
-              <Goal className="size-4" />
-              {name}
-            </Badge>
+          <div className="flex flex-col gap-1">
             <h1 className="font-heading text-2xl font-semibold leading-[1.05] text-background">
               Plano de Treino
             </h1>
+            <p className="font-heading text-xs text-background/60">{name}</p>
           </div>
+          <Button
+            asChild
+            variant="ghost"
+            size="sm"
+            className="gap-1.5 text-background hover:bg-background/10 hover:text-background"
+          >
+            <Link href={`/workout-plans/${id}/history`}>
+              <History className="size-4" />
+              Ver histórico
+            </Link>
+          </Button>
         </div>
       </div>
 

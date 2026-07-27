@@ -145,7 +145,6 @@ export const aiRoutes = async (app: FastifyInstance) => {
             description:
               "Cria um novo plano de treino completo para o usuário.",
             inputSchema: z.object({
-              name: z.string().describe("Nome do plano de treino"),
               workoutDays: z
                 .array(
                   z.object({
@@ -198,7 +197,6 @@ export const aiRoutes = async (app: FastifyInstance) => {
               const createWorkoutPlan = new CreateWorkoutPlan();
               return createWorkoutPlan.execute({
                 userId,
-                name: input.name,
                 workoutDays: input.workoutDays,
               });
             },

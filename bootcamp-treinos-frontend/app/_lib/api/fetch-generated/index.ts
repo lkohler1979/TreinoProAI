@@ -263,8 +263,6 @@ export type CreateWorkoutPlanBodyWorkoutDaysItem = {
 };
 
 export type CreateWorkoutPlanBody = {
-  /** @minLength 1 */
-  name: string;
   workoutDays: CreateWorkoutPlanBodyWorkoutDaysItem[];
 };
 
@@ -497,6 +495,52 @@ export type UpdateWorkoutSession404 = {
 };
 
 export type UpdateWorkoutSession500 = {
+  error: string;
+  code: string;
+};
+
+export type GetWorkoutSessions200ItemSessionsItemWeekDay =
+  (typeof GetWorkoutSessions200ItemSessionsItemWeekDay)[keyof typeof GetWorkoutSessions200ItemSessionsItemWeekDay];
+
+export const GetWorkoutSessions200ItemSessionsItemWeekDay = {
+  MONDAY: "MONDAY",
+  TUESDAY: "TUESDAY",
+  WEDNESDAY: "WEDNESDAY",
+  THURSDAY: "THURSDAY",
+  FRIDAY: "FRIDAY",
+  SATURDAY: "SATURDAY",
+  SUNDAY: "SUNDAY",
+} as const;
+
+export type GetWorkoutSessions200ItemSessionsItem = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  name: string;
+  weekDay: GetWorkoutSessions200ItemSessionsItemWeekDay;
+  /** @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$ */
+  startedAt: string;
+  /** @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$ */
+  completedAt: string;
+  durationInSeconds: number;
+  exercisesCount: number;
+};
+
+export type GetWorkoutSessions200Item = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  workoutPlanId: string;
+  workoutPlanName: string;
+  isActive: boolean;
+  completedWorkoutsCount: number;
+  totalTimeInSeconds: number;
+  sessions: GetWorkoutSessions200ItemSessionsItem[];
+};
+
+export type GetWorkoutSessions401 = {
+  error: string;
+  code: string;
+};
+
+export type GetWorkoutSessions500 = {
   error: string;
   code: string;
 };
@@ -1080,6 +1124,52 @@ export const updateWorkoutSession = async (
       body: JSON.stringify(updateWorkoutSessionBody),
     },
   );
+};
+
+/**
+ * @summary List all workout plans with their completed sessions and stats
+ */
+export type getWorkoutSessionsResponse200 = {
+  data: GetWorkoutSessions200Item[];
+  status: 200;
+};
+
+export type getWorkoutSessionsResponse401 = {
+  data: GetWorkoutSessions401;
+  status: 401;
+};
+
+export type getWorkoutSessionsResponse500 = {
+  data: GetWorkoutSessions500;
+  status: 500;
+};
+
+export type getWorkoutSessionsResponseSuccess =
+  getWorkoutSessionsResponse200 & {
+    headers: Headers;
+  };
+export type getWorkoutSessionsResponseError = (
+  | getWorkoutSessionsResponse401
+  | getWorkoutSessionsResponse500
+) & {
+  headers: Headers;
+};
+
+export type getWorkoutSessionsResponse =
+  | getWorkoutSessionsResponseSuccess
+  | getWorkoutSessionsResponseError;
+
+export const getGetWorkoutSessionsUrl = () => {
+  return `/workout-sessions/`;
+};
+
+export const getWorkoutSessions = async (
+  options?: RequestInit,
+): Promise<getWorkoutSessionsResponse> => {
+  return customFetch<getWorkoutSessionsResponse>(getGetWorkoutSessionsUrl(), {
+    ...options,
+    method: "GET",
+  });
 };
 
 /**

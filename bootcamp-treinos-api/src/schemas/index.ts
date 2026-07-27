@@ -167,6 +167,27 @@ export const UpsertUserTrainDataSchema = z.object({
   bodyFatPercentage: z.number(),
 });
 
+export const WorkoutSessionHistoryItemSchema = z.object({
+  id: z.uuid(),
+  name: z.string(),
+  weekDay: z.enum(WeekDay),
+  startedAt: z.iso.datetime(),
+  completedAt: z.iso.datetime(),
+  durationInSeconds: z.number(),
+  exercisesCount: z.number(),
+});
+
+export const WorkoutPlanHistorySchema = z.object({
+  workoutPlanId: z.uuid(),
+  workoutPlanName: z.string(),
+  isActive: z.boolean(),
+  completedWorkoutsCount: z.number(),
+  totalTimeInSeconds: z.number(),
+  sessions: z.array(WorkoutSessionHistoryItemSchema),
+});
+
+export const ListWorkoutPlanHistorySchema = z.array(WorkoutPlanHistorySchema);
+
 export const WorkoutPlanSchema = z.object({
   id: z.uuid(),
   name: z.string().trim().min(1),

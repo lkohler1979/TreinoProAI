@@ -79,7 +79,7 @@ export const workoutPlanRoutes = async (app: FastifyInstance) => {
       operationId: "createWorkoutPlan",
       tags: ["Workout Plan"],
       summary: "Create a workout plan",
-      body: WorkoutPlanSchema.omit({ id: true }),
+      body: WorkoutPlanSchema.omit({ id: true, name: true }),
       response: {
         201: WorkoutPlanSchema,
         400: ErrorSchema,
@@ -102,7 +102,6 @@ export const workoutPlanRoutes = async (app: FastifyInstance) => {
         const createWorkoutPlan = new CreateWorkoutPlan();
         const result = await createWorkoutPlan.execute({
           userId: session.user.id,
-          name: request.body.name,
           workoutDays: request.body.workoutDays,
         });
         return reply.status(201).send(result);

@@ -22,6 +22,7 @@ import { homeRoutes } from "./routes/home.js";
 import { meRoutes } from "./routes/me.js";
 import { statsRoutes } from "./routes/stats.js";
 import { workoutPlanRoutes } from "./routes/workout-plan.js";
+import { workoutSessionRoutes } from "./routes/workout-session.js";
 
 const app = Fastify(
   env.NODE_ENV === "development"
@@ -59,6 +60,7 @@ await app.register(fastifySwagger, {
 await app.register(fastifyCors, {
   origin: [env.WEB_APP_BASE_URL],
   credentials: true,
+  methods: ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE"],
 });
 
 await app.register(fastifyApiReference, {
@@ -85,6 +87,7 @@ await app.register(homeRoutes, { prefix: "/home" });
 await app.register(meRoutes, { prefix: "/me" });
 await app.register(statsRoutes, { prefix: "/stats" });
 await app.register(workoutPlanRoutes, { prefix: "/workout-plans" });
+await app.register(workoutSessionRoutes, { prefix: "/workout-sessions" });
 await app.register(aiRoutes, { prefix: "/ai" });
 
 app.withTypeProvider<ZodTypeProvider>().route({
