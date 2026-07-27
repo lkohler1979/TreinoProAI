@@ -1,24 +1,67 @@
 "use client";
 
-import { CircleHelp, Zap } from "lucide-react";
+import { useTransition } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { CircleHelp, History, Weight, Zap } from "lucide-react";
 import { useQueryStates, parseAsBoolean, parseAsString } from "nuqs";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import type { GetWorkoutDay200ExercisesItem } from "@/app/_lib/api/fetch-generated";
+import { updateExerciseLoadAction } from "../_actions";
+
+const loadFormSchema = z.object({
+  loadInKg: z
+    .string()
+    .refine((value) => value !== "" && Number(value) >= 0, {
+      message: "Informe uma carga válida",
+    }),
+});
+
+type LoadFormValues = z.infer<typeof loadFormSchema>;
 
 interface ExerciseCardProps {
   exercise: GetWorkoutDay200ExercisesItem;
+  workoutPlanId: string;
+  workoutDayId: string;
 }
 
-export function ExerciseCard({ exercise }: ExerciseCardProps) {
+export function ExerciseCard({
+  exercise,
+  workoutPlanId,
+  workoutDayId,
+}: ExerciseCardProps) {
   const [, setChatParams] = useQueryStates({
     chat_open: parseAsBoolean.withDefault(false),
     chat_initial_message: parseAsString,
+  });
+  const [isPending, startTransition] = useTransition();
+
+  const form = useForm<LoadFormValues>({
+    resolver: zodResolver(loadFormSchema),
+    defaultValues: {
+      loadInKg: exercise.loadInKg != null ? String(exercise.loadInKg) : "",
+    },
   });
 
   const handleHelp = () => {
     setChatParams({
       chat_open: true,
       chat_initial_message: `Como executar o exercício ${exercise.name} corretamente?`,
+    });
+  };
+
+  const onSubmit = (values: LoadFormValues) => {
+    startTransition(async () => {
+      await updateExerciseLoadAction(
+        workoutPlanId,
+        workoutDayId,
+        exercise.id,
+        Number(values.loadInKg),
+      );
     });
   };
 
@@ -44,6 +87,46 @@ export function ExerciseCard({ exercise }: ExerciseCardProps) {
           {exercise.restTimeInSeconds}s
         </span>
       </div>
+
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="flex items-center gap-2 border-t border-border pt-3"
+        >
+          <Weight className="size-4 shrink-0 text-muted-foreground" />
+          <FormField
+            control={form.control}
+            name="loadInKg"
+            render={({ field }) => (
+              <FormItem className="flex-1">
+                <FormControl>
+                  <Input
+                    {...field}
+                    type="number"
+                    step="0.5"
+                    min="0"
+                    placeholder="Carga (kg)"
+                    className="h-8 text-sm"
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+          <Button
+            type="submit"
+            variant="outline"
+            size="sm"
+            disabled={isPending}
+          >
+            Salvar
+          </Button>
+          <Link
+            href={`/workout-plans/${workoutPlanId}/days/${workoutDayId}/exercises/${exercise.id}/history`}
+          >
+            <History className="size-4 text-muted-foreground" />
+          </Link>
+        </form>
+      </Form>
     </div>
   );
 }

@@ -400,6 +400,7 @@ export type GetWorkoutDay200ExercisesItem = {
   sets: number;
   reps: number;
   restTimeInSeconds: number;
+  loadInKg?: number;
 };
 
 export type GetWorkoutDay200SessionsItem = {
@@ -541,6 +542,57 @@ export type GetWorkoutSessions401 = {
 };
 
 export type GetWorkoutSessions500 = {
+  error: string;
+  code: string;
+};
+
+export type UpdateExerciseLoadBody = {
+  /** @minimum 0 */
+  loadInKg: number;
+};
+
+export type UpdateExerciseLoad200 = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  loadInKg: number;
+  /** @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$ */
+  recordedAt: string;
+};
+
+export type UpdateExerciseLoad401 = {
+  error: string;
+  code: string;
+};
+
+export type UpdateExerciseLoad404 = {
+  error: string;
+  code: string;
+};
+
+export type UpdateExerciseLoad500 = {
+  error: string;
+  code: string;
+};
+
+export type GetExerciseLoadHistory200Item = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  loadInKg: number;
+  /** @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$ */
+  recordedAt: string;
+};
+
+export type GetExerciseLoadHistory401 = {
+  error: string;
+  code: string;
+};
+
+export type GetExerciseLoadHistory404 = {
+  error: string;
+  code: string;
+};
+
+export type GetExerciseLoadHistory500 = {
   error: string;
   code: string;
 };
@@ -1170,6 +1222,121 @@ export const getWorkoutSessions = async (
     ...options,
     method: "GET",
   });
+};
+
+/**
+ * @summary Update an exercise's current load and log the change
+ */
+export type updateExerciseLoadResponse200 = {
+  data: UpdateExerciseLoad200;
+  status: 200;
+};
+
+export type updateExerciseLoadResponse401 = {
+  data: UpdateExerciseLoad401;
+  status: 401;
+};
+
+export type updateExerciseLoadResponse404 = {
+  data: UpdateExerciseLoad404;
+  status: 404;
+};
+
+export type updateExerciseLoadResponse500 = {
+  data: UpdateExerciseLoad500;
+  status: 500;
+};
+
+export type updateExerciseLoadResponseSuccess =
+  updateExerciseLoadResponse200 & {
+    headers: Headers;
+  };
+export type updateExerciseLoadResponseError = (
+  | updateExerciseLoadResponse401
+  | updateExerciseLoadResponse404
+  | updateExerciseLoadResponse500
+) & {
+  headers: Headers;
+};
+
+export type updateExerciseLoadResponse =
+  | updateExerciseLoadResponseSuccess
+  | updateExerciseLoadResponseError;
+
+export const getUpdateExerciseLoadUrl = (exerciseId: string) => {
+  return `/exercises/${exerciseId}/load`;
+};
+
+export const updateExerciseLoad = async (
+  exerciseId: string,
+  updateExerciseLoadBody: UpdateExerciseLoadBody,
+  options?: RequestInit,
+): Promise<updateExerciseLoadResponse> => {
+  return customFetch<updateExerciseLoadResponse>(
+    getUpdateExerciseLoadUrl(exerciseId),
+    {
+      ...options,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json", ...options?.headers },
+      body: JSON.stringify(updateExerciseLoadBody),
+    },
+  );
+};
+
+/**
+ * @summary List the load history for an exercise
+ */
+export type getExerciseLoadHistoryResponse200 = {
+  data: GetExerciseLoadHistory200Item[];
+  status: 200;
+};
+
+export type getExerciseLoadHistoryResponse401 = {
+  data: GetExerciseLoadHistory401;
+  status: 401;
+};
+
+export type getExerciseLoadHistoryResponse404 = {
+  data: GetExerciseLoadHistory404;
+  status: 404;
+};
+
+export type getExerciseLoadHistoryResponse500 = {
+  data: GetExerciseLoadHistory500;
+  status: 500;
+};
+
+export type getExerciseLoadHistoryResponseSuccess =
+  getExerciseLoadHistoryResponse200 & {
+    headers: Headers;
+  };
+export type getExerciseLoadHistoryResponseError = (
+  | getExerciseLoadHistoryResponse401
+  | getExerciseLoadHistoryResponse404
+  | getExerciseLoadHistoryResponse500
+) & {
+  headers: Headers;
+};
+
+export type getExerciseLoadHistoryResponse =
+  | getExerciseLoadHistoryResponseSuccess
+  | getExerciseLoadHistoryResponseError;
+
+export const getGetExerciseLoadHistoryUrl = (exerciseId: string) => {
+  return `/exercises/${exerciseId}/load-history`;
+};
+
+export const getExerciseLoadHistory = async (
+  exerciseId: string,
+  options?: RequestInit,
+): Promise<getExerciseLoadHistoryResponse> => {
+  return customFetch<getExerciseLoadHistoryResponse>(
+    getGetExerciseLoadHistoryUrl(exerciseId),
+    {
+      ...options,
+      method: "GET",
+    },
+  );
 };
 
 /**

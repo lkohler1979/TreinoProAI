@@ -80,6 +80,7 @@ export const GetWorkoutDaySchema = z.object({
       sets: z.number(),
       reps: z.number(),
       restTimeInSeconds: z.number(),
+      loadInKg: z.number().optional(),
     })
   ),
   sessions: z.array(
@@ -187,6 +188,18 @@ export const WorkoutPlanHistorySchema = z.object({
 });
 
 export const ListWorkoutPlanHistorySchema = z.array(WorkoutPlanHistorySchema);
+
+export const UpdateExerciseLoadBodySchema = z.object({
+  loadInKg: z.number().min(0),
+});
+
+export const ExerciseLoadEntrySchema = z.object({
+  id: z.uuid(),
+  loadInKg: z.number(),
+  recordedAt: z.iso.datetime(),
+});
+
+export const ExerciseLoadHistorySchema = z.array(ExerciseLoadEntrySchema);
 
 export const WorkoutPlanSchema = z.object({
   id: z.uuid(),

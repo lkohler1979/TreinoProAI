@@ -28,6 +28,7 @@ interface OutputDto {
     sets: number;
     reps: number;
     restTimeInSeconds: number;
+    loadInKg?: number;
   }>;
   sessions: Array<{
     id: string;
@@ -74,6 +75,7 @@ export class GetWorkoutDay {
         sets: exercise.sets,
         reps: exercise.reps,
         restTimeInSeconds: exercise.restTimeInSeconds,
+        loadInKg: exercise.loadInKg ?? undefined,
       })),
       sessions: workoutDay.sessions.map((session) => ({
         id: session.id,
