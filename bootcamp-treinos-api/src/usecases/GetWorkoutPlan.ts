@@ -10,6 +10,7 @@ interface InputDto {
 interface OutputDto {
   id: string;
   name: string;
+  dailyWaterGoalInMl?: number;
   workoutDays: Array<{
     id: string;
     weekDay: WeekDay;
@@ -18,6 +19,17 @@ interface OutputDto {
     coverImageUrl?: string;
     estimatedDurationInSeconds: number;
     exercisesCount: number;
+  }>;
+  meals: Array<{
+    id: string;
+    order: number;
+    name: string;
+    time: string;
+    description: string;
+    calories: number;
+    proteinInGrams: number;
+    carbsInGrams: number;
+    fatInGrams: number;
   }>;
 }
 
@@ -33,6 +45,7 @@ export class GetWorkoutPlan {
             },
           },
         },
+        meals: { orderBy: { order: "asc" } },
       },
     });
 
@@ -43,6 +56,7 @@ export class GetWorkoutPlan {
     return {
       id: workoutPlan.id,
       name: workoutPlan.name,
+      dailyWaterGoalInMl: workoutPlan.dailyWaterGoalInMl ?? undefined,
       workoutDays: workoutPlan.workoutDays.map((day) => ({
         id: day.id,
         weekDay: day.weekDay,
@@ -51,6 +65,17 @@ export class GetWorkoutPlan {
         coverImageUrl: day.coverImageUrl ?? undefined,
         estimatedDurationInSeconds: day.estimatedDurationInSeconds,
         exercisesCount: day._count.exercises,
+      })),
+      meals: workoutPlan.meals.map((meal) => ({
+        id: meal.id,
+        order: meal.order,
+        name: meal.name,
+        time: meal.time,
+        description: meal.description,
+        calories: meal.calories,
+        proteinInGrams: meal.proteinInGrams,
+        carbsInGrams: meal.carbsInGrams,
+        fatInGrams: meal.fatInGrams,
       })),
     };
   }

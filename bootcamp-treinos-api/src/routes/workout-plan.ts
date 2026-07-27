@@ -10,21 +10,27 @@ import {
 } from "../errors/index.js";
 import { auth } from "../lib/auth.js";
 import {
+  CreateMealBodySchema,
   ErrorSchema,
   GetWorkoutDaySchema,
   GetWorkoutPlanSchema,
   ListWorkoutPlansQuerySchema,
   ListWorkoutPlansSchema,
+  MealSchema,
   StartWorkoutSessionSchema,
+  UpdateMealBodySchema,
   UpdateWorkoutSessionBodySchema,
   UpdateWorkoutSessionSchema,
   WorkoutPlanSchema,
 } from "../schemas/index.js";
+import { CreateMeal } from "../usecases/CreateMeal.js";
 import { CreateWorkoutPlan } from "../usecases/CreateWorkoutPlan.js";
+import { DeleteMeal } from "../usecases/DeleteMeal.js";
 import { GetWorkoutDay } from "../usecases/GetWorkoutDay.js";
 import { GetWorkoutPlan } from "../usecases/GetWorkoutPlan.js";
 import { ListWorkoutPlans } from "../usecases/ListWorkoutPlans.js";
 import { StartWorkoutSession } from "../usecases/StartWorkoutSession.js";
+import { UpdateMeal } from "../usecases/UpdateMeal.js";
 import { UpdateWorkoutSession } from "../usecases/UpdateWorkoutSession.js";
 
 export const workoutPlanRoutes = async (app: FastifyInstance) => {
@@ -102,7 +108,9 @@ export const workoutPlanRoutes = async (app: FastifyInstance) => {
         const createWorkoutPlan = new CreateWorkoutPlan();
         const result = await createWorkoutPlan.execute({
           userId: session.user.id,
+          dailyWaterGoalInMl: request.body.dailyWaterGoalInMl,
           workoutDays: request.body.workoutDays,
+          meals: request.body.meals,
         });
         return reply.status(201).send(result);
       } catch (error) {
@@ -345,6 +353,166 @@ export const workoutPlanRoutes = async (app: FastifyInstance) => {
         });
 
         return reply.status(200).send(result);
+      } catch (error) {
+        app.log.error(error);
+
+        if (error instanceof NotFoundError) {
+          return reply.status(404).send({
+            error: error.message,
+            code: "NOT_FOUND_ERROR",
+          });
+        }
+
+        return reply.status(500).send({
+          error: "Internal server error",
+          code: "INTERNAL_SERVER_ERROR",
+        });
+      }
+    },
+  });
+
+  app.withTypeProvider<ZodTypeProvider>().route({
+    method: "POST",
+    url: "/:workoutPlanId/meals",
+    schema: {
+      operationId: "createMeal",
+      tags: ["Meal"],
+      summary: "Add a meal to a workout plan",
+      params: z.object({ workoutPlanId: z.uuid() }),
+      body: CreateMealBodySchema,
+      response: {
+        201: MealSchema,
+        401: ErrorSchema,
+        404: ErrorSchema,
+        500: ErrorSchema,
+      },
+    },
+    handler: async (request, reply) => {
+      try {
+        const session = await auth.api.getSession({
+          headers: fromNodeHeaders(request.headers),
+        });
+        if (!session) {
+          return reply.status(401).send({
+            error: "Unauthorized",
+            code: "UNAUTHORIZED",
+          });
+        }
+
+        const createMeal = new CreateMeal();
+        const result = await createMeal.execute({
+          userId: session.user.id,
+          workoutPlanId: request.params.workoutPlanId,
+          ...request.body,
+        });
+
+        return reply.status(201).send(result);
+      } catch (error) {
+        app.log.error(error);
+
+        if (error instanceof NotFoundError) {
+          return reply.status(404).send({
+            error: error.message,
+            code: "NOT_FOUND_ERROR",
+          });
+        }
+
+        return reply.status(500).send({
+          error: "Internal server error",
+          code: "INTERNAL_SERVER_ERROR",
+        });
+      }
+    },
+  });
+
+  app.withTypeProvider<ZodTypeProvider>().route({
+    method: "PATCH",
+    url: "/:workoutPlanId/meals/:mealId",
+    schema: {
+      operationId: "updateMeal",
+      tags: ["Meal"],
+      summary: "Update a meal",
+      params: z.object({ workoutPlanId: z.uuid(), mealId: z.uuid() }),
+      body: UpdateMealBodySchema,
+      response: {
+        200: MealSchema,
+        401: ErrorSchema,
+        404: ErrorSchema,
+        500: ErrorSchema,
+      },
+    },
+    handler: async (request, reply) => {
+      try {
+        const session = await auth.api.getSession({
+          headers: fromNodeHeaders(request.headers),
+        });
+        if (!session) {
+          return reply.status(401).send({
+            error: "Unauthorized",
+            code: "UNAUTHORIZED",
+          });
+        }
+
+        const updateMeal = new UpdateMeal();
+        const result = await updateMeal.execute({
+          userId: session.user.id,
+          mealId: request.params.mealId,
+          ...request.body,
+        });
+
+        return reply.status(200).send(result);
+      } catch (error) {
+        app.log.error(error);
+
+        if (error instanceof NotFoundError) {
+          return reply.status(404).send({
+            error: error.message,
+            code: "NOT_FOUND_ERROR",
+          });
+        }
+
+        return reply.status(500).send({
+          error: "Internal server error",
+          code: "INTERNAL_SERVER_ERROR",
+        });
+      }
+    },
+  });
+
+  app.withTypeProvider<ZodTypeProvider>().route({
+    method: "DELETE",
+    url: "/:workoutPlanId/meals/:mealId",
+    schema: {
+      operationId: "deleteMeal",
+      tags: ["Meal"],
+      summary: "Delete a meal",
+      params: z.object({ workoutPlanId: z.uuid(), mealId: z.uuid() }),
+      response: {
+        204: z.void(),
+        401: ErrorSchema,
+        404: ErrorSchema,
+        500: ErrorSchema,
+      },
+    },
+    handler: async (request, reply) => {
+      try {
+        const session = await auth.api.getSession({
+          headers: fromNodeHeaders(request.headers),
+        });
+        if (!session) {
+          return reply.status(401).send({
+            error: "Unauthorized",
+            code: "UNAUTHORIZED",
+          });
+        }
+
+        const deleteMeal = new DeleteMeal();
+        await deleteMeal.execute({
+          userId: session.user.id,
+          mealId: request.params.mealId,
+        });
+
+        return reply.status(204).send();
       } catch (error) {
         app.log.error(error);
 

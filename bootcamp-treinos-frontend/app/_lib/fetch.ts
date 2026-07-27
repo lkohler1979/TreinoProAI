@@ -1,8 +1,9 @@
 import { cookies } from "next/headers";
 import { getApiBaseUrl } from "./api-base-url";
 
-const getBody = <T>(c: Response | Request): Promise<T> => {
-  return c.json() as Promise<T>;
+const getBody = async <T>(c: Response | Request): Promise<T> => {
+  const text = await c.text();
+  return (text ? JSON.parse(text) : undefined) as T;
 };
 
 const getUrl = (contextUrl: string): string => {

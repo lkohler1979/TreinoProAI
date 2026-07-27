@@ -29,20 +29,47 @@ model User {
   age                 Int?
   bodyFatPercentage   Int? // 100 representa 100%
   isAnonymous         Boolean?
+  waterIntakeEntries  WaterIntakeEntry[]
 
   @@unique([email])
   @@map("user")
 }
 
 model WorkoutPlan {
-  id          String       @id @default(uuid())
-  name        String
-  userId      String
-  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  workoutDays WorkoutDay[]
-  isActive    Boolean      @default(true)
-  createdAt   DateTime     @default(now()) @db.Timestamptz()
-  updatedAt   DateTime     @updatedAt @db.Timestamptz()
+  id                 String       @id @default(uuid())
+  name               String
+  userId             String
+  user               User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  workoutDays        WorkoutDay[]
+  meals              Meal[]
+  dailyWaterGoalInMl Int?
+  isActive           Boolean      @default(true)
+  createdAt          DateTime     @default(now()) @db.Timestamptz()
+  updatedAt          DateTime     @updatedAt @db.Timestamptz()
+}
+
+model Meal {
+  id             String      @id @default(uuid())
+  workoutPlanId  String
+  workoutPlan    WorkoutPlan @relation(fields: [workoutPlanId], references: [id], onDelete: Cascade)
+  name           String
+  time           String
+  description    String
+  calories       Int
+  proteinInGrams Int
+  carbsInGrams   Int
+  fatInGrams     Int
+  order          Int
+  createdAt      DateTime    @default(now()) @db.Timestamptz()
+  updatedAt      DateTime    @updatedAt @db.Timestamptz()
+}
+
+model WaterIntakeEntry {
+  id         String   @id @default(uuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  amountInMl Int
+  recordedAt DateTime @default(now()) @db.Timestamptz()
 }
 
 enum WeekDay {

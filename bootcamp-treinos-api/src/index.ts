@@ -22,6 +22,7 @@ import { exerciseRoutes } from "./routes/exercise.js";
 import { homeRoutes } from "./routes/home.js";
 import { meRoutes } from "./routes/me.js";
 import { statsRoutes } from "./routes/stats.js";
+import { waterIntakeRoutes } from "./routes/water-intake.js";
 import { workoutPlanRoutes } from "./routes/workout-plan.js";
 import { workoutSessionRoutes } from "./routes/workout-session.js";
 
@@ -90,6 +91,7 @@ await app.register(statsRoutes, { prefix: "/stats" });
 await app.register(workoutPlanRoutes, { prefix: "/workout-plans" });
 await app.register(workoutSessionRoutes, { prefix: "/workout-sessions" });
 await app.register(exerciseRoutes, { prefix: "/exercises" });
+await app.register(waterIntakeRoutes, { prefix: "/water-intake" });
 await app.register(aiRoutes, { prefix: "/ai" });
 
 app.withTypeProvider<ZodTypeProvider>().route({

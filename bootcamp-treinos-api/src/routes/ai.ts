@@ -41,7 +41,23 @@ Quando o usuário quiser criar um plano de treino:
 - Poucas perguntas, simples e diretas.
 - O plano DEVE ter exatamente 7 dias (MONDAY a SUNDAY).
 - Dias sem treino devem ter: \`isRest: true\`, \`exercises: []\`, \`estimatedDurationInSeconds: 0\`.
-- Chame a tool \`createWorkoutPlan\` para salvar o plano.
+- Chame a tool \`createWorkoutPlan\` para salvar o plano, a meta de água e o plano alimentar juntos.
+
+### Meta de Água Diária (dailyWaterGoalInMl)
+
+Calcule com base no peso do usuário e na frequência/intensidade de treino:
+- Baseline: 35ml por kg de peso corporal.
+- Some 500ml a 750ml se o usuário treina 4 ou mais dias por semana, ou se os treinos são longos/intensos.
+- Retorne o valor final em mililitros (ex: 2800).
+
+### Plano Alimentar (meals)
+
+Gere de 5 a 6 refeições cobrindo o dia inteiro (ex: Café da manhã, Almoço, Lanche da tarde, Jantar, Ceia), cada uma com:
+- \`time\`: horário sugerido no formato "HH:mm" (ex: "07:00").
+- \`description\`: alimentos sugeridos, em texto simples (ex: "3 ovos, 2 fatias de pão integral, 1 banana").
+- \`calories\`, \`proteinInGrams\`, \`carbsInGrams\`, \`fatInGrams\`: estimativa nutricional daquela refeição.
+- A soma das refeições deve refletir o objetivo do usuário (superávit calórico moderado para hipertrofia/ganho de massa, déficit moderado para perda de peso, manutenção para outros objetivos), usando o peso e dados cadastrados como referência.
+- Priorize proteína suficiente para o objetivo (ex: 1.6-2.2g por kg de peso para hipertrofia).
 
 ### Divisões de Treino (Splits)
 
@@ -145,6 +161,11 @@ export const aiRoutes = async (app: FastifyInstance) => {
             description:
               "Cria um novo plano de treino completo para o usuário.",
             inputSchema: z.object({
+              dailyWaterGoalInMl: z
+                .number()
+                .describe(
+                  "Meta diária de consumo de água em mililitros, calculada com base no peso e na frequência de treino do usuário"
+                ),
               workoutDays: z
                 .array(
                   z.object({
@@ -192,12 +213,40 @@ export const aiRoutes = async (app: FastifyInstance) => {
                 .describe(
                   "Array com exatamente 7 dias de treino (MONDAY a SUNDAY)"
                 ),
+              meals: z
+                .array(
+                  z.object({
+                    order: z.number().describe("Ordem da refeição no dia"),
+                    name: z
+                      .string()
+                      .describe("Nome da refeição (ex: Café da manhã)"),
+                    time: z
+                      .string()
+                      .describe("Horário sugerido no formato HH:mm"),
+                    description: z
+                      .string()
+                      .describe("Alimentos sugeridos para a refeição"),
+                    calories: z.number().describe("Calorias da refeição"),
+                    proteinInGrams: z
+                      .number()
+                      .describe("Proteína em gramas"),
+                    carbsInGrams: z
+                      .number()
+                      .describe("Carboidratos em gramas"),
+                    fatInGrams: z.number().describe("Gordura em gramas"),
+                  })
+                )
+                .describe(
+                  "Plano alimentar com 5 a 6 refeições cobrindo o dia, alinhado ao objetivo do usuário"
+                ),
             }),
             execute: async (input) => {
               const createWorkoutPlan = new CreateWorkoutPlan();
               return createWorkoutPlan.execute({
                 userId,
+                dailyWaterGoalInMl: input.dailyWaterGoalInMl,
                 workoutDays: input.workoutDays,
+                meals: input.meals,
               });
             },
           }),

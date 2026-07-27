@@ -7,6 +7,7 @@ import { prisma } from "../lib/db.js";
 // Data Transfer Object t
 interface InputDto {
   userId: string;
+  dailyWaterGoalInMl: number;
   workoutDays: Array<{
     name: string;
     weekDay: WeekDay;
@@ -21,11 +22,22 @@ interface InputDto {
       restTimeInSeconds: number;
     }>;
   }>;
+  meals: Array<{
+    order: number;
+    name: string;
+    time: string;
+    description: string;
+    calories: number;
+    proteinInGrams: number;
+    carbsInGrams: number;
+    fatInGrams: number;
+  }>;
 }
 
 interface OutputDto {
   id: string;
   name: string;
+  dailyWaterGoalInMl: number;
   workoutDays: Array<{
     name: string;
     weekDay: WeekDay;
@@ -39,6 +51,16 @@ interface OutputDto {
       reps: number;
       restTimeInSeconds: number;
     }>;
+  }>;
+  meals: Array<{
+    order: number;
+    name: string;
+    time: string;
+    description: string;
+    calories: number;
+    proteinInGrams: number;
+    carbsInGrams: number;
+    fatInGrams: number;
   }>;
 }
 
@@ -65,6 +87,7 @@ export class CreateWorkoutPlan {
           name,
           userId: dto.userId,
           isActive: true,
+          dailyWaterGoalInMl: dto.dailyWaterGoalInMl,
           workoutDays: {
             create: dto.workoutDays.map((workoutDay) => ({
               name: workoutDay.name,
@@ -83,6 +106,18 @@ export class CreateWorkoutPlan {
               },
             })),
           },
+          meals: {
+            create: dto.meals.map((meal) => ({
+              order: meal.order,
+              name: meal.name,
+              time: meal.time,
+              description: meal.description,
+              calories: meal.calories,
+              proteinInGrams: meal.proteinInGrams,
+              carbsInGrams: meal.carbsInGrams,
+              fatInGrams: meal.fatInGrams,
+            })),
+          },
         },
       });
       const result = await tx.workoutPlan.findUnique({
@@ -93,6 +128,7 @@ export class CreateWorkoutPlan {
               exercises: true,
             },
           },
+          meals: { orderBy: { order: "asc" } },
         },
       });
       if (!result) {
@@ -101,6 +137,7 @@ export class CreateWorkoutPlan {
       return {
         id: result.id,
         name: result.name,
+        dailyWaterGoalInMl: dto.dailyWaterGoalInMl,
         workoutDays: result.workoutDays.map((day) => ({
           name: day.name,
           weekDay: day.weekDay,
@@ -114,6 +151,16 @@ export class CreateWorkoutPlan {
             reps: exercise.reps,
             restTimeInSeconds: exercise.restTimeInSeconds,
           })),
+        })),
+        meals: result.meals.map((meal) => ({
+          order: meal.order,
+          name: meal.name,
+          time: meal.time,
+          description: meal.description,
+          calories: meal.calories,
+          proteinInGrams: meal.proteinInGrams,
+          carbsInGrams: meal.carbsInGrams,
+          fatInGrams: meal.fatInGrams,
         })),
       };
     });

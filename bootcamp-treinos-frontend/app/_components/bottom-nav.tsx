@@ -4,6 +4,7 @@ import {
   Calendar,
   ChartNoAxesColumn,
   UserRound,
+  Utensils,
 } from "lucide-react";
 import dayjs from "dayjs";
 import { getHomeData } from "@/app/_lib/api/fetch-generated";
@@ -11,7 +12,7 @@ import { cn } from "@/lib/utils";
 import { ChatOpenButton } from "@/app/_components/chat-open-button";
 
 interface BottomNavProps {
-  activePage?: "home" | "calendar" | "stats" | "profile";
+  activePage?: "home" | "calendar" | "nutrition" | "stats" | "profile";
 }
 
 export async function BottomNav({ activePage = "home" }: BottomNavProps) {
@@ -24,8 +25,8 @@ export async function BottomNav({ activePage = "home" }: BottomNavProps) {
       : null;
 
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-50 mx-auto flex w-full max-w-[480px] items-center justify-center gap-6 rounded-t-[20px] border border-border bg-background px-6 py-4">
-      <Link href="/" className="p-3">
+    <nav className="fixed inset-x-0 bottom-0 z-50 mx-auto flex w-full max-w-[480px] items-center justify-center gap-4 rounded-t-[20px] border border-border bg-background px-4 py-4">
+      <Link href="/" className="p-2.5">
         <House
           className={cn(
             "size-6",
@@ -34,7 +35,7 @@ export async function BottomNav({ activePage = "home" }: BottomNavProps) {
         />
       </Link>
       {calendarHref ? (
-        <Link href={calendarHref} className="p-3">
+        <Link href={calendarHref} className="p-2.5">
           <Calendar
             className={cn(
               "size-6",
@@ -45,7 +46,7 @@ export async function BottomNav({ activePage = "home" }: BottomNavProps) {
           />
         </Link>
       ) : (
-        <button className="p-3">
+        <button className="p-2.5">
           <Calendar
             className={cn(
               "size-6",
@@ -56,8 +57,18 @@ export async function BottomNav({ activePage = "home" }: BottomNavProps) {
           />
         </button>
       )}
+      <Link href="/nutrition" className="p-2.5">
+        <Utensils
+          className={cn(
+            "size-6",
+            activePage === "nutrition"
+              ? "text-foreground"
+              : "text-muted-foreground"
+          )}
+        />
+      </Link>
       <ChatOpenButton />
-      <Link href="/stats" className="p-3">
+      <Link href="/stats" className="p-2.5">
         <ChartNoAxesColumn
           className={cn(
             "size-6",
@@ -67,7 +78,7 @@ export async function BottomNav({ activePage = "home" }: BottomNavProps) {
           )}
         />
       </Link>
-      <Link href="/profile" className="p-3">
+      <Link href="/profile" className="p-2.5">
         <UserRound
           className={cn(
             "size-6",

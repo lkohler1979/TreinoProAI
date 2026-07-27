@@ -262,8 +262,28 @@ export type CreateWorkoutPlanBodyWorkoutDaysItem = {
   exercises: CreateWorkoutPlanBodyWorkoutDaysItemExercisesItem[];
 };
 
+export type CreateWorkoutPlanBodyMealsItem = {
+  /** @minimum 0 */
+  order: number;
+  /** @minLength 1 */
+  name: string;
+  time: string;
+  description: string;
+  /** @minimum 0 */
+  calories: number;
+  /** @minimum 0 */
+  proteinInGrams: number;
+  /** @minimum 0 */
+  carbsInGrams: number;
+  /** @minimum 0 */
+  fatInGrams: number;
+};
+
 export type CreateWorkoutPlanBody = {
+  /** @minimum 0 */
+  dailyWaterGoalInMl: number;
   workoutDays: CreateWorkoutPlanBodyWorkoutDaysItem[];
+  meals: CreateWorkoutPlanBodyMealsItem[];
 };
 
 export type CreateWorkoutPlan201WorkoutDaysItemWeekDay =
@@ -303,12 +323,32 @@ export type CreateWorkoutPlan201WorkoutDaysItem = {
   exercises: CreateWorkoutPlan201WorkoutDaysItemExercisesItem[];
 };
 
+export type CreateWorkoutPlan201MealsItem = {
+  /** @minimum 0 */
+  order: number;
+  /** @minLength 1 */
+  name: string;
+  time: string;
+  description: string;
+  /** @minimum 0 */
+  calories: number;
+  /** @minimum 0 */
+  proteinInGrams: number;
+  /** @minimum 0 */
+  carbsInGrams: number;
+  /** @minimum 0 */
+  fatInGrams: number;
+};
+
 export type CreateWorkoutPlan201 = {
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
   id: string;
   /** @minLength 1 */
   name: string;
+  /** @minimum 0 */
+  dailyWaterGoalInMl: number;
   workoutDays: CreateWorkoutPlan201WorkoutDaysItem[];
+  meals: CreateWorkoutPlan201MealsItem[];
 };
 
 export type CreateWorkoutPlan400 = {
@@ -355,11 +395,26 @@ export type GetWorkoutPlan200WorkoutDaysItem = {
   exercisesCount: number;
 };
 
+export type GetWorkoutPlan200MealsItem = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  order: number;
+  name: string;
+  time: string;
+  description: string;
+  calories: number;
+  proteinInGrams: number;
+  carbsInGrams: number;
+  fatInGrams: number;
+};
+
 export type GetWorkoutPlan200 = {
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
   id: string;
   name: string;
+  dailyWaterGoalInMl?: number;
   workoutDays: GetWorkoutPlan200WorkoutDaysItem[];
+  meals: GetWorkoutPlan200MealsItem[];
 };
 
 export type GetWorkoutPlan401 = {
@@ -500,6 +555,107 @@ export type UpdateWorkoutSession500 = {
   code: string;
 };
 
+export type CreateMealBody = {
+  /** @minLength 1 */
+  name: string;
+  time: string;
+  description: string;
+  /** @minimum 0 */
+  calories: number;
+  /** @minimum 0 */
+  proteinInGrams: number;
+  /** @minimum 0 */
+  carbsInGrams: number;
+  /** @minimum 0 */
+  fatInGrams: number;
+};
+
+export type CreateMeal201 = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  order: number;
+  name: string;
+  time: string;
+  description: string;
+  calories: number;
+  proteinInGrams: number;
+  carbsInGrams: number;
+  fatInGrams: number;
+};
+
+export type CreateMeal401 = {
+  error: string;
+  code: string;
+};
+
+export type CreateMeal404 = {
+  error: string;
+  code: string;
+};
+
+export type CreateMeal500 = {
+  error: string;
+  code: string;
+};
+
+export type UpdateMealBody = {
+  /** @minLength 1 */
+  name: string;
+  time: string;
+  description: string;
+  /** @minimum 0 */
+  calories: number;
+  /** @minimum 0 */
+  proteinInGrams: number;
+  /** @minimum 0 */
+  carbsInGrams: number;
+  /** @minimum 0 */
+  fatInGrams: number;
+};
+
+export type UpdateMeal200 = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  order: number;
+  name: string;
+  time: string;
+  description: string;
+  calories: number;
+  proteinInGrams: number;
+  carbsInGrams: number;
+  fatInGrams: number;
+};
+
+export type UpdateMeal401 = {
+  error: string;
+  code: string;
+};
+
+export type UpdateMeal404 = {
+  error: string;
+  code: string;
+};
+
+export type UpdateMeal500 = {
+  error: string;
+  code: string;
+};
+
+export type DeleteMeal401 = {
+  error: string;
+  code: string;
+};
+
+export type DeleteMeal404 = {
+  error: string;
+  code: string;
+};
+
+export type DeleteMeal500 = {
+  error: string;
+  code: string;
+};
+
 export type GetWorkoutSessions200ItemSessionsItemWeekDay =
   (typeof GetWorkoutSessions200ItemSessionsItemWeekDay)[keyof typeof GetWorkoutSessions200ItemSessionsItemWeekDay];
 
@@ -593,6 +749,60 @@ export type GetExerciseLoadHistory404 = {
 };
 
 export type GetExerciseLoadHistory500 = {
+  error: string;
+  code: string;
+};
+
+export type GetWaterIntakeTodayParams = {
+  /**
+   * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))$
+   */
+  date: string;
+};
+
+export type GetWaterIntakeToday200EntriesItem = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  amountInMl: number;
+  /** @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$ */
+  recordedAt: string;
+};
+
+export type GetWaterIntakeToday200 = {
+  goalInMl?: number;
+  totalInMl: number;
+  entries: GetWaterIntakeToday200EntriesItem[];
+};
+
+export type GetWaterIntakeToday401 = {
+  error: string;
+  code: string;
+};
+
+export type GetWaterIntakeToday500 = {
+  error: string;
+  code: string;
+};
+
+export type CreateWaterIntakeEntryBody = {
+  /** @minimum 1 */
+  amountInMl: number;
+};
+
+export type CreateWaterIntakeEntry201 = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  amountInMl: number;
+  /** @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$ */
+  recordedAt: string;
+};
+
+export type CreateWaterIntakeEntry401 = {
+  error: string;
+  code: string;
+};
+
+export type CreateWaterIntakeEntry500 = {
   error: string;
   code: string;
 };
@@ -1179,6 +1389,176 @@ export const updateWorkoutSession = async (
 };
 
 /**
+ * @summary Add a meal to a workout plan
+ */
+export type createMealResponse201 = {
+  data: CreateMeal201;
+  status: 201;
+};
+
+export type createMealResponse401 = {
+  data: CreateMeal401;
+  status: 401;
+};
+
+export type createMealResponse404 = {
+  data: CreateMeal404;
+  status: 404;
+};
+
+export type createMealResponse500 = {
+  data: CreateMeal500;
+  status: 500;
+};
+
+export type createMealResponseSuccess = createMealResponse201 & {
+  headers: Headers;
+};
+export type createMealResponseError = (
+  | createMealResponse401
+  | createMealResponse404
+  | createMealResponse500
+) & {
+  headers: Headers;
+};
+
+export type createMealResponse =
+  | createMealResponseSuccess
+  | createMealResponseError;
+
+export const getCreateMealUrl = (workoutPlanId: string) => {
+  return `/workout-plans/${workoutPlanId}/meals`;
+};
+
+export const createMeal = async (
+  workoutPlanId: string,
+  createMealBody: CreateMealBody,
+  options?: RequestInit,
+): Promise<createMealResponse> => {
+  return customFetch<createMealResponse>(getCreateMealUrl(workoutPlanId), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(createMealBody),
+  });
+};
+
+/**
+ * @summary Update a meal
+ */
+export type updateMealResponse200 = {
+  data: UpdateMeal200;
+  status: 200;
+};
+
+export type updateMealResponse401 = {
+  data: UpdateMeal401;
+  status: 401;
+};
+
+export type updateMealResponse404 = {
+  data: UpdateMeal404;
+  status: 404;
+};
+
+export type updateMealResponse500 = {
+  data: UpdateMeal500;
+  status: 500;
+};
+
+export type updateMealResponseSuccess = updateMealResponse200 & {
+  headers: Headers;
+};
+export type updateMealResponseError = (
+  | updateMealResponse401
+  | updateMealResponse404
+  | updateMealResponse500
+) & {
+  headers: Headers;
+};
+
+export type updateMealResponse =
+  | updateMealResponseSuccess
+  | updateMealResponseError;
+
+export const getUpdateMealUrl = (workoutPlanId: string, mealId: string) => {
+  return `/workout-plans/${workoutPlanId}/meals/${mealId}`;
+};
+
+export const updateMeal = async (
+  workoutPlanId: string,
+  mealId: string,
+  updateMealBody: UpdateMealBody,
+  options?: RequestInit,
+): Promise<updateMealResponse> => {
+  return customFetch<updateMealResponse>(
+    getUpdateMealUrl(workoutPlanId, mealId),
+    {
+      ...options,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json", ...options?.headers },
+      body: JSON.stringify(updateMealBody),
+    },
+  );
+};
+
+/**
+ * @summary Delete a meal
+ */
+export type deleteMealResponse204 = {
+  data: unknown;
+  status: 204;
+};
+
+export type deleteMealResponse401 = {
+  data: DeleteMeal401;
+  status: 401;
+};
+
+export type deleteMealResponse404 = {
+  data: DeleteMeal404;
+  status: 404;
+};
+
+export type deleteMealResponse500 = {
+  data: DeleteMeal500;
+  status: 500;
+};
+
+export type deleteMealResponseSuccess = deleteMealResponse204 & {
+  headers: Headers;
+};
+export type deleteMealResponseError = (
+  | deleteMealResponse401
+  | deleteMealResponse404
+  | deleteMealResponse500
+) & {
+  headers: Headers;
+};
+
+export type deleteMealResponse =
+  | deleteMealResponseSuccess
+  | deleteMealResponseError;
+
+export const getDeleteMealUrl = (workoutPlanId: string, mealId: string) => {
+  return `/workout-plans/${workoutPlanId}/meals/${mealId}`;
+};
+
+export const deleteMeal = async (
+  workoutPlanId: string,
+  mealId: string,
+  options?: RequestInit,
+): Promise<deleteMealResponse> => {
+  return customFetch<deleteMealResponse>(
+    getDeleteMealUrl(workoutPlanId, mealId),
+    {
+      ...options,
+      method: "DELETE",
+    },
+  );
+};
+
+/**
  * @summary List all workout plans with their completed sessions and stats
  */
 export type getWorkoutSessionsResponse200 = {
@@ -1335,6 +1715,122 @@ export const getExerciseLoadHistory = async (
     {
       ...options,
       method: "GET",
+    },
+  );
+};
+
+/**
+ * @summary Get today's water intake entries, total, and daily goal
+ */
+export type getWaterIntakeTodayResponse200 = {
+  data: GetWaterIntakeToday200;
+  status: 200;
+};
+
+export type getWaterIntakeTodayResponse401 = {
+  data: GetWaterIntakeToday401;
+  status: 401;
+};
+
+export type getWaterIntakeTodayResponse500 = {
+  data: GetWaterIntakeToday500;
+  status: 500;
+};
+
+export type getWaterIntakeTodayResponseSuccess =
+  getWaterIntakeTodayResponse200 & {
+    headers: Headers;
+  };
+export type getWaterIntakeTodayResponseError = (
+  | getWaterIntakeTodayResponse401
+  | getWaterIntakeTodayResponse500
+) & {
+  headers: Headers;
+};
+
+export type getWaterIntakeTodayResponse =
+  | getWaterIntakeTodayResponseSuccess
+  | getWaterIntakeTodayResponseError;
+
+export const getGetWaterIntakeTodayUrl = (
+  params: GetWaterIntakeTodayParams,
+) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : value.toString());
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0
+    ? `/water-intake/?${stringifiedParams}`
+    : `/water-intake/`;
+};
+
+export const getWaterIntakeToday = async (
+  params: GetWaterIntakeTodayParams,
+  options?: RequestInit,
+): Promise<getWaterIntakeTodayResponse> => {
+  return customFetch<getWaterIntakeTodayResponse>(
+    getGetWaterIntakeTodayUrl(params),
+    {
+      ...options,
+      method: "GET",
+    },
+  );
+};
+
+/**
+ * @summary Log a water intake entry
+ */
+export type createWaterIntakeEntryResponse201 = {
+  data: CreateWaterIntakeEntry201;
+  status: 201;
+};
+
+export type createWaterIntakeEntryResponse401 = {
+  data: CreateWaterIntakeEntry401;
+  status: 401;
+};
+
+export type createWaterIntakeEntryResponse500 = {
+  data: CreateWaterIntakeEntry500;
+  status: 500;
+};
+
+export type createWaterIntakeEntryResponseSuccess =
+  createWaterIntakeEntryResponse201 & {
+    headers: Headers;
+  };
+export type createWaterIntakeEntryResponseError = (
+  | createWaterIntakeEntryResponse401
+  | createWaterIntakeEntryResponse500
+) & {
+  headers: Headers;
+};
+
+export type createWaterIntakeEntryResponse =
+  | createWaterIntakeEntryResponseSuccess
+  | createWaterIntakeEntryResponseError;
+
+export const getCreateWaterIntakeEntryUrl = () => {
+  return `/water-intake/`;
+};
+
+export const createWaterIntakeEntry = async (
+  createWaterIntakeEntryBody: CreateWaterIntakeEntryBody,
+  options?: RequestInit,
+): Promise<createWaterIntakeEntryResponse> => {
+  return customFetch<createWaterIntakeEntryResponse>(
+    getCreateWaterIntakeEntryUrl(),
+    {
+      ...options,
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...options?.headers },
+      body: JSON.stringify(createWaterIntakeEntryBody),
     },
   );
 };

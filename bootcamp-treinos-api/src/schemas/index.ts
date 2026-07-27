@@ -93,9 +93,22 @@ export const GetWorkoutDaySchema = z.object({
   ),
 });
 
+export const MealSchema = z.object({
+  id: z.uuid(),
+  order: z.number(),
+  name: z.string(),
+  time: z.string(),
+  description: z.string(),
+  calories: z.number(),
+  proteinInGrams: z.number(),
+  carbsInGrams: z.number(),
+  fatInGrams: z.number(),
+});
+
 export const GetWorkoutPlanSchema = z.object({
   id: z.uuid(),
   name: z.string(),
+  dailyWaterGoalInMl: z.number().optional(),
   workoutDays: z.array(
     z.object({
       id: z.uuid(),
@@ -107,6 +120,7 @@ export const GetWorkoutPlanSchema = z.object({
       exercisesCount: z.number(),
     })
   ),
+  meals: z.array(MealSchema),
 });
 
 export const ListWorkoutPlansQuerySchema = z.object({
@@ -201,9 +215,42 @@ export const ExerciseLoadEntrySchema = z.object({
 
 export const ExerciseLoadHistorySchema = z.array(ExerciseLoadEntrySchema);
 
+export const CreateMealBodySchema = z.object({
+  name: z.string().trim().min(1),
+  time: z.string(),
+  description: z.string(),
+  calories: z.number().min(0),
+  proteinInGrams: z.number().min(0),
+  carbsInGrams: z.number().min(0),
+  fatInGrams: z.number().min(0),
+});
+
+export const UpdateMealBodySchema = CreateMealBodySchema;
+
+export const CreateWaterIntakeBodySchema = z.object({
+  amountInMl: z.number().min(1),
+});
+
+export const WaterIntakeEntrySchema = z.object({
+  id: z.uuid(),
+  amountInMl: z.number(),
+  recordedAt: z.iso.datetime(),
+});
+
+export const WaterIntakeTodayQuerySchema = z.object({
+  date: z.iso.date(),
+});
+
+export const WaterIntakeTodaySchema = z.object({
+  goalInMl: z.number().optional(),
+  totalInMl: z.number(),
+  entries: z.array(WaterIntakeEntrySchema),
+});
+
 export const WorkoutPlanSchema = z.object({
   id: z.uuid(),
   name: z.string().trim().min(1),
+  dailyWaterGoalInMl: z.number().min(0),
   workoutDays: z.array(
     z.object({
       name: z.string().trim().min(1),
@@ -220,6 +267,18 @@ export const WorkoutPlanSchema = z.object({
           restTimeInSeconds: z.number().min(1),
         })
       ),
+    })
+  ),
+  meals: z.array(
+    z.object({
+      order: z.number().min(0),
+      name: z.string().trim().min(1),
+      time: z.string(),
+      description: z.string(),
+      calories: z.number().min(0),
+      proteinInGrams: z.number().min(0),
+      carbsInGrams: z.number().min(0),
+      fatInGrams: z.number().min(0),
     })
   ),
 });
