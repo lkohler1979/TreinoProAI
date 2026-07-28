@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
 
@@ -9,23 +9,33 @@ interface BeforeInstallPromptEvent extends Event {
   userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
 }
 
+const subscribeNoop = () => () => {};
+
+const getIsStandaloneSnapshot = () =>
+  window.matchMedia("(display-mode: standalone)").matches;
+const getIsStandaloneServerSnapshot = () => false;
+
+const getIsIosSnapshot = () =>
+  /iphone|ipad|ipod/i.test(navigator.userAgent) &&
+  !(navigator as unknown as { standalone?: boolean }).standalone;
+const getIsIosServerSnapshot = () => false;
+
 export const InstallPwaButton = () => {
   const [deferredPrompt, setDeferredPrompt] =
     useState<BeforeInstallPromptEvent | null>(null);
-  const [isIos, setIsIos] = useState(false);
-  const [isInstalled, setIsInstalled] = useState(true);
+  const [isInstalled, setIsInstalled] = useState(false);
+  const isStandalone = useSyncExternalStore(
+    subscribeNoop,
+    getIsStandaloneSnapshot,
+    getIsStandaloneServerSnapshot,
+  );
+  const isIos = useSyncExternalStore(
+    subscribeNoop,
+    getIsIosSnapshot,
+    getIsIosServerSnapshot,
+  );
 
   useEffect(() => {
-    const ios =
-      /iphone|ipad|ipod/i.test(navigator.userAgent) &&
-      !(navigator as unknown as { standalone?: boolean }).standalone;
-    const standalone = window.matchMedia("(display-mode: standalone)").matches;
-
-    if (standalone) return;
-
-    setIsInstalled(false);
-    setIsIos(ios);
-
     const handler = (e: Event) => {
       e.preventDefault();
       setDeferredPrompt(e as BeforeInstallPromptEvent);
@@ -35,7 +45,7 @@ export const InstallPwaButton = () => {
     return () => window.removeEventListener("beforeinstallprompt", handler);
   }, []);
 
-  if (isInstalled) return null;
+  if (isStandalone || isInstalled) return null;
 
   if (isIos) {
     return (
