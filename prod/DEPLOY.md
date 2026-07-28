@@ -259,11 +259,12 @@ cd /var/www/treino
 ./app/prod/deploy.sh
 ```
 
-Ele faz, em ordem, parando no primeiro erro: `git pull` (recusa rodar se
-houver mudanças locais não commitadas em `app/`), instala e builda o
-backend, roda `prisma migrate deploy`, instala e builda o frontend,
-reinicia os dois processos no PM2 e testa se `127.0.0.1:8080` e
-`127.0.0.1:3000` respondem.
+Ele faz, em ordem, parando no primeiro erro: atualiza `app/` a partir da
+`main` (se houver qualquer alteração local - commitada ou não - ela é
+descartada antes; a pasta em produção deve sempre refletir exatamente o
+que está na `main`), instala e builda o backend, roda
+`prisma migrate deploy`, instala e builda o frontend, reinicia os dois
+processos no PM2 e testa se `127.0.0.1:8080` e `127.0.0.1:3000` respondem.
 
 Um deploy já em andamento é detectado (lock file em `/tmp/treino-deploy.lock`)
 e uma segunda execução simultânea é recusada.

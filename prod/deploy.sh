@@ -33,10 +33,16 @@ flock -n 200 || fail "ja existe um deploy em andamento (lock: $LOCK_FILE)"
 
 log "1/6 - Atualizando o repositorio (git pull)"
 cd "$APP_DIR"
+
 if [ -n "$(git status --porcelain)" ]; then
-  fail "existem mudancas locais nao commitadas em $APP_DIR - resolva antes de dar deploy (git status)"
+  log "Alteracoes locais encontradas em $APP_DIR - descartando (producao sempre reflete a main)"
+  git reset --hard HEAD
+  git clean -fd
 fi
-git pull --ff-only
+
+git fetch origin main
+git checkout main
+git reset --hard origin/main
 
 log "2/6 - Instalando dependencias do backend"
 cd "$BACKEND_DIR"
