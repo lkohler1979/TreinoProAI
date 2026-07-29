@@ -9,14 +9,22 @@
   "orientation": "portrait",
   "icons": [
     {
-      "src": "/0a1a6d4f-dbd2-44df-951b-16cbf80f8da2.png",
+      "src": "/icons/icon-192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
-      "src": "/0a1a6d4f-dbd2-44df-951b-16cbf80f8da2.png",
+      "src": "/icons/icon-512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }

@@ -2,9 +2,9 @@ import Image from "next/image";
 import { redirect } from "next/navigation";
 import { authClient } from "@/app/_lib/auth-client";
 import { headers } from "next/headers";
+import { InstallPwaButton } from "@/app/_components/install-pwa-button";
 import { SignInWithGoogle } from "./_components/sign-in-with-google";
 import { SignInAnonymous } from "./_components/sign-in-anonymous";
-import { InstallPwaButton } from "./_components/install-pwa-button";
 
 export default async function AuthPage() {
   const session = await authClient.getSession({

@@ -4,6 +4,7 @@ import { authClient } from "@/app/_lib/auth-client";
 import { getUserTrainData, getHomeData } from "@/app/_lib/api/fetch-generated";
 import dayjs from "dayjs";
 import { BottomNav } from "@/app/_components/bottom-nav";
+import { InstallPwaButton } from "@/app/_components/install-pwa-button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Weight, Ruler, BicepsFlexed, User } from "lucide-react";
 import { LogoutButton } from "./_components/logout-button";
@@ -128,6 +129,10 @@ export default async function ProfilePage() {
           </div>
         </div>
 
+        <InstallPwaButton
+          buttonClassName="w-full rounded-xl border-border bg-transparent text-foreground hover:bg-accent"
+          instructionsClassName="text-muted-foreground"
+        />
         <LogoutButton />
       </div>
 
