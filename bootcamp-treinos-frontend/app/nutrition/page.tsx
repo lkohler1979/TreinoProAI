@@ -18,6 +18,7 @@ import {
 import { WaterTracker } from "./_components/water-tracker";
 import { MealCard } from "./_components/meal-card";
 import { AddMealButton } from "./_components/add-meal-button";
+import { PhotoMealCapture } from "./_components/photo-meal-capture";
 
 export default async function NutritionPage() {
   const session = await authClient.getSession({
@@ -83,6 +84,7 @@ export default async function NutritionPage() {
                 meal={meal}
               />
             ))}
+            <PhotoMealCapture workoutPlanId={workoutPlanId} />
             <AddMealButton workoutPlanId={workoutPlanId} />
           </TabsContent>
         </Tabs>

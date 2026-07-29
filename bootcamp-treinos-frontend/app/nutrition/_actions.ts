@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import {
+  analyzeMealPhoto,
   createMeal,
   createWaterIntakeEntry,
   deleteMeal,
@@ -43,4 +44,12 @@ export async function updateMealAction(
 export async function deleteMealAction(workoutPlanId: string, mealId: string) {
   await deleteMeal(workoutPlanId, mealId);
   revalidatePath("/nutrition");
+}
+
+export async function analyzeMealPhotoAction(image: string) {
+  const response = await analyzeMealPhoto({ image });
+  if (response.status !== 200) {
+    throw new Error("Failed to analyze meal photo");
+  }
+  return response.data;
 }

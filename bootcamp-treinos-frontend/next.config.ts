@@ -14,6 +14,7 @@ const nextConfig: NextConfig = {
   experimental: {
     serverActions: {
       allowedOrigins: [".nexux360.com.br"],
+      bodySizeLimit: "8mb",
     },
   },
 };

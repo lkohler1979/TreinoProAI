@@ -4,11 +4,15 @@ import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import dayjs from "dayjs";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import type { GetWorkoutPlan200MealsItem } from "@/app/_lib/api/fetch-generated";
+import type {
+  AnalyzeMealPhoto200,
+  GetWorkoutPlan200MealsItem,
+} from "@/app/_lib/api/fetch-generated";
 import { createMealAction, updateMealAction } from "../_actions";
 
 const numericString = () =>
@@ -31,22 +35,29 @@ type MealFormValues = z.infer<typeof mealFormSchema>;
 interface MealFormProps {
   workoutPlanId: string;
   meal?: GetWorkoutPlan200MealsItem;
+  suggestedValues?: AnalyzeMealPhoto200;
   onDone?: () => void;
 }
 
-export function MealForm({ workoutPlanId, meal, onDone }: MealFormProps) {
+export function MealForm({
+  workoutPlanId,
+  meal,
+  suggestedValues,
+  onDone,
+}: MealFormProps) {
   const [isPending, startTransition] = useTransition();
+  const initialValues = meal ?? suggestedValues;
 
   const form = useForm<MealFormValues>({
     resolver: zodResolver(mealFormSchema),
     defaultValues: {
-      name: meal?.name ?? "",
-      time: meal?.time ?? "",
-      description: meal?.description ?? "",
-      calories: meal ? String(meal.calories) : "",
-      proteinInGrams: meal ? String(meal.proteinInGrams) : "",
-      carbsInGrams: meal ? String(meal.carbsInGrams) : "",
-      fatInGrams: meal ? String(meal.fatInGrams) : "",
+      name: initialValues?.name ?? "",
+      time: meal?.time ?? dayjs().format("HH:mm"),
+      description: initialValues?.description ?? "",
+      calories: initialValues ? String(initialValues.calories) : "",
+      proteinInGrams: initialValues ? String(initialValues.proteinInGrams) : "",
+      carbsInGrams: initialValues ? String(initialValues.carbsInGrams) : "",
+      fatInGrams: initialValues ? String(initialValues.fatInGrams) : "",
     },
   });
 

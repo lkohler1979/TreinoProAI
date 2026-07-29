@@ -656,6 +656,34 @@ export type DeleteMeal500 = {
   code: string;
 };
 
+export type AnalyzeMealPhotoBody = {
+  /** @minLength 1 */
+  image: string;
+};
+
+export type AnalyzeMealPhoto200 = {
+  name: string;
+  description: string;
+  /** @minimum 0 */
+  calories: number;
+  /** @minimum 0 */
+  proteinInGrams: number;
+  /** @minimum 0 */
+  carbsInGrams: number;
+  /** @minimum 0 */
+  fatInGrams: number;
+};
+
+export type AnalyzeMealPhoto401 = {
+  error: string;
+  code: string;
+};
+
+export type AnalyzeMealPhoto500 = {
+  error: string;
+  code: string;
+};
+
 export type GetWorkoutSessions200ItemSessionsItemWeekDay =
   (typeof GetWorkoutSessions200ItemSessionsItemWeekDay)[keyof typeof GetWorkoutSessions200ItemSessionsItemWeekDay];
 
@@ -1556,6 +1584,54 @@ export const deleteMeal = async (
       method: "DELETE",
     },
   );
+};
+
+/**
+ * @summary Analyze a photo of a meal and estimate its foods and macros. The photo is not stored.
+ */
+export type analyzeMealPhotoResponse200 = {
+  data: AnalyzeMealPhoto200;
+  status: 200;
+};
+
+export type analyzeMealPhotoResponse401 = {
+  data: AnalyzeMealPhoto401;
+  status: 401;
+};
+
+export type analyzeMealPhotoResponse500 = {
+  data: AnalyzeMealPhoto500;
+  status: 500;
+};
+
+export type analyzeMealPhotoResponseSuccess = analyzeMealPhotoResponse200 & {
+  headers: Headers;
+};
+export type analyzeMealPhotoResponseError = (
+  | analyzeMealPhotoResponse401
+  | analyzeMealPhotoResponse500
+) & {
+  headers: Headers;
+};
+
+export type analyzeMealPhotoResponse =
+  | analyzeMealPhotoResponseSuccess
+  | analyzeMealPhotoResponseError;
+
+export const getAnalyzeMealPhotoUrl = () => {
+  return `/meals/analyze-photo`;
+};
+
+export const analyzeMealPhoto = async (
+  analyzeMealPhotoBody: AnalyzeMealPhotoBody,
+  options?: RequestInit,
+): Promise<analyzeMealPhotoResponse> => {
+  return customFetch<analyzeMealPhotoResponse>(getAnalyzeMealPhotoUrl(), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(analyzeMealPhotoBody),
+  });
 };
 
 /**

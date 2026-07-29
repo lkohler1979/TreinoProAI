@@ -227,6 +227,19 @@ export const CreateMealBodySchema = z.object({
 
 export const UpdateMealBodySchema = CreateMealBodySchema;
 
+export const AnalyzeMealPhotoBodySchema = z.object({
+  image: z.string().min(1),
+});
+
+export const MealAnalysisSchema = z.object({
+  name: z.string(),
+  description: z.string(),
+  calories: z.number().min(0),
+  proteinInGrams: z.number().min(0),
+  carbsInGrams: z.number().min(0),
+  fatInGrams: z.number().min(0),
+});
+
 export const CreateWaterIntakeBodySchema = z.object({
   amountInMl: z.number().min(1),
 });

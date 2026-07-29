@@ -21,6 +21,7 @@ import { aiRoutes } from "./routes/ai.js";
 import { exerciseRoutes } from "./routes/exercise.js";
 import { homeRoutes } from "./routes/home.js";
 import { meRoutes } from "./routes/me.js";
+import { mealPhotoRoutes } from "./routes/meal-photo.js";
 import { statsRoutes } from "./routes/stats.js";
 import { waterIntakeRoutes } from "./routes/water-intake.js";
 import { workoutPlanRoutes } from "./routes/workout-plan.js";
@@ -29,6 +30,7 @@ import { workoutSessionRoutes } from "./routes/workout-session.js";
 const app = Fastify(
   env.NODE_ENV === "development"
     ? {
+        bodyLimit: 8 * 1024 * 1024,
         loggerInstance: pino(
           pinoPretty({
             translateTime: "HH:MM:ss Z",
@@ -36,7 +38,7 @@ const app = Fastify(
           })
         ),
       }
-    : { logger: env.NODE_ENV === "production" }
+    : { bodyLimit: 8 * 1024 * 1024, logger: env.NODE_ENV === "production" }
 );
 
 app.setValidatorCompiler(validatorCompiler);
@@ -89,6 +91,7 @@ await app.register(homeRoutes, { prefix: "/home" });
 await app.register(meRoutes, { prefix: "/me" });
 await app.register(statsRoutes, { prefix: "/stats" });
 await app.register(workoutPlanRoutes, { prefix: "/workout-plans" });
+await app.register(mealPhotoRoutes, { prefix: "/meals" });
 await app.register(workoutSessionRoutes, { prefix: "/workout-sessions" });
 await app.register(exerciseRoutes, { prefix: "/exercises" });
 await app.register(waterIntakeRoutes, { prefix: "/water-intake" });
