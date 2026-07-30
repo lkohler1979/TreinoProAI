@@ -14,14 +14,14 @@ datasource db {
 }
 
 model User {
-  id                  String        @id
+  id                  String             @id
   workoutPlans        WorkoutPlan[]
   name                String
   email               String
-  emailVerified       Boolean       @default(false)
+  emailVerified       Boolean            @default(false)
   image               String?
-  createdAt           DateTime      @default(now())
-  updatedAt           DateTime      @updatedAt
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @updatedAt
   sessions            Session[]
   accounts            Account[]
   weightInGrams       Int?
@@ -40,12 +40,21 @@ model WorkoutPlan {
   name               String
   userId             String
   user               User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  goal               WorkoutGoal?
   workoutDays        WorkoutDay[]
   meals              Meal[]
   dailyWaterGoalInMl Int?
   isActive           Boolean      @default(true)
   createdAt          DateTime     @default(now()) @db.Timestamptz()
   updatedAt          DateTime     @updatedAt @db.Timestamptz()
+}
+
+enum WorkoutGoal {
+  HYPERTROPHY
+  WEIGHT_LOSS
+  ENDURANCE
+  STRENGTH
+  GENERAL_FITNESS
 }
 
 model Meal {
@@ -62,6 +71,25 @@ model Meal {
   order          Int
   createdAt      DateTime    @default(now()) @db.Timestamptz()
   updatedAt      DateTime    @updatedAt @db.Timestamptz()
+}
+
+model MuscleGroup {
+  id                String             @id @default(uuid())
+  name              String             @unique
+  exerciseTemplates ExerciseTemplate[]
+  createdAt         DateTime           @default(now()) @db.Timestamptz()
+  updatedAt         DateTime           @updatedAt @db.Timestamptz()
+}
+
+model ExerciseTemplate {
+  id            String      @id @default(uuid())
+  name          String
+  muscleGroupId String
+  muscleGroup   MuscleGroup @relation(fields: [muscleGroupId], references: [id], onDelete: Cascade)
+  createdAt     DateTime    @default(now()) @db.Timestamptz()
+  updatedAt     DateTime    @updatedAt @db.Timestamptz()
+
+  @@unique([muscleGroupId, name])
 }
 
 model WaterIntakeEntry {
@@ -98,18 +126,18 @@ model WorkoutDay {
 }
 
 model WorkoutExercise {
-  id                String               @id @default(uuid())
+  id                String              @id @default(uuid())
   name              String
   order             Int
   workoutDayId      String
-  workoutDay        WorkoutDay           @relation(fields: [workoutDayId], references: [id], onDelete: Cascade)
+  workoutDay        WorkoutDay          @relation(fields: [workoutDayId], references: [id], onDelete: Cascade)
   sets              Int
   reps              Int
   restTimeInSeconds Int
   loadInKg          Float?
   loadEntries       ExerciseLoadEntry[]
-  createdAt         DateTime             @default(now()) @db.Timestamptz()
-  updatedAt         DateTime             @updatedAt @db.Timestamptz()
+  createdAt         DateTime            @default(now()) @db.Timestamptz()
+  updatedAt         DateTime            @updatedAt @db.Timestamptz()
 }
 
 model ExerciseLoadEntry {

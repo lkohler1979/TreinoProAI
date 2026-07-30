@@ -108,6 +108,7 @@ export const workoutPlanRoutes = async (app: FastifyInstance) => {
         const createWorkoutPlan = new CreateWorkoutPlan();
         const result = await createWorkoutPlan.execute({
           userId: session.user.id,
+          goal: request.body.goal,
           dailyWaterGoalInMl: request.body.dailyWaterGoalInMl,
           workoutDays: request.body.workoutDays,
           meals: request.body.meals,

@@ -1,12 +1,13 @@
 import dayjs from "dayjs";
 
 import { NotFoundError } from "../errors/index.js";
-import { WeekDay } from "../generated/prisma/enums.js";
+import { WeekDay, WorkoutGoal } from "../generated/prisma/enums.js";
 import { prisma } from "../lib/db.js";
 
 // Data Transfer Object t
 interface InputDto {
   userId: string;
+  goal?: WorkoutGoal;
   dailyWaterGoalInMl: number;
   workoutDays: Array<{
     name: string;
@@ -37,6 +38,7 @@ interface InputDto {
 interface OutputDto {
   id: string;
   name: string;
+  goal?: WorkoutGoal;
   dailyWaterGoalInMl: number;
   workoutDays: Array<{
     name: string;
@@ -87,6 +89,7 @@ export class CreateWorkoutPlan {
           name,
           userId: dto.userId,
           isActive: true,
+          goal: dto.goal,
           dailyWaterGoalInMl: dto.dailyWaterGoalInMl,
           workoutDays: {
             create: dto.workoutDays.map((workoutDay) => ({
@@ -137,6 +140,7 @@ export class CreateWorkoutPlan {
       return {
         id: result.id,
         name: result.name,
+        goal: result.goal ?? undefined,
         dailyWaterGoalInMl: dto.dailyWaterGoalInMl,
         workoutDays: result.workoutDays.map((day) => ({
           name: day.name,

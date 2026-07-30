@@ -1,6 +1,6 @@
 import z from "zod";
 
-import { WeekDay } from "../generated/prisma/enums.js";
+import { WeekDay, WorkoutGoal } from "../generated/prisma/enums.js";
 
 export const ErrorSchema = z.object({
   error: z.string(),
@@ -108,6 +108,7 @@ export const MealSchema = z.object({
 export const GetWorkoutPlanSchema = z.object({
   id: z.uuid(),
   name: z.string(),
+  goal: z.enum(WorkoutGoal).optional(),
   dailyWaterGoalInMl: z.number().optional(),
   workoutDays: z.array(
     z.object({
@@ -134,6 +135,7 @@ export const ListWorkoutPlansSchema = z.array(
   z.object({
     id: z.uuid(),
     name: z.string(),
+    goal: z.enum(WorkoutGoal).optional(),
     isActive: z.boolean(),
     workoutDays: z.array(
       z.object({
@@ -263,6 +265,7 @@ export const WaterIntakeTodaySchema = z.object({
 export const WorkoutPlanSchema = z.object({
   id: z.uuid(),
   name: z.string().trim().min(1),
+  goal: z.enum(WorkoutGoal).optional(),
   dailyWaterGoalInMl: z.number().min(0),
   workoutDays: z.array(
     z.object({
@@ -295,3 +298,39 @@ export const WorkoutPlanSchema = z.object({
     })
   ),
 });
+
+export const ExerciseTemplateSchema = z.object({
+  id: z.uuid(),
+  name: z.string(),
+});
+
+export const ExerciseTemplateWithGroupSchema = ExerciseTemplateSchema.extend({
+  muscleGroupId: z.uuid(),
+});
+
+export const MuscleGroupSchema = z.object({
+  id: z.uuid(),
+  name: z.string(),
+});
+
+export const MuscleGroupWithExerciseTemplatesSchema = MuscleGroupSchema.extend(
+  {
+    exerciseTemplates: z.array(ExerciseTemplateSchema),
+  }
+);
+
+export const ListMuscleGroupsSchema = z.array(
+  MuscleGroupWithExerciseTemplatesSchema
+);
+
+export const CreateMuscleGroupBodySchema = z.object({
+  name: z.string().trim().min(1),
+});
+
+export const UpdateMuscleGroupBodySchema = CreateMuscleGroupBodySchema;
+
+export const CreateExerciseTemplateBodySchema = z.object({
+  name: z.string().trim().min(1),
+});
+
+export const UpdateExerciseTemplateBodySchema = CreateExerciseTemplateBodySchema;
