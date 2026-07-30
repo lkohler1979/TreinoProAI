@@ -173,6 +173,17 @@ export const ListWorkoutPlansActive = {
   false: "false",
 } as const;
 
+export type ListWorkoutPlans200ItemGoal =
+  (typeof ListWorkoutPlans200ItemGoal)[keyof typeof ListWorkoutPlans200ItemGoal];
+
+export const ListWorkoutPlans200ItemGoal = {
+  HYPERTROPHY: "HYPERTROPHY",
+  WEIGHT_LOSS: "WEIGHT_LOSS",
+  ENDURANCE: "ENDURANCE",
+  STRENGTH: "STRENGTH",
+  GENERAL_FITNESS: "GENERAL_FITNESS",
+} as const;
+
 export type ListWorkoutPlans200ItemWorkoutDaysItemWeekDay =
   (typeof ListWorkoutPlans200ItemWorkoutDaysItemWeekDay)[keyof typeof ListWorkoutPlans200ItemWorkoutDaysItemWeekDay];
 
@@ -211,6 +222,7 @@ export type ListWorkoutPlans200Item = {
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
   id: string;
   name: string;
+  goal?: ListWorkoutPlans200ItemGoal;
   isActive: boolean;
   workoutDays: ListWorkoutPlans200ItemWorkoutDaysItem[];
 };
@@ -224,6 +236,17 @@ export type ListWorkoutPlans500 = {
   error: string;
   code: string;
 };
+
+export type CreateWorkoutPlanBodyGoal =
+  (typeof CreateWorkoutPlanBodyGoal)[keyof typeof CreateWorkoutPlanBodyGoal];
+
+export const CreateWorkoutPlanBodyGoal = {
+  HYPERTROPHY: "HYPERTROPHY",
+  WEIGHT_LOSS: "WEIGHT_LOSS",
+  ENDURANCE: "ENDURANCE",
+  STRENGTH: "STRENGTH",
+  GENERAL_FITNESS: "GENERAL_FITNESS",
+} as const;
 
 export type CreateWorkoutPlanBodyWorkoutDaysItemWeekDay =
   (typeof CreateWorkoutPlanBodyWorkoutDaysItemWeekDay)[keyof typeof CreateWorkoutPlanBodyWorkoutDaysItemWeekDay];
@@ -280,11 +303,23 @@ export type CreateWorkoutPlanBodyMealsItem = {
 };
 
 export type CreateWorkoutPlanBody = {
+  goal?: CreateWorkoutPlanBodyGoal;
   /** @minimum 0 */
   dailyWaterGoalInMl: number;
   workoutDays: CreateWorkoutPlanBodyWorkoutDaysItem[];
   meals: CreateWorkoutPlanBodyMealsItem[];
 };
+
+export type CreateWorkoutPlan201Goal =
+  (typeof CreateWorkoutPlan201Goal)[keyof typeof CreateWorkoutPlan201Goal];
+
+export const CreateWorkoutPlan201Goal = {
+  HYPERTROPHY: "HYPERTROPHY",
+  WEIGHT_LOSS: "WEIGHT_LOSS",
+  ENDURANCE: "ENDURANCE",
+  STRENGTH: "STRENGTH",
+  GENERAL_FITNESS: "GENERAL_FITNESS",
+} as const;
 
 export type CreateWorkoutPlan201WorkoutDaysItemWeekDay =
   (typeof CreateWorkoutPlan201WorkoutDaysItemWeekDay)[keyof typeof CreateWorkoutPlan201WorkoutDaysItemWeekDay];
@@ -345,6 +380,7 @@ export type CreateWorkoutPlan201 = {
   id: string;
   /** @minLength 1 */
   name: string;
+  goal?: CreateWorkoutPlan201Goal;
   /** @minimum 0 */
   dailyWaterGoalInMl: number;
   workoutDays: CreateWorkoutPlan201WorkoutDaysItem[];
@@ -370,6 +406,17 @@ export type CreateWorkoutPlan500 = {
   error: string;
   code: string;
 };
+
+export type GetWorkoutPlan200Goal =
+  (typeof GetWorkoutPlan200Goal)[keyof typeof GetWorkoutPlan200Goal];
+
+export const GetWorkoutPlan200Goal = {
+  HYPERTROPHY: "HYPERTROPHY",
+  WEIGHT_LOSS: "WEIGHT_LOSS",
+  ENDURANCE: "ENDURANCE",
+  STRENGTH: "STRENGTH",
+  GENERAL_FITNESS: "GENERAL_FITNESS",
+} as const;
 
 export type GetWorkoutPlan200WorkoutDaysItemWeekDay =
   (typeof GetWorkoutPlan200WorkoutDaysItemWeekDay)[keyof typeof GetWorkoutPlan200WorkoutDaysItemWeekDay];
@@ -412,6 +459,7 @@ export type GetWorkoutPlan200 = {
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
   id: string;
   name: string;
+  goal?: GetWorkoutPlan200Goal;
   dailyWaterGoalInMl?: number;
   workoutDays: GetWorkoutPlan200WorkoutDaysItem[];
   meals: GetWorkoutPlan200MealsItem[];
@@ -831,6 +879,182 @@ export type CreateWaterIntakeEntry401 = {
 };
 
 export type CreateWaterIntakeEntry500 = {
+  error: string;
+  code: string;
+};
+
+export type ListMuscleGroups200ItemExerciseTemplatesItem = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  name: string;
+};
+
+export type ListMuscleGroups200Item = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  name: string;
+  exerciseTemplates: ListMuscleGroups200ItemExerciseTemplatesItem[];
+};
+
+export type ListMuscleGroups401 = {
+  error: string;
+  code: string;
+};
+
+export type ListMuscleGroups500 = {
+  error: string;
+  code: string;
+};
+
+export type CreateMuscleGroupBody = {
+  /** @minLength 1 */
+  name: string;
+};
+
+export type CreateMuscleGroup201 = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  name: string;
+};
+
+export type CreateMuscleGroup401 = {
+  error: string;
+  code: string;
+};
+
+export type CreateMuscleGroup409 = {
+  error: string;
+  code: string;
+};
+
+export type CreateMuscleGroup500 = {
+  error: string;
+  code: string;
+};
+
+export type UpdateMuscleGroupBody = {
+  /** @minLength 1 */
+  name: string;
+};
+
+export type UpdateMuscleGroup200 = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  name: string;
+};
+
+export type UpdateMuscleGroup401 = {
+  error: string;
+  code: string;
+};
+
+export type UpdateMuscleGroup404 = {
+  error: string;
+  code: string;
+};
+
+export type UpdateMuscleGroup409 = {
+  error: string;
+  code: string;
+};
+
+export type UpdateMuscleGroup500 = {
+  error: string;
+  code: string;
+};
+
+export type DeleteMuscleGroup401 = {
+  error: string;
+  code: string;
+};
+
+export type DeleteMuscleGroup404 = {
+  error: string;
+  code: string;
+};
+
+export type DeleteMuscleGroup500 = {
+  error: string;
+  code: string;
+};
+
+export type CreateExerciseTemplateBody = {
+  /** @minLength 1 */
+  name: string;
+};
+
+export type CreateExerciseTemplate201 = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  name: string;
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  muscleGroupId: string;
+};
+
+export type CreateExerciseTemplate401 = {
+  error: string;
+  code: string;
+};
+
+export type CreateExerciseTemplate404 = {
+  error: string;
+  code: string;
+};
+
+export type CreateExerciseTemplate409 = {
+  error: string;
+  code: string;
+};
+
+export type CreateExerciseTemplate500 = {
+  error: string;
+  code: string;
+};
+
+export type UpdateExerciseTemplateBody = {
+  /** @minLength 1 */
+  name: string;
+};
+
+export type UpdateExerciseTemplate200 = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  name: string;
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  muscleGroupId: string;
+};
+
+export type UpdateExerciseTemplate401 = {
+  error: string;
+  code: string;
+};
+
+export type UpdateExerciseTemplate404 = {
+  error: string;
+  code: string;
+};
+
+export type UpdateExerciseTemplate409 = {
+  error: string;
+  code: string;
+};
+
+export type UpdateExerciseTemplate500 = {
+  error: string;
+  code: string;
+};
+
+export type DeleteExerciseTemplate401 = {
+  error: string;
+  code: string;
+};
+
+export type DeleteExerciseTemplate404 = {
+  error: string;
+  code: string;
+};
+
+export type DeleteExerciseTemplate500 = {
   error: string;
   code: string;
 };
@@ -1907,6 +2131,418 @@ export const createWaterIntakeEntry = async (
       method: "POST",
       headers: { "Content-Type": "application/json", ...options?.headers },
       body: JSON.stringify(createWaterIntakeEntryBody),
+    },
+  );
+};
+
+/**
+ * @summary List muscle groups with their exercise templates
+ */
+export type listMuscleGroupsResponse200 = {
+  data: ListMuscleGroups200Item[];
+  status: 200;
+};
+
+export type listMuscleGroupsResponse401 = {
+  data: ListMuscleGroups401;
+  status: 401;
+};
+
+export type listMuscleGroupsResponse500 = {
+  data: ListMuscleGroups500;
+  status: 500;
+};
+
+export type listMuscleGroupsResponseSuccess = listMuscleGroupsResponse200 & {
+  headers: Headers;
+};
+export type listMuscleGroupsResponseError = (
+  | listMuscleGroupsResponse401
+  | listMuscleGroupsResponse500
+) & {
+  headers: Headers;
+};
+
+export type listMuscleGroupsResponse =
+  | listMuscleGroupsResponseSuccess
+  | listMuscleGroupsResponseError;
+
+export const getListMuscleGroupsUrl = () => {
+  return `/muscle-groups/`;
+};
+
+export const listMuscleGroups = async (
+  options?: RequestInit,
+): Promise<listMuscleGroupsResponse> => {
+  return customFetch<listMuscleGroupsResponse>(getListMuscleGroupsUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+/**
+ * @summary Create a muscle group
+ */
+export type createMuscleGroupResponse201 = {
+  data: CreateMuscleGroup201;
+  status: 201;
+};
+
+export type createMuscleGroupResponse401 = {
+  data: CreateMuscleGroup401;
+  status: 401;
+};
+
+export type createMuscleGroupResponse409 = {
+  data: CreateMuscleGroup409;
+  status: 409;
+};
+
+export type createMuscleGroupResponse500 = {
+  data: CreateMuscleGroup500;
+  status: 500;
+};
+
+export type createMuscleGroupResponseSuccess = createMuscleGroupResponse201 & {
+  headers: Headers;
+};
+export type createMuscleGroupResponseError = (
+  | createMuscleGroupResponse401
+  | createMuscleGroupResponse409
+  | createMuscleGroupResponse500
+) & {
+  headers: Headers;
+};
+
+export type createMuscleGroupResponse =
+  | createMuscleGroupResponseSuccess
+  | createMuscleGroupResponseError;
+
+export const getCreateMuscleGroupUrl = () => {
+  return `/muscle-groups/`;
+};
+
+export const createMuscleGroup = async (
+  createMuscleGroupBody: CreateMuscleGroupBody,
+  options?: RequestInit,
+): Promise<createMuscleGroupResponse> => {
+  return customFetch<createMuscleGroupResponse>(getCreateMuscleGroupUrl(), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(createMuscleGroupBody),
+  });
+};
+
+/**
+ * @summary Update a muscle group
+ */
+export type updateMuscleGroupResponse200 = {
+  data: UpdateMuscleGroup200;
+  status: 200;
+};
+
+export type updateMuscleGroupResponse401 = {
+  data: UpdateMuscleGroup401;
+  status: 401;
+};
+
+export type updateMuscleGroupResponse404 = {
+  data: UpdateMuscleGroup404;
+  status: 404;
+};
+
+export type updateMuscleGroupResponse409 = {
+  data: UpdateMuscleGroup409;
+  status: 409;
+};
+
+export type updateMuscleGroupResponse500 = {
+  data: UpdateMuscleGroup500;
+  status: 500;
+};
+
+export type updateMuscleGroupResponseSuccess = updateMuscleGroupResponse200 & {
+  headers: Headers;
+};
+export type updateMuscleGroupResponseError = (
+  | updateMuscleGroupResponse401
+  | updateMuscleGroupResponse404
+  | updateMuscleGroupResponse409
+  | updateMuscleGroupResponse500
+) & {
+  headers: Headers;
+};
+
+export type updateMuscleGroupResponse =
+  | updateMuscleGroupResponseSuccess
+  | updateMuscleGroupResponseError;
+
+export const getUpdateMuscleGroupUrl = (muscleGroupId: string) => {
+  return `/muscle-groups/${muscleGroupId}`;
+};
+
+export const updateMuscleGroup = async (
+  muscleGroupId: string,
+  updateMuscleGroupBody: UpdateMuscleGroupBody,
+  options?: RequestInit,
+): Promise<updateMuscleGroupResponse> => {
+  return customFetch<updateMuscleGroupResponse>(
+    getUpdateMuscleGroupUrl(muscleGroupId),
+    {
+      ...options,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json", ...options?.headers },
+      body: JSON.stringify(updateMuscleGroupBody),
+    },
+  );
+};
+
+/**
+ * @summary Delete a muscle group
+ */
+export type deleteMuscleGroupResponse204 = {
+  data: unknown;
+  status: 204;
+};
+
+export type deleteMuscleGroupResponse401 = {
+  data: DeleteMuscleGroup401;
+  status: 401;
+};
+
+export type deleteMuscleGroupResponse404 = {
+  data: DeleteMuscleGroup404;
+  status: 404;
+};
+
+export type deleteMuscleGroupResponse500 = {
+  data: DeleteMuscleGroup500;
+  status: 500;
+};
+
+export type deleteMuscleGroupResponseSuccess = deleteMuscleGroupResponse204 & {
+  headers: Headers;
+};
+export type deleteMuscleGroupResponseError = (
+  | deleteMuscleGroupResponse401
+  | deleteMuscleGroupResponse404
+  | deleteMuscleGroupResponse500
+) & {
+  headers: Headers;
+};
+
+export type deleteMuscleGroupResponse =
+  | deleteMuscleGroupResponseSuccess
+  | deleteMuscleGroupResponseError;
+
+export const getDeleteMuscleGroupUrl = (muscleGroupId: string) => {
+  return `/muscle-groups/${muscleGroupId}`;
+};
+
+export const deleteMuscleGroup = async (
+  muscleGroupId: string,
+  options?: RequestInit,
+): Promise<deleteMuscleGroupResponse> => {
+  return customFetch<deleteMuscleGroupResponse>(
+    getDeleteMuscleGroupUrl(muscleGroupId),
+    {
+      ...options,
+      method: "DELETE",
+    },
+  );
+};
+
+/**
+ * @summary Create an exercise template within a muscle group
+ */
+export type createExerciseTemplateResponse201 = {
+  data: CreateExerciseTemplate201;
+  status: 201;
+};
+
+export type createExerciseTemplateResponse401 = {
+  data: CreateExerciseTemplate401;
+  status: 401;
+};
+
+export type createExerciseTemplateResponse404 = {
+  data: CreateExerciseTemplate404;
+  status: 404;
+};
+
+export type createExerciseTemplateResponse409 = {
+  data: CreateExerciseTemplate409;
+  status: 409;
+};
+
+export type createExerciseTemplateResponse500 = {
+  data: CreateExerciseTemplate500;
+  status: 500;
+};
+
+export type createExerciseTemplateResponseSuccess =
+  createExerciseTemplateResponse201 & {
+    headers: Headers;
+  };
+export type createExerciseTemplateResponseError = (
+  | createExerciseTemplateResponse401
+  | createExerciseTemplateResponse404
+  | createExerciseTemplateResponse409
+  | createExerciseTemplateResponse500
+) & {
+  headers: Headers;
+};
+
+export type createExerciseTemplateResponse =
+  | createExerciseTemplateResponseSuccess
+  | createExerciseTemplateResponseError;
+
+export const getCreateExerciseTemplateUrl = (muscleGroupId: string) => {
+  return `/muscle-groups/${muscleGroupId}/exercise-templates`;
+};
+
+export const createExerciseTemplate = async (
+  muscleGroupId: string,
+  createExerciseTemplateBody: CreateExerciseTemplateBody,
+  options?: RequestInit,
+): Promise<createExerciseTemplateResponse> => {
+  return customFetch<createExerciseTemplateResponse>(
+    getCreateExerciseTemplateUrl(muscleGroupId),
+    {
+      ...options,
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...options?.headers },
+      body: JSON.stringify(createExerciseTemplateBody),
+    },
+  );
+};
+
+/**
+ * @summary Update an exercise template
+ */
+export type updateExerciseTemplateResponse200 = {
+  data: UpdateExerciseTemplate200;
+  status: 200;
+};
+
+export type updateExerciseTemplateResponse401 = {
+  data: UpdateExerciseTemplate401;
+  status: 401;
+};
+
+export type updateExerciseTemplateResponse404 = {
+  data: UpdateExerciseTemplate404;
+  status: 404;
+};
+
+export type updateExerciseTemplateResponse409 = {
+  data: UpdateExerciseTemplate409;
+  status: 409;
+};
+
+export type updateExerciseTemplateResponse500 = {
+  data: UpdateExerciseTemplate500;
+  status: 500;
+};
+
+export type updateExerciseTemplateResponseSuccess =
+  updateExerciseTemplateResponse200 & {
+    headers: Headers;
+  };
+export type updateExerciseTemplateResponseError = (
+  | updateExerciseTemplateResponse401
+  | updateExerciseTemplateResponse404
+  | updateExerciseTemplateResponse409
+  | updateExerciseTemplateResponse500
+) & {
+  headers: Headers;
+};
+
+export type updateExerciseTemplateResponse =
+  | updateExerciseTemplateResponseSuccess
+  | updateExerciseTemplateResponseError;
+
+export const getUpdateExerciseTemplateUrl = (
+  muscleGroupId: string,
+  exerciseTemplateId: string,
+) => {
+  return `/muscle-groups/${muscleGroupId}/exercise-templates/${exerciseTemplateId}`;
+};
+
+export const updateExerciseTemplate = async (
+  muscleGroupId: string,
+  exerciseTemplateId: string,
+  updateExerciseTemplateBody: UpdateExerciseTemplateBody,
+  options?: RequestInit,
+): Promise<updateExerciseTemplateResponse> => {
+  return customFetch<updateExerciseTemplateResponse>(
+    getUpdateExerciseTemplateUrl(muscleGroupId, exerciseTemplateId),
+    {
+      ...options,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json", ...options?.headers },
+      body: JSON.stringify(updateExerciseTemplateBody),
+    },
+  );
+};
+
+/**
+ * @summary Delete an exercise template
+ */
+export type deleteExerciseTemplateResponse204 = {
+  data: unknown;
+  status: 204;
+};
+
+export type deleteExerciseTemplateResponse401 = {
+  data: DeleteExerciseTemplate401;
+  status: 401;
+};
+
+export type deleteExerciseTemplateResponse404 = {
+  data: DeleteExerciseTemplate404;
+  status: 404;
+};
+
+export type deleteExerciseTemplateResponse500 = {
+  data: DeleteExerciseTemplate500;
+  status: 500;
+};
+
+export type deleteExerciseTemplateResponseSuccess =
+  deleteExerciseTemplateResponse204 & {
+    headers: Headers;
+  };
+export type deleteExerciseTemplateResponseError = (
+  | deleteExerciseTemplateResponse401
+  | deleteExerciseTemplateResponse404
+  | deleteExerciseTemplateResponse500
+) & {
+  headers: Headers;
+};
+
+export type deleteExerciseTemplateResponse =
+  | deleteExerciseTemplateResponseSuccess
+  | deleteExerciseTemplateResponseError;
+
+export const getDeleteExerciseTemplateUrl = (
+  muscleGroupId: string,
+  exerciseTemplateId: string,
+) => {
+  return `/muscle-groups/${muscleGroupId}/exercise-templates/${exerciseTemplateId}`;
+};
+
+export const deleteExerciseTemplate = async (
+  muscleGroupId: string,
+  exerciseTemplateId: string,
+  options?: RequestInit,
+): Promise<deleteExerciseTemplateResponse> => {
+  return customFetch<deleteExerciseTemplateResponse>(
+    getDeleteExerciseTemplateUrl(muscleGroupId, exerciseTemplateId),
+    {
+      ...options,
+      method: "DELETE",
     },
   );
 };

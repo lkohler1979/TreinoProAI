@@ -6,8 +6,16 @@ import dayjs from "dayjs";
 import { BottomNav } from "@/app/_components/bottom-nav";
 import { InstallPwaButton } from "@/app/_components/install-pwa-button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Weight, Ruler, BicepsFlexed, User } from "lucide-react";
+import {
+  Weight,
+  Ruler,
+  BicepsFlexed,
+  User,
+  Dumbbell,
+  ListChecks,
+} from "lucide-react";
 import { LogoutButton } from "./_components/logout-button";
+import { ProfileMenuLink } from "./_components/profile-menu-link";
 
 export default async function ProfilePage() {
   const session = await authClient.getSession({
@@ -127,6 +135,19 @@ export default async function ProfilePage() {
               </span>
             </div>
           </div>
+        </div>
+
+        <div className="flex w-full flex-col gap-2.5">
+          <ProfileMenuLink
+            href="/workout-plans/new"
+            icon={Dumbbell}
+            label="Criar treino manualmente"
+          />
+          <ProfileMenuLink
+            href="/exercise-catalog"
+            icon={ListChecks}
+            label="Grupos musculares e exercícios"
+          />
         </div>
 
         <InstallPwaButton
