@@ -13,9 +13,13 @@ import z from "zod";
 
 import { WeekDay } from "../generated/prisma/enums.js";
 import { auth } from "../lib/auth.js";
+import { CreateWorkoutExercise } from "../usecases/CreateWorkoutExercise.js";
 import { CreateWorkoutPlan } from "../usecases/CreateWorkoutPlan.js";
+import { DeleteWorkoutExercise } from "../usecases/DeleteWorkoutExercise.js";
 import { GetUserTrainData } from "../usecases/GetUserTrainData.js";
 import { ListWorkoutPlans } from "../usecases/ListWorkoutPlans.js";
+import { UpdateWorkoutDay } from "../usecases/UpdateWorkoutDay.js";
+import { UpdateWorkoutExercise } from "../usecases/UpdateWorkoutExercise.js";
 import { UpsertUserTrainData } from "../usecases/UpsertUserTrainData.js";
 
 const SYSTEM_PROMPT = `Você é um personal trainer virtual especialista em montagem de planos de treino personalizados.
@@ -33,10 +37,31 @@ const SYSTEM_PROMPT = `Você é um personal trainer virtual especialista em mont
    - Faça perguntas simples e diretas, tudo em uma única mensagem.
    - Após receber os dados, salve com a tool \`updateUserTrainData\`. **IMPORTANTE**: converta o peso de kg para gramas (multiplique por 1000) antes de salvar.
 3. Se o usuário **já tem dados cadastrados**: cumprimente-o pelo nome de forma amigável.
+4. **SEMPRE**, logo em seguida, chame a tool \`getWorkoutPlans\` para verificar se o usuário já tem um plano de treino ativo (\`isActive: true\`).
+   - Se **houver** um plano ativo, informe rapidamente qual é o plano/objetivo atual e pergunte o que o usuário deseja fazer:
+     a) **Ajustar o treino atual** (trocar, adicionar ou remover um exercício, mudar a duração de um dia, transformar um dia de treino em descanso ou vice-versa);
+     b) Diga que **mudou de objetivo** e quer um plano novo alinhado a isso;
+     c) **Trocar o treino atual** por um plano novo, mantendo o mesmo objetivo.
+   - **Nunca assuma** o que o usuário quer fazer com o plano existente — sempre pergunte antes de agir.
+   - Se **não houver** plano ativo, siga direto para a seção "Criação de Plano de Treino".
+
+## Ajustando um Plano Existente
+
+Quando o usuário pedir um **ajuste pontual** (opção "a" acima):
+- Use os dados já retornados por \`getWorkoutPlans\` (workoutPlanId, workoutDayId, exerciseId) para identificar exatamente o que precisa mudar. **Nunca** peça esses IDs ao usuário.
+- Use as tools \`updateWorkoutDay\`, \`addWorkoutExercise\`, \`updateWorkoutExercise\` e \`removeWorkoutExercise\` para aplicar somente a mudança pedida. **Nunca** recrie o plano inteiro (\`createWorkoutPlan\`) para um ajuste pontual.
+- Ao marcar um dia como descanso (\`isRest: true\`), os exercícios daquele dia são removidos automaticamente — avise o usuário disso antes de confirmar.
+- Ao adicionar um exercício a um dia que era de descanso, ele passa a ser dia de treino automaticamente; atualize o nome do dia com \`updateWorkoutDay\` para refletir o novo foco.
+- Ao final, confirme brevemente com o usuário o que foi alterado.
+
+Quando o usuário indicar que **mudou de objetivo** ou quer **trocar o treino** (opções "b"/"c" acima):
+- Pergunte apenas o que ainda não souber (novo objetivo, dias por semana disponíveis, restrições físicas) — não repita perguntas cujas respostas já tem.
+- Monte o novo plano com base no foco/estrutura do treino atual (quando ainda fizer sentido para o novo objetivo) e nos dados de medidas do usuário (peso, altura, idade, % de gordura) já cadastrados.
+- Chame \`createWorkoutPlan\` normalmente — isso desativa o plano anterior e recalcula a meta de água e o plano alimentar para o novo objetivo.
 
 ## Criação de Plano de Treino
 
-Quando o usuário quiser criar um plano de treino:
+Use esta seção tanto para o primeiro plano do usuário quanto para substituir um plano existente (opções "b"/"c" acima). Quando o usuário quiser criar um plano de treino:
 - Pergunte o objetivo, quantos dias por semana ele pode treinar e se tem restrições físicas ou lesões.
 - Poucas perguntas, simples e diretas.
 - O plano DEVE ter exatamente 7 dias (MONDAY a SUNDAY).
@@ -150,7 +175,7 @@ export const aiRoutes = async (app: FastifyInstance) => {
           }),
           getWorkoutPlans: tool({
             description:
-              "Lista todos os planos de treino do usuário autenticado.",
+              "Lista todos os planos de treino do usuário autenticado, incluindo os dias (workoutDayId) e exercícios (exerciseId) de cada um. Use isActive para identificar o plano vigente. Use os IDs retornados aqui para ajustar um plano existente, sem precisar perguntá-los ao usuário.",
             inputSchema: z.object({}),
             execute: async () => {
               const listWorkoutPlans = new ListWorkoutPlans();
@@ -248,6 +273,79 @@ export const aiRoutes = async (app: FastifyInstance) => {
                 workoutDays: input.workoutDays,
                 meals: input.meals,
               });
+            },
+          }),
+          updateWorkoutDay: tool({
+            description:
+              "Atualiza o nome, a duração estimada ou o status de descanso de um dia do plano de treino. Marcar isRest como true remove automaticamente os exercícios daquele dia.",
+            inputSchema: z.object({
+              workoutPlanId: z.string().describe("ID do plano de treino"),
+              workoutDayId: z.string().describe("ID do dia de treino"),
+              name: z
+                .string()
+                .describe("Nome do dia (ex: Peito e Tríceps, Descanso)"),
+              isRest: z
+                .boolean()
+                .describe("Se o dia passa a ser de descanso"),
+              estimatedDurationInSeconds: z
+                .number()
+                .describe(
+                  "Duração estimada em segundos (1 para dias de descanso)"
+                ),
+            }),
+            execute: async (input) => {
+              const updateWorkoutDay = new UpdateWorkoutDay();
+              return updateWorkoutDay.execute({ userId, ...input });
+            },
+          }),
+          addWorkoutExercise: tool({
+            description:
+              "Adiciona um novo exercício a um dia do plano de treino. Se o dia era de descanso, ele passa a ser dia de treino automaticamente.",
+            inputSchema: z.object({
+              workoutPlanId: z.string().describe("ID do plano de treino"),
+              workoutDayId: z.string().describe("ID do dia de treino"),
+              name: z.string().describe("Nome do exercício"),
+              sets: z.number().describe("Número de séries"),
+              reps: z.number().describe("Número de repetições"),
+              restTimeInSeconds: z
+                .number()
+                .describe("Tempo de descanso entre séries em segundos"),
+            }),
+            execute: async (input) => {
+              const createWorkoutExercise = new CreateWorkoutExercise();
+              return createWorkoutExercise.execute({ userId, ...input });
+            },
+          }),
+          updateWorkoutExercise: tool({
+            description:
+              "Atualiza o nome, séries, repetições ou descanso de um exercício existente.",
+            inputSchema: z.object({
+              workoutPlanId: z.string().describe("ID do plano de treino"),
+              workoutDayId: z.string().describe("ID do dia de treino"),
+              exerciseId: z.string().describe("ID do exercício"),
+              name: z.string().describe("Nome do exercício"),
+              sets: z.number().describe("Número de séries"),
+              reps: z.number().describe("Número de repetições"),
+              restTimeInSeconds: z
+                .number()
+                .describe("Tempo de descanso entre séries em segundos"),
+            }),
+            execute: async (input) => {
+              const updateWorkoutExercise = new UpdateWorkoutExercise();
+              return updateWorkoutExercise.execute({ userId, ...input });
+            },
+          }),
+          removeWorkoutExercise: tool({
+            description: "Remove um exercício de um dia do plano de treino.",
+            inputSchema: z.object({
+              workoutPlanId: z.string().describe("ID do plano de treino"),
+              workoutDayId: z.string().describe("ID do dia de treino"),
+              exerciseId: z.string().describe("ID do exercício"),
+            }),
+            execute: async (input) => {
+              const deleteWorkoutExercise = new DeleteWorkoutExercise();
+              await deleteWorkoutExercise.execute({ userId, ...input });
+              return { success: true };
             },
           }),
         },
