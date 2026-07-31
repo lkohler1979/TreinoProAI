@@ -124,6 +124,55 @@ export const GetWorkoutPlanSchema = z.object({
   meals: z.array(MealSchema),
 });
 
+export const UpdateWorkoutDayBodySchema = z.object({
+  name: z.string().trim().min(1),
+  isRest: z.boolean(),
+  estimatedDurationInSeconds: z.number().min(1),
+});
+
+export const WorkoutDaySchema = z.object({
+  id: z.uuid(),
+  name: z.string(),
+  isRest: z.boolean(),
+  weekDay: z.enum(WeekDay),
+  estimatedDurationInSeconds: z.number(),
+  coverImageUrl: z.url().optional(),
+});
+
+export const CreateWorkoutExerciseBodySchema = z.object({
+  name: z.string().trim().min(1),
+  sets: z.number().min(1),
+  reps: z.number().min(1),
+  restTimeInSeconds: z.number().min(1),
+});
+
+export const UpdateWorkoutExerciseBodySchema = CreateWorkoutExerciseBodySchema;
+
+export const WorkoutExerciseSchema = z.object({
+  id: z.uuid(),
+  order: z.number(),
+  name: z.string(),
+  sets: z.number(),
+  reps: z.number(),
+  restTimeInSeconds: z.number(),
+});
+
+export const GetWorkoutPlanDetailsSchema = z.object({
+  id: z.uuid(),
+  name: z.string(),
+  workoutDays: z.array(
+    z.object({
+      id: z.uuid(),
+      name: z.string(),
+      weekDay: z.enum(WeekDay),
+      isRest: z.boolean(),
+      estimatedDurationInSeconds: z.number(),
+      coverImageUrl: z.url().optional(),
+      exercises: z.array(WorkoutExerciseSchema),
+    })
+  ),
+});
+
 export const ListWorkoutPlansQuerySchema = z.object({
   active: z
     .enum(["true", "false"])

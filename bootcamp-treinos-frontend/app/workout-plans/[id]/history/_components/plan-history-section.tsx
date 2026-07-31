@@ -1,6 +1,7 @@
 import { CircleCheck, Hourglass } from "lucide-react";
 import type { GetWorkoutSessions200Item } from "@/app/_lib/api/fetch-generated";
 import { Badge } from "@/components/ui/badge";
+import { DeletePlanButton } from "./delete-plan-button";
 import { SessionHistoryItem } from "./session-history-item";
 
 function formatTotalTime(totalSeconds: number): string {
@@ -20,11 +21,17 @@ export function PlanHistorySection({ plan }: PlanHistorySectionProps) {
         <p className="font-heading text-sm text-muted-foreground">
           {plan.workoutPlanName}
         </p>
-        {plan.isActive && (
-          <Badge className="rounded-full px-2.5 py-1 font-heading text-[10px] font-semibold uppercase">
-            Ativo
-          </Badge>
-        )}
+        <div className="flex items-center gap-1">
+          {plan.isActive && (
+            <Badge className="rounded-full px-2.5 py-1 font-heading text-[10px] font-semibold uppercase">
+              Ativo
+            </Badge>
+          )}
+          <DeletePlanButton
+            workoutPlanId={plan.workoutPlanId}
+            workoutPlanName={plan.workoutPlanName}
+          />
+        </div>
       </div>
 
       <div className="grid grid-cols-2 gap-3">

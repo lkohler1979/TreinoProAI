@@ -480,6 +480,77 @@ export type GetWorkoutPlan500 = {
   code: string;
 };
 
+export type DeleteWorkoutPlan401 = {
+  error: string;
+  code: string;
+};
+
+export type DeleteWorkoutPlan404 = {
+  error: string;
+  code: string;
+};
+
+export type DeleteWorkoutPlan500 = {
+  error: string;
+  code: string;
+};
+
+export type GetWorkoutPlanDetails200WorkoutDaysItemWeekDay =
+  (typeof GetWorkoutPlanDetails200WorkoutDaysItemWeekDay)[keyof typeof GetWorkoutPlanDetails200WorkoutDaysItemWeekDay];
+
+export const GetWorkoutPlanDetails200WorkoutDaysItemWeekDay = {
+  MONDAY: "MONDAY",
+  TUESDAY: "TUESDAY",
+  WEDNESDAY: "WEDNESDAY",
+  THURSDAY: "THURSDAY",
+  FRIDAY: "FRIDAY",
+  SATURDAY: "SATURDAY",
+  SUNDAY: "SUNDAY",
+} as const;
+
+export type GetWorkoutPlanDetails200WorkoutDaysItemExercisesItem = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  order: number;
+  name: string;
+  sets: number;
+  reps: number;
+  restTimeInSeconds: number;
+};
+
+export type GetWorkoutPlanDetails200WorkoutDaysItem = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  name: string;
+  weekDay: GetWorkoutPlanDetails200WorkoutDaysItemWeekDay;
+  isRest: boolean;
+  estimatedDurationInSeconds: number;
+  coverImageUrl?: string;
+  exercises: GetWorkoutPlanDetails200WorkoutDaysItemExercisesItem[];
+};
+
+export type GetWorkoutPlanDetails200 = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  name: string;
+  workoutDays: GetWorkoutPlanDetails200WorkoutDaysItem[];
+};
+
+export type GetWorkoutPlanDetails401 = {
+  error: string;
+  code: string;
+};
+
+export type GetWorkoutPlanDetails404 = {
+  error: string;
+  code: string;
+};
+
+export type GetWorkoutPlanDetails500 = {
+  error: string;
+  code: string;
+};
+
 export type GetWorkoutDay200WeekDay =
   (typeof GetWorkoutDay200WeekDay)[keyof typeof GetWorkoutDay200WeekDay];
 
@@ -540,6 +611,139 @@ export type GetWorkoutDay404 = {
 };
 
 export type GetWorkoutDay500 = {
+  error: string;
+  code: string;
+};
+
+export type UpdateWorkoutDayBody = {
+  /** @minLength 1 */
+  name: string;
+  isRest: boolean;
+  /** @minimum 1 */
+  estimatedDurationInSeconds: number;
+};
+
+export type UpdateWorkoutDay200WeekDay =
+  (typeof UpdateWorkoutDay200WeekDay)[keyof typeof UpdateWorkoutDay200WeekDay];
+
+export const UpdateWorkoutDay200WeekDay = {
+  MONDAY: "MONDAY",
+  TUESDAY: "TUESDAY",
+  WEDNESDAY: "WEDNESDAY",
+  THURSDAY: "THURSDAY",
+  FRIDAY: "FRIDAY",
+  SATURDAY: "SATURDAY",
+  SUNDAY: "SUNDAY",
+} as const;
+
+export type UpdateWorkoutDay200 = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  name: string;
+  isRest: boolean;
+  weekDay: UpdateWorkoutDay200WeekDay;
+  estimatedDurationInSeconds: number;
+  coverImageUrl?: string;
+};
+
+export type UpdateWorkoutDay401 = {
+  error: string;
+  code: string;
+};
+
+export type UpdateWorkoutDay404 = {
+  error: string;
+  code: string;
+};
+
+export type UpdateWorkoutDay500 = {
+  error: string;
+  code: string;
+};
+
+export type CreateWorkoutExerciseBody = {
+  /** @minLength 1 */
+  name: string;
+  /** @minimum 1 */
+  sets: number;
+  /** @minimum 1 */
+  reps: number;
+  /** @minimum 1 */
+  restTimeInSeconds: number;
+};
+
+export type CreateWorkoutExercise201 = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  order: number;
+  name: string;
+  sets: number;
+  reps: number;
+  restTimeInSeconds: number;
+};
+
+export type CreateWorkoutExercise401 = {
+  error: string;
+  code: string;
+};
+
+export type CreateWorkoutExercise404 = {
+  error: string;
+  code: string;
+};
+
+export type CreateWorkoutExercise500 = {
+  error: string;
+  code: string;
+};
+
+export type UpdateWorkoutExerciseBody = {
+  /** @minLength 1 */
+  name: string;
+  /** @minimum 1 */
+  sets: number;
+  /** @minimum 1 */
+  reps: number;
+  /** @minimum 1 */
+  restTimeInSeconds: number;
+};
+
+export type UpdateWorkoutExercise200 = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  order: number;
+  name: string;
+  sets: number;
+  reps: number;
+  restTimeInSeconds: number;
+};
+
+export type UpdateWorkoutExercise401 = {
+  error: string;
+  code: string;
+};
+
+export type UpdateWorkoutExercise404 = {
+  error: string;
+  code: string;
+};
+
+export type UpdateWorkoutExercise500 = {
+  error: string;
+  code: string;
+};
+
+export type DeleteWorkoutExercise401 = {
+  error: string;
+  code: string;
+};
+
+export type DeleteWorkoutExercise404 = {
+  error: string;
+  code: string;
+};
+
+export type DeleteWorkoutExercise500 = {
   error: string;
   code: string;
 };
@@ -1445,6 +1649,117 @@ export const getWorkoutPlan = async (
 };
 
 /**
+ * @summary Delete a workout plan
+ */
+export type deleteWorkoutPlanResponse204 = {
+  data: unknown;
+  status: 204;
+};
+
+export type deleteWorkoutPlanResponse401 = {
+  data: DeleteWorkoutPlan401;
+  status: 401;
+};
+
+export type deleteWorkoutPlanResponse404 = {
+  data: DeleteWorkoutPlan404;
+  status: 404;
+};
+
+export type deleteWorkoutPlanResponse500 = {
+  data: DeleteWorkoutPlan500;
+  status: 500;
+};
+
+export type deleteWorkoutPlanResponseSuccess = deleteWorkoutPlanResponse204 & {
+  headers: Headers;
+};
+export type deleteWorkoutPlanResponseError = (
+  | deleteWorkoutPlanResponse401
+  | deleteWorkoutPlanResponse404
+  | deleteWorkoutPlanResponse500
+) & {
+  headers: Headers;
+};
+
+export type deleteWorkoutPlanResponse =
+  | deleteWorkoutPlanResponseSuccess
+  | deleteWorkoutPlanResponseError;
+
+export const getDeleteWorkoutPlanUrl = (workoutPlanId: string) => {
+  return `/workout-plans/${workoutPlanId}`;
+};
+
+export const deleteWorkoutPlan = async (
+  workoutPlanId: string,
+  options?: RequestInit,
+): Promise<deleteWorkoutPlanResponse> => {
+  return customFetch<deleteWorkoutPlanResponse>(
+    getDeleteWorkoutPlanUrl(workoutPlanId),
+    {
+      ...options,
+      method: "DELETE",
+    },
+  );
+};
+
+/**
+ * @summary Get a workout plan with all days and exercises, for editing
+ */
+export type getWorkoutPlanDetailsResponse200 = {
+  data: GetWorkoutPlanDetails200;
+  status: 200;
+};
+
+export type getWorkoutPlanDetailsResponse401 = {
+  data: GetWorkoutPlanDetails401;
+  status: 401;
+};
+
+export type getWorkoutPlanDetailsResponse404 = {
+  data: GetWorkoutPlanDetails404;
+  status: 404;
+};
+
+export type getWorkoutPlanDetailsResponse500 = {
+  data: GetWorkoutPlanDetails500;
+  status: 500;
+};
+
+export type getWorkoutPlanDetailsResponseSuccess =
+  getWorkoutPlanDetailsResponse200 & {
+    headers: Headers;
+  };
+export type getWorkoutPlanDetailsResponseError = (
+  | getWorkoutPlanDetailsResponse401
+  | getWorkoutPlanDetailsResponse404
+  | getWorkoutPlanDetailsResponse500
+) & {
+  headers: Headers;
+};
+
+export type getWorkoutPlanDetailsResponse =
+  | getWorkoutPlanDetailsResponseSuccess
+  | getWorkoutPlanDetailsResponseError;
+
+export const getGetWorkoutPlanDetailsUrl = (workoutPlanId: string) => {
+  return `/workout-plans/${workoutPlanId}/details`;
+};
+
+export const getWorkoutPlanDetails = async (
+  workoutPlanId: string,
+  options?: RequestInit,
+): Promise<getWorkoutPlanDetailsResponse> => {
+  return customFetch<getWorkoutPlanDetailsResponse>(
+    getGetWorkoutPlanDetailsUrl(workoutPlanId),
+    {
+      ...options,
+      method: "GET",
+    },
+  );
+};
+
+/**
  * @summary Get a workout day
  */
 export type getWorkoutDayResponse200 = {
@@ -1499,6 +1814,258 @@ export const getWorkoutDay = async (
     {
       ...options,
       method: "GET",
+    },
+  );
+};
+
+/**
+ * @summary Update a workout day (name, duration, rest status)
+ */
+export type updateWorkoutDayResponse200 = {
+  data: UpdateWorkoutDay200;
+  status: 200;
+};
+
+export type updateWorkoutDayResponse401 = {
+  data: UpdateWorkoutDay401;
+  status: 401;
+};
+
+export type updateWorkoutDayResponse404 = {
+  data: UpdateWorkoutDay404;
+  status: 404;
+};
+
+export type updateWorkoutDayResponse500 = {
+  data: UpdateWorkoutDay500;
+  status: 500;
+};
+
+export type updateWorkoutDayResponseSuccess = updateWorkoutDayResponse200 & {
+  headers: Headers;
+};
+export type updateWorkoutDayResponseError = (
+  | updateWorkoutDayResponse401
+  | updateWorkoutDayResponse404
+  | updateWorkoutDayResponse500
+) & {
+  headers: Headers;
+};
+
+export type updateWorkoutDayResponse =
+  | updateWorkoutDayResponseSuccess
+  | updateWorkoutDayResponseError;
+
+export const getUpdateWorkoutDayUrl = (
+  workoutPlanId: string,
+  workoutDayId: string,
+) => {
+  return `/workout-plans/${workoutPlanId}/days/${workoutDayId}`;
+};
+
+export const updateWorkoutDay = async (
+  workoutPlanId: string,
+  workoutDayId: string,
+  updateWorkoutDayBody: UpdateWorkoutDayBody,
+  options?: RequestInit,
+): Promise<updateWorkoutDayResponse> => {
+  return customFetch<updateWorkoutDayResponse>(
+    getUpdateWorkoutDayUrl(workoutPlanId, workoutDayId),
+    {
+      ...options,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json", ...options?.headers },
+      body: JSON.stringify(updateWorkoutDayBody),
+    },
+  );
+};
+
+/**
+ * @summary Add an exercise to a workout day
+ */
+export type createWorkoutExerciseResponse201 = {
+  data: CreateWorkoutExercise201;
+  status: 201;
+};
+
+export type createWorkoutExerciseResponse401 = {
+  data: CreateWorkoutExercise401;
+  status: 401;
+};
+
+export type createWorkoutExerciseResponse404 = {
+  data: CreateWorkoutExercise404;
+  status: 404;
+};
+
+export type createWorkoutExerciseResponse500 = {
+  data: CreateWorkoutExercise500;
+  status: 500;
+};
+
+export type createWorkoutExerciseResponseSuccess =
+  createWorkoutExerciseResponse201 & {
+    headers: Headers;
+  };
+export type createWorkoutExerciseResponseError = (
+  | createWorkoutExerciseResponse401
+  | createWorkoutExerciseResponse404
+  | createWorkoutExerciseResponse500
+) & {
+  headers: Headers;
+};
+
+export type createWorkoutExerciseResponse =
+  | createWorkoutExerciseResponseSuccess
+  | createWorkoutExerciseResponseError;
+
+export const getCreateWorkoutExerciseUrl = (
+  workoutPlanId: string,
+  workoutDayId: string,
+) => {
+  return `/workout-plans/${workoutPlanId}/days/${workoutDayId}/exercises`;
+};
+
+export const createWorkoutExercise = async (
+  workoutPlanId: string,
+  workoutDayId: string,
+  createWorkoutExerciseBody: CreateWorkoutExerciseBody,
+  options?: RequestInit,
+): Promise<createWorkoutExerciseResponse> => {
+  return customFetch<createWorkoutExerciseResponse>(
+    getCreateWorkoutExerciseUrl(workoutPlanId, workoutDayId),
+    {
+      ...options,
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...options?.headers },
+      body: JSON.stringify(createWorkoutExerciseBody),
+    },
+  );
+};
+
+/**
+ * @summary Update an exercise in a workout day
+ */
+export type updateWorkoutExerciseResponse200 = {
+  data: UpdateWorkoutExercise200;
+  status: 200;
+};
+
+export type updateWorkoutExerciseResponse401 = {
+  data: UpdateWorkoutExercise401;
+  status: 401;
+};
+
+export type updateWorkoutExerciseResponse404 = {
+  data: UpdateWorkoutExercise404;
+  status: 404;
+};
+
+export type updateWorkoutExerciseResponse500 = {
+  data: UpdateWorkoutExercise500;
+  status: 500;
+};
+
+export type updateWorkoutExerciseResponseSuccess =
+  updateWorkoutExerciseResponse200 & {
+    headers: Headers;
+  };
+export type updateWorkoutExerciseResponseError = (
+  | updateWorkoutExerciseResponse401
+  | updateWorkoutExerciseResponse404
+  | updateWorkoutExerciseResponse500
+) & {
+  headers: Headers;
+};
+
+export type updateWorkoutExerciseResponse =
+  | updateWorkoutExerciseResponseSuccess
+  | updateWorkoutExerciseResponseError;
+
+export const getUpdateWorkoutExerciseUrl = (
+  workoutPlanId: string,
+  workoutDayId: string,
+  exerciseId: string,
+) => {
+  return `/workout-plans/${workoutPlanId}/days/${workoutDayId}/exercises/${exerciseId}`;
+};
+
+export const updateWorkoutExercise = async (
+  workoutPlanId: string,
+  workoutDayId: string,
+  exerciseId: string,
+  updateWorkoutExerciseBody: UpdateWorkoutExerciseBody,
+  options?: RequestInit,
+): Promise<updateWorkoutExerciseResponse> => {
+  return customFetch<updateWorkoutExerciseResponse>(
+    getUpdateWorkoutExerciseUrl(workoutPlanId, workoutDayId, exerciseId),
+    {
+      ...options,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json", ...options?.headers },
+      body: JSON.stringify(updateWorkoutExerciseBody),
+    },
+  );
+};
+
+/**
+ * @summary Delete an exercise from a workout day
+ */
+export type deleteWorkoutExerciseResponse204 = {
+  data: unknown;
+  status: 204;
+};
+
+export type deleteWorkoutExerciseResponse401 = {
+  data: DeleteWorkoutExercise401;
+  status: 401;
+};
+
+export type deleteWorkoutExerciseResponse404 = {
+  data: DeleteWorkoutExercise404;
+  status: 404;
+};
+
+export type deleteWorkoutExerciseResponse500 = {
+  data: DeleteWorkoutExercise500;
+  status: 500;
+};
+
+export type deleteWorkoutExerciseResponseSuccess =
+  deleteWorkoutExerciseResponse204 & {
+    headers: Headers;
+  };
+export type deleteWorkoutExerciseResponseError = (
+  | deleteWorkoutExerciseResponse401
+  | deleteWorkoutExerciseResponse404
+  | deleteWorkoutExerciseResponse500
+) & {
+  headers: Headers;
+};
+
+export type deleteWorkoutExerciseResponse =
+  | deleteWorkoutExerciseResponseSuccess
+  | deleteWorkoutExerciseResponseError;
+
+export const getDeleteWorkoutExerciseUrl = (
+  workoutPlanId: string,
+  workoutDayId: string,
+  exerciseId: string,
+) => {
+  return `/workout-plans/${workoutPlanId}/days/${workoutDayId}/exercises/${exerciseId}`;
+};
+
+export const deleteWorkoutExercise = async (
+  workoutPlanId: string,
+  workoutDayId: string,
+  exerciseId: string,
+  options?: RequestInit,
+): Promise<deleteWorkoutExerciseResponse> => {
+  return customFetch<deleteWorkoutExerciseResponse>(
+    getDeleteWorkoutExerciseUrl(workoutPlanId, workoutDayId, exerciseId),
+    {
+      ...options,
+      method: "DELETE",
     },
   );
 };

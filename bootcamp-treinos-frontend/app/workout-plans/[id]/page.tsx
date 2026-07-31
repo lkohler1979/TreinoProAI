@@ -5,7 +5,7 @@ import { getWorkoutPlan, getHomeData, getUserTrainData } from "@/app/_lib/api/fe
 import dayjs from "dayjs";
 import Image from "next/image";
 import Link from "next/link";
-import { History } from "lucide-react";
+import { History, Pencil } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BottomNav } from "@/app/_components/bottom-nav";
 import { WorkoutDayCard } from "@/app/_components/workout-day-card";
@@ -90,17 +90,30 @@ export default async function WorkoutPlanPage({
             </h1>
             <p className="font-heading text-xs text-background/60">{name}</p>
           </div>
-          <Button
-            asChild
-            variant="ghost"
-            size="sm"
-            className="gap-1.5 text-background hover:bg-background/10 hover:text-background"
-          >
-            <Link href={`/workout-plans/${id}/history`}>
-              <History className="size-4" />
-              Ver histórico
-            </Link>
-          </Button>
+          <div className="flex items-center gap-1">
+            <Button
+              asChild
+              variant="ghost"
+              size="sm"
+              className="gap-1.5 text-background hover:bg-background/10 hover:text-background"
+            >
+              <Link href={`/workout-plans/${id}/edit`}>
+                <Pencil className="size-4" />
+                Editar
+              </Link>
+            </Button>
+            <Button
+              asChild
+              variant="ghost"
+              size="sm"
+              className="gap-1.5 text-background hover:bg-background/10 hover:text-background"
+            >
+              <Link href={`/workout-plans/${id}/history`}>
+                <History className="size-4" />
+                Ver histórico
+              </Link>
+            </Button>
+          </div>
         </div>
       </div>
 

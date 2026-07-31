@@ -1,24 +1,7 @@
 import { z } from "zod";
+import { WEEK_DAYS } from "@/app/_lib/week-days";
 
-export const WEEK_DAYS = [
-  "MONDAY",
-  "TUESDAY",
-  "WEDNESDAY",
-  "THURSDAY",
-  "FRIDAY",
-  "SATURDAY",
-  "SUNDAY",
-] as const;
-
-export const WEEK_DAY_LABELS: Record<(typeof WEEK_DAYS)[number], string> = {
-  MONDAY: "Segunda-feira",
-  TUESDAY: "Terça-feira",
-  WEDNESDAY: "Quarta-feira",
-  THURSDAY: "Quinta-feira",
-  FRIDAY: "Sexta-feira",
-  SATURDAY: "Sábado",
-  SUNDAY: "Domingo",
-};
+export { WEEK_DAYS, WEEK_DAY_LABELS } from "@/app/_lib/week-days";
 
 export const GOAL_OPTIONS = [
   { value: "HYPERTROPHY", label: "Hipertrofia (ganho de massa)" },
