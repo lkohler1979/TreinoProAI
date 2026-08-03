@@ -3,7 +3,6 @@ import { authClient } from "@/app/_lib/auth-client";
 import { headers } from "next/headers";
 import {
   getExerciseLoadHistory,
-  getHomeData,
   getUserTrainData,
 } from "@/app/_lib/api/fetch-generated";
 import dayjs from "dayjs";
@@ -25,18 +24,15 @@ export default async function ExerciseLoadHistoryPage({
   if (!session.data?.user) redirect("/auth");
 
   const { id, dayId, exerciseId } = await params;
-  const today = dayjs();
 
-  const [historyResponse, homeData, trainData] = await Promise.all([
+  const [historyResponse, trainData] = await Promise.all([
     getExerciseLoadHistory(exerciseId),
-    getHomeData(today.format("YYYY-MM-DD")),
     getUserTrainData(),
   ]);
 
-  const needsOnboarding =
-    (homeData.status === 200 && !homeData.data.activeWorkoutPlanId) ||
-    (trainData.status === 200 && !trainData.data);
-  if (needsOnboarding) redirect("/onboarding");
+  if (trainData.status === 200 && !trainData.data) {
+    redirect("/profile/setup");
+  }
 
   if (historyResponse.status !== 200) redirect(`/workout-plans/${id}/days/${dayId}`);
 

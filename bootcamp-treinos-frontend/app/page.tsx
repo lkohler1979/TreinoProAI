@@ -4,7 +4,8 @@ import { headers } from "next/headers";
 import { getHomeData, getUserTrainData } from "./_lib/api/fetch-generated";
 import dayjs from "dayjs";
 import Link from "next/link";
-import { Flame, Calendar } from "lucide-react";
+import { Flame, Calendar, Dumbbell } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { BottomNav } from "./_components/bottom-nav";
 import {
   ConsistencyTracker,
@@ -50,11 +51,10 @@ export default async function Home() {
     throw new Error("Failed to fetch home data");
   }
 
-  const needsOnboarding =
-    !homeData.data.activeWorkoutPlanId ||
-    (trainData.status === 200 && !trainData.data);
-  if (needsOnboarding) redirect("/onboarding");
+  const missingProfile = trainData.status === 200 && !trainData.data;
+  if (missingProfile) redirect("/onboarding");
 
+  const hasActivePlan = !!homeData.data.activeWorkoutPlanId;
   const { todayWorkoutDay, workoutStreak, consistencyByDay } = homeData.data;
   const userName = session.data.user.name?.split(" ")[0] ?? "";
 
@@ -100,64 +100,87 @@ export default async function Home() {
         <TipOfDay message={tipMessage} />
       </div>
 
-      <div className="flex flex-col gap-3 px-5 pt-5">
-        <div className="flex items-center justify-between">
-          <h2 className="font-heading text-lg font-semibold text-foreground">
-            Sua semana
-          </h2>
-          <button className="font-heading text-xs text-primary">
-            Ver histórico
-          </button>
-        </div>
+      {hasActivePlan ? (
+        <>
+          <div className="flex flex-col gap-3 px-5 pt-5">
+            <div className="flex items-center justify-between">
+              <h2 className="font-heading text-lg font-semibold text-foreground">
+                Sua semana
+              </h2>
+              <button className="font-heading text-xs text-primary">
+                Ver histórico
+              </button>
+            </div>
 
-        <div className="rounded-xl border border-border bg-card p-5">
-          <ConsistencyTracker
-            consistencyByDay={consistencyByDay}
-            today={today}
-          />
-        </div>
-      </div>
+            <div className="rounded-xl border border-border bg-card p-5">
+              <ConsistencyTracker
+                consistencyByDay={consistencyByDay}
+                today={today}
+              />
+            </div>
+          </div>
 
-      <div className="flex flex-col gap-3 p-5">
-        <div className="flex items-center justify-between">
-          <h2 className="font-heading text-lg font-semibold text-foreground">
-            Treino de Hoje
-          </h2>
-          <button className="font-heading text-xs text-primary">
-            Ver treinos
-          </button>
-        </div>
+          <div className="flex flex-col gap-3 p-5">
+            <div className="flex items-center justify-between">
+              <h2 className="font-heading text-lg font-semibold text-foreground">
+                Treino de Hoje
+              </h2>
+              <button className="font-heading text-xs text-primary">
+                Ver treinos
+              </button>
+            </div>
 
-        {todayWorkoutDay?.isRest ? (
-          <div className="flex h-[120px] flex-col items-center justify-center gap-1 rounded-xl border border-border bg-card">
-            <Calendar className="size-5 text-muted-foreground" />
-            <p className="font-heading text-sm font-semibold text-foreground">
-              Dia de descanso
+            {todayWorkoutDay?.isRest ? (
+              <div className="flex h-[120px] flex-col items-center justify-center gap-1 rounded-xl border border-border bg-card">
+                <Calendar className="size-5 text-muted-foreground" />
+                <p className="font-heading text-sm font-semibold text-foreground">
+                  Dia de descanso
+                </p>
+                <p className="font-heading text-xs text-muted-foreground">
+                  Aproveite pra recuperar
+                </p>
+              </div>
+            ) : todayWorkoutDay ? (
+              <Link
+                href={`/workout-plans/${todayWorkoutDay.workoutPlanId}/days/${todayWorkoutDay.id}`}
+              >
+                <WorkoutDayCard
+                  name={todayWorkoutDay.name}
+                  weekDay={todayWorkoutDay.weekDay}
+                  estimatedDurationInSeconds={
+                    todayWorkoutDay.estimatedDurationInSeconds
+                  }
+                  exercisesCount={todayWorkoutDay.exercisesCount}
+                  coverImageUrl={todayWorkoutDay.coverImageUrl}
+                />
+              </Link>
+            ) : null}
+          </div>
+
+          <div className="px-5 pb-2">
+            <ShareStreakCard streak={workoutStreak} userName={userName} />
+          </div>
+        </>
+      ) : (
+        <div className="flex flex-col gap-3 px-5 pt-6">
+          <div className="flex flex-col items-center gap-2 rounded-xl border border-border bg-card p-8 text-center">
+            <Dumbbell className="size-8 text-muted-foreground" />
+            <p className="font-heading text-base font-semibold text-foreground">
+              Você ainda não tem um treino
             </p>
-            <p className="font-heading text-xs text-muted-foreground">
-              Aproveite pra recuperar
+            <p className="font-heading text-sm text-muted-foreground">
+              Monte seu plano com a ajuda da IA ou crie manualmente escolhendo
+              seus próprios exercícios.
             </p>
           </div>
-        ) : todayWorkoutDay ? (
-          <Link
-            href={`/workout-plans/${todayWorkoutDay.workoutPlanId}/days/${todayWorkoutDay.id}`}
-          >
-            <WorkoutDayCard
-              name={todayWorkoutDay.name}
-              weekDay={todayWorkoutDay.weekDay}
-              estimatedDurationInSeconds={
-                todayWorkoutDay.estimatedDurationInSeconds
-              }
-              exercisesCount={todayWorkoutDay.exercisesCount}
-              coverImageUrl={todayWorkoutDay.coverImageUrl}
-            />
-          </Link>
-        ) : null}
-      </div>
-
-      <div className="px-5 pb-2">
-        <ShareStreakCard streak={workoutStreak} userName={userName} />
-      </div>
+          <Button asChild className="w-full rounded-xl">
+            <Link href="/onboarding">Montar com IA</Link>
+          </Button>
+          <Button asChild variant="outline" className="w-full rounded-xl">
+            <Link href="/workout-plans/new">Criar manualmente</Link>
+          </Button>
+        </div>
+      )}
 
       <BottomNav />
     </div>

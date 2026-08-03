@@ -1,3 +1,4 @@
+import { WorkoutGoal } from "../generated/prisma/enums.js";
 import { prisma } from "../lib/db.js";
 
 interface InputDto {
@@ -11,6 +12,8 @@ interface OutputDto {
   heightInCentimeters: number;
   age: number;
   bodyFatPercentage: number;
+  healthRestrictions?: string;
+  goal: WorkoutGoal;
 }
 
 export class GetUserTrainData {
@@ -27,7 +30,8 @@ export class GetUserTrainData {
       user.weightInGrams === null ||
       user.heightInCentimeters === null ||
       user.age === null ||
-      user.bodyFatPercentage === null
+      user.bodyFatPercentage === null ||
+      user.goal === null
     ) {
       return null;
     }
@@ -39,6 +43,8 @@ export class GetUserTrainData {
       heightInCentimeters: user.heightInCentimeters,
       age: user.age,
       bodyFatPercentage: user.bodyFatPercentage,
+      healthRestrictions: user.healthRestrictions ?? undefined,
+      goal: user.goal,
     };
   }
 }

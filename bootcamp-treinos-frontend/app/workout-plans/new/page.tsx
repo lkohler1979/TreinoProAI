@@ -1,7 +1,10 @@
 import { redirect } from "next/navigation";
 import { authClient } from "@/app/_lib/auth-client";
 import { headers } from "next/headers";
-import { listMuscleGroups } from "@/app/_lib/api/fetch-generated";
+import {
+  getUserTrainData,
+  listMuscleGroups,
+} from "@/app/_lib/api/fetch-generated";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { ManualWorkoutPlanForm } from "./_components/manual-workout-plan-form";
@@ -14,6 +17,10 @@ export default async function NewWorkoutPlanPage() {
   });
 
   if (!session.data?.user) redirect("/auth");
+
+  const trainData = await getUserTrainData();
+  const missingProfile = trainData.status === 200 && !trainData.data;
+  if (missingProfile) redirect("/profile/setup");
 
   const muscleGroupsResponse = await listMuscleGroups();
 

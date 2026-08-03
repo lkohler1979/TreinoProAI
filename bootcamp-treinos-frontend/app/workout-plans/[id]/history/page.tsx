@@ -3,10 +3,8 @@ import { authClient } from "@/app/_lib/auth-client";
 import { headers } from "next/headers";
 import {
   getWorkoutSessions,
-  getHomeData,
   getUserTrainData,
 } from "@/app/_lib/api/fetch-generated";
-import dayjs from "dayjs";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { BottomNav } from "@/app/_components/bottom-nav";
@@ -26,18 +24,15 @@ export default async function WorkoutHistoryPage({
   if (!session.data?.user) redirect("/auth");
 
   const { id } = await params;
-  const today = dayjs();
 
-  const [sessionsResponse, homeData, trainData] = await Promise.all([
+  const [sessionsResponse, trainData] = await Promise.all([
     getWorkoutSessions(),
-    getHomeData(today.format("YYYY-MM-DD")),
     getUserTrainData(),
   ]);
 
-  const needsOnboarding =
-    (homeData.status === 200 && !homeData.data.activeWorkoutPlanId) ||
-    (trainData.status === 200 && !trainData.data);
-  if (needsOnboarding) redirect("/onboarding");
+  if (trainData.status === 200 && !trainData.data) {
+    redirect("/profile/setup");
+  }
 
   if (sessionsResponse.status !== 200) {
     throw new Error("Failed to fetch workout history");

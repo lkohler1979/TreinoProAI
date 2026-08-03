@@ -11,7 +11,7 @@ import { FastifyInstance } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 import z from "zod";
 
-import { WeekDay } from "../generated/prisma/enums.js";
+import { WeekDay, WorkoutGoal } from "../generated/prisma/enums.js";
 import { auth } from "../lib/auth.js";
 import { CreateWorkoutExercise } from "../usecases/CreateWorkoutExercise.js";
 import { CreateWorkoutPlan } from "../usecases/CreateWorkoutPlan.js";
@@ -33,9 +33,9 @@ const SYSTEM_PROMPT = `Você é um personal trainer virtual especialista em mont
 
 1. **SEMPRE** chame a tool \`getUserTrainData\` antes de qualquer interação com o usuário. Isso é obrigatório.
 2. Se o usuário **não tem dados cadastrados** (retornou null):
-   - Pergunte nome, peso (kg), altura (cm), idade e % de gordura corporal (inteiro de 0 a 100, onde 100 = 100%), quanto tempo já treina (meses).
+   - Pergunte nome, peso (kg), altura (cm), idade, % de gordura corporal (inteiro de 0 a 100, onde 100 = 100%), quanto tempo já treina (meses), se tem algum problema de saúde ou lesão que impeça ou dificulte algum tipo de exercício, e qual o objetivo principal (hipertrofia/ganho de massa, perda de peso, resistência, força ou condicionamento geral).
    - Faça perguntas simples e diretas, tudo em uma única mensagem.
-   - Após receber os dados, salve com a tool \`updateUserTrainData\`. **IMPORTANTE**: converta o peso de kg para gramas (multiplique por 1000) antes de salvar.
+   - Após receber os dados, salve com a tool \`updateUserTrainData\`. **IMPORTANTE**: converta o peso de kg para gramas (multiplique por 1000) antes de salvar. Se o usuário disser que não tem nenhum problema de saúde, salve \`healthRestrictions\` como "Nenhuma".
 3. Se o usuário **já tem dados cadastrados**: cumprimente-o pelo nome de forma amigável.
 4. **SEMPRE**, logo em seguida, chame a tool \`getWorkoutPlans\` para verificar se o usuário já tem um plano de treino ativo (\`isActive: true\`).
    - Se **houver** um plano ativo, informe rapidamente qual é o plano/objetivo atual e pergunte o que o usuário deseja fazer:
@@ -62,7 +62,8 @@ Quando o usuário indicar que **mudou de objetivo** ou quer **trocar o treino** 
 ## Criação de Plano de Treino
 
 Use esta seção tanto para o primeiro plano do usuário quanto para substituir um plano existente (opções "b"/"c" acima). Quando o usuário quiser criar um plano de treino:
-- Pergunte o objetivo, quantos dias por semana ele pode treinar e se tem restrições físicas ou lesões.
+- Use o objetivo e as restrições de saúde já cadastrados no perfil (\`getUserTrainData\`) como padrão. Só pergunte o objetivo de novo se o usuário quiser um foco diferente para este plano específico.
+- Pergunte apenas quantos dias por semana ele pode treinar.
 - Poucas perguntas, simples e diretas.
 - O plano DEVE ter exatamente 7 dias (MONDAY a SUNDAY).
 - Dias sem treino devem ter: \`isRest: true\`, \`exercises: []\`, \`estimatedDurationInSeconds: 0\`.
@@ -167,6 +168,14 @@ export const aiRoutes = async (app: FastifyInstance) => {
                 .min(0)
                 .max(100)
                 .describe("Percentual de gordura corporal (0 a 100)"),
+              healthRestrictions: z
+                .string()
+                .describe(
+                  "Problemas de saúde ou lesões que impeçam ou dificultem algum tipo de exercício. Usar \"Nenhuma\" se o usuário não tiver nenhuma restrição"
+                ),
+              goal: z
+                .enum(WorkoutGoal)
+                .describe("Objetivo principal do usuário"),
             }),
             execute: async (params) => {
               const upsertUserTrainData = new UpsertUserTrainData();

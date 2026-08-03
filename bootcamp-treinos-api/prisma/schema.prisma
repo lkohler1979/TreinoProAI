@@ -28,6 +28,8 @@ model User {
   heightInCentimeters Int?
   age                 Int?
   bodyFatPercentage   Int? // 100 representa 100%
+  healthRestrictions  String?
+  goal                WorkoutGoal?
   isAnonymous         Boolean?
   waterIntakeEntries  WaterIntakeEntry[]
 

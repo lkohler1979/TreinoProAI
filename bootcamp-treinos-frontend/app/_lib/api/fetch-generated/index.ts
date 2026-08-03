@@ -76,6 +76,13 @@ export type GetUserTrainData200 = {
    * @maximum 100
    */
   bodyFatPercentage: number;
+  healthRestrictions?: string;
+  goal:
+    | "HYPERTROPHY"
+    | "WEIGHT_LOSS"
+    | "ENDURANCE"
+    | "STRENGTH"
+    | "GENERAL_FITNESS";
 } | null;
 
 export type GetUserTrainData401 = {
@@ -87,6 +94,17 @@ export type GetUserTrainData500 = {
   error: string;
   code: string;
 };
+
+export type UpsertUserTrainDataBodyGoal =
+  (typeof UpsertUserTrainDataBodyGoal)[keyof typeof UpsertUserTrainDataBodyGoal];
+
+export const UpsertUserTrainDataBodyGoal = {
+  HYPERTROPHY: "HYPERTROPHY",
+  WEIGHT_LOSS: "WEIGHT_LOSS",
+  ENDURANCE: "ENDURANCE",
+  STRENGTH: "STRENGTH",
+  GENERAL_FITNESS: "GENERAL_FITNESS",
+} as const;
 
 export type UpsertUserTrainDataBody = {
   /** @minimum 0 */
@@ -100,7 +118,20 @@ export type UpsertUserTrainDataBody = {
    * @maximum 100
    */
   bodyFatPercentage: number;
+  healthRestrictions?: string;
+  goal: UpsertUserTrainDataBodyGoal;
 };
+
+export type UpsertUserTrainData200Goal =
+  (typeof UpsertUserTrainData200Goal)[keyof typeof UpsertUserTrainData200Goal];
+
+export const UpsertUserTrainData200Goal = {
+  HYPERTROPHY: "HYPERTROPHY",
+  WEIGHT_LOSS: "WEIGHT_LOSS",
+  ENDURANCE: "ENDURANCE",
+  STRENGTH: "STRENGTH",
+  GENERAL_FITNESS: "GENERAL_FITNESS",
+} as const;
 
 export type UpsertUserTrainData200 = {
   userId: string;
@@ -108,6 +139,8 @@ export type UpsertUserTrainData200 = {
   heightInCentimeters: number;
   age: number;
   bodyFatPercentage: number;
+  healthRestrictions?: string;
+  goal: UpsertUserTrainData200Goal;
 };
 
 export type UpsertUserTrainData401 = {

@@ -28,5 +28,14 @@ export default async function OnboardingPage() {
     redirect("/");
   }
 
-  return <Chat embedded initialMessage="Quero começar a melhorar minha saúde!" />;
+  const hasProfile = trainData.status === 200 && !!trainData.data;
+  const skipHref = hasProfile ? "/" : "/profile/setup";
+
+  return (
+    <Chat
+      embedded
+      skipHref={skipHref}
+      initialMessage="Quero começar a melhorar minha saúde!"
+    />
+  );
 }

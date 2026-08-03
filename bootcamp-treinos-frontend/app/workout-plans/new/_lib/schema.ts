@@ -2,14 +2,7 @@ import { z } from "zod";
 import { WEEK_DAYS } from "@/app/_lib/week-days";
 
 export { WEEK_DAYS, WEEK_DAY_LABELS } from "@/app/_lib/week-days";
-
-export const GOAL_OPTIONS = [
-  { value: "HYPERTROPHY", label: "Hipertrofia (ganho de massa)" },
-  { value: "WEIGHT_LOSS", label: "Emagrecimento" },
-  { value: "ENDURANCE", label: "Resistência" },
-  { value: "STRENGTH", label: "Força" },
-  { value: "GENERAL_FITNESS", label: "Condicionamento geral" },
-] as const;
+export { GOAL_OPTIONS } from "@/app/_lib/goals";
 
 const numericString = () =>
   z.string().refine((value) => value !== "" && Number(value) > 0, {

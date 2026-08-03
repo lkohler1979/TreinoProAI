@@ -35,10 +35,9 @@ export default async function NutritionPage() {
     getUserTrainData(),
   ]);
 
-  const needsOnboarding =
-    (homeData.status === 200 && !homeData.data.activeWorkoutPlanId) ||
-    (trainData.status === 200 && !trainData.data);
-  if (needsOnboarding) redirect("/onboarding");
+  if (trainData.status === 200 && !trainData.data) {
+    redirect("/profile/setup");
+  }
 
   if (homeData.status !== 200 || !homeData.data.activeWorkoutPlanId) {
     redirect("/");

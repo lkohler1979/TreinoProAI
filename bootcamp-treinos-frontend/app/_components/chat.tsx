@@ -26,9 +26,14 @@ type ChatFormValues = z.infer<typeof chatFormSchema>;
 interface ChatProps {
   embedded?: boolean;
   initialMessage?: string;
+  skipHref?: string;
 }
 
-export function Chat({ embedded = false, initialMessage }: ChatProps) {
+export function Chat({
+  embedded = false,
+  initialMessage,
+  skipHref = "/",
+}: ChatProps) {
   const [chatParams, setChatParams] = useQueryStates({
     chat_open: parseAsBoolean.withDefault(false),
     chat_initial_message: parseAsString,
@@ -130,7 +135,7 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
         </div>
         {embedded ? (
           <Button variant="ghost" size="sm" asChild>
-            <Link href="/">Acessar TreinoPro.AI</Link>
+            <Link href={skipHref}>Ir para o app</Link>
           </Button>
         ) : (
           <Button variant="ghost" size="icon" onClick={handleClose}>

@@ -214,6 +214,8 @@ export const UpsertUserTrainDataBodySchema = z.object({
   heightInCentimeters: z.number().min(0),
   age: z.number().min(0),
   bodyFatPercentage: z.number().min(0).max(100),
+  healthRestrictions: z.string().trim().optional(),
+  goal: z.enum(WorkoutGoal),
 });
 
 export const UserTrainDataSchema = z.object({
@@ -223,6 +225,8 @@ export const UserTrainDataSchema = z.object({
   heightInCentimeters: z.number(),
   age: z.number(),
   bodyFatPercentage: z.number().min(0).max(100),
+  healthRestrictions: z.string().optional(),
+  goal: z.enum(WorkoutGoal),
 });
 
 export const UpsertUserTrainDataSchema = z.object({
@@ -231,6 +235,8 @@ export const UpsertUserTrainDataSchema = z.object({
   heightInCentimeters: z.number(),
   age: z.number(),
   bodyFatPercentage: z.number(),
+  healthRestrictions: z.string().optional(),
+  goal: z.enum(WorkoutGoal),
 });
 
 export const WorkoutSessionHistoryItemSchema = z.object({
