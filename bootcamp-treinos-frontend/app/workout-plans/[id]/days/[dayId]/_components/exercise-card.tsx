@@ -1,10 +1,10 @@
 "use client";
 
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { CircleHelp, History, Weight, Zap } from "lucide-react";
+import { CircleHelp, History, Play, Weight, Zap } from "lucide-react";
 import { useQueryStates, parseAsBoolean, parseAsString } from "nuqs";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -12,6 +12,7 @@ import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import type { GetWorkoutDay200ExercisesItem } from "@/app/_lib/api/fetch-generated";
 import { updateExerciseLoadAction } from "../_actions";
+import { RestTimerOverlay } from "./rest-timer-overlay";
 
 const loadFormSchema = z.object({
   loadInKg: z
@@ -39,6 +40,7 @@ export function ExerciseCard({
     chat_initial_message: parseAsString,
   });
   const [isPending, startTransition] = useTransition();
+  const [isResting, setIsResting] = useState(false);
 
   const form = useForm<LoadFormValues>({
     resolver: zodResolver(loadFormSchema),
@@ -82,11 +84,27 @@ export function ExerciseCard({
         <span className="rounded-full bg-muted px-2.5 py-1 font-heading text-xs font-semibold uppercase text-muted-foreground">
           {exercise.reps} reps
         </span>
-        <span className="flex items-center gap-1 rounded-full bg-muted px-2.5 py-1 font-heading text-xs font-semibold uppercase text-muted-foreground">
+        <Button
+          type="button"
+          variant="ghost"
+          onClick={() => setIsResting(true)}
+          className="h-auto gap-1 rounded-full bg-muted px-2.5 py-1 font-heading text-xs font-semibold uppercase text-muted-foreground hover:bg-accent"
+        >
           <Zap className="size-3.5" />
           {exercise.restTimeInSeconds}s
-        </span>
+          <Play className="size-3 fill-current" />
+        </Button>
       </div>
+
+      {isResting && (
+        <RestTimerOverlay
+          exerciseName={exercise.name}
+          sets={exercise.sets}
+          loadInKg={exercise.loadInKg}
+          restTimeInSeconds={exercise.restTimeInSeconds}
+          onClose={() => setIsResting(false)}
+        />
+      )}
 
       <Form {...form}>
         <form
