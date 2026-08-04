@@ -40,6 +40,7 @@ model User {
   injuries            String?
   metabolicConditions String?
   trainerSettings     PersonalTrainerSettings?
+  paymentRecords      StudentPaymentRecord[]
 
   @@unique([email])
   @@map("user")
@@ -54,6 +55,23 @@ model PersonalTrainerSettings {
   trainerId                   String @id
   trainer                     User   @relation(fields: [trainerId], references: [id], onDelete: Cascade)
   defaultAccessDurationInDays Int    @default(30)
+}
+
+model StudentPaymentRecord {
+  id            String              @id @default(uuid())
+  studentId     String
+  student       User                @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  amountInCents Int
+  paymentDate   DateTime            @db.Timestamptz()
+  status        StudentPaymentStatus
+  createdAt     DateTime            @default(now()) @db.Timestamptz()
+  updatedAt     DateTime            @updatedAt @db.Timestamptz()
+}
+
+enum StudentPaymentStatus {
+  PAID
+  PENDING
+  OVERDUE
 }
 
 model WorkoutPlan {

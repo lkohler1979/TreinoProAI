@@ -11,55 +11,59 @@ Referência: [`PRD.md`](./PRD.md). Este documento quebra o PRD em tarefas de eng
 
 ---
 
-## Fase 0 — Fundamentos (schema e papéis)
+## Fase 0 — Fundamentos (schema e papéis) ✅ concluída
 
 **Backend**
-- [ ] Migration: adicionar `role` (`UserRole`: `STUDENT` default, `PERSONAL_TRAINER`) em `User`.
-- [ ] Migration: adicionar `trainerId String?` (self-relation em `User`) e `accessExpiresAt DateTime?`.
-- [ ] Migration: adicionar `injuries String?` e `metabolicConditions String?` em `User`.
-- [ ] Criar helper central de sessão autenticada (ex.: `src/lib/get-authenticated-session.ts`) que já valida `accessExpiresAt` quando `role=STUDENT` e retorna 401 com código específico (`ACCESS_EXPIRED`) quando vencido — hoje cada rota chama `auth.api.getSession` diretamente, então esse helper deve ser adotado progressivamente pelas rotas existentes também, não só pelas novas.
-- [ ] Definir constantes de planos (`PLAN_TIERS`) num único lugar (ex. `src/lib/plan-tiers.ts`): `UP_TO_10` (10 alunos, R$140,00), `UP_TO_50` (50 alunos, R$599,00), `ABOVE_51` (ilimitado, R$987,00).
+- [x] Migration: adicionar `role` (`UserRole`: `STUDENT` default, `PERSONAL_TRAINER`) em `User`.
+- [x] Migration: adicionar `trainerId String?` (self-relation em `User`) e `accessExpiresAt DateTime?`.
+- [x] Migration: adicionar `injuries String?` e `metabolicConditions String?` em `User`.
+- [x] Criar helper central de sessão autenticada (`src/lib/get-authenticated-session.ts`) que já valida `accessExpiresAt` quando `role=STUDENT`. Ainda **não foi adotado pelas rotas existentes** (treino, água, refeições) — cada uma continua chamando `auth.api.getSession` diretamente; retrofit fica pendente.
+- [x] Definir constantes de planos (`PLAN_TIERS`) em `src/lib/plan-tiers.ts`.
 
 **Frontend**
-- [ ] Nenhuma tarefa de UI nesta fase (fundação de dados apenas).
+- [x] Nenhuma tarefa de UI nesta fase (fundação de dados apenas).
 
 ---
 
-## Fase 1 — Autenticação e conta do Personal Trainer
+## Fase 1 — Autenticação e conta do Personal Trainer ✅ concluída
 
 **Backend**
-- [ ] Habilitar plugin `emailAndPassword` do better-auth em `src/lib/auth.ts` (plugin `admin` descartado — ver PRD §9).
-- [ ] Rota/usecase de cadastro de PT (`role=PERSONAL_TRAINER`) — pode reaproveitar o signup padrão do better-auth, apenas setando `role` corretamente após a criação.
-- [ ] Middleware/guard simples (dentro do helper de sessão da Fase 0) para diferenciar rotas exclusivas de PT das rotas de aluno.
+- [x] Habilitar plugin `emailAndPassword` do better-auth em `src/lib/auth.ts` (plugin `admin` descartado — ver PRD §9).
+- [x] Rota/usecase de cadastro de PT (`role=PERSONAL_TRAINER`) via `auth.api.signUpEmail` + `prisma.user.update`.
+- [x] `GET /personal/me` para o frontend identificar se a sessão atual é de um PT.
 
 **Frontend**
-- [ ] Página `app/personal/auth/page.tsx` — login/cadastro de PT via e-mail/senha (Server Component + Server Actions, mesmo padrão de `app/profile/setup`).
-- [ ] Componente de formulário de login/cadastro (RHF + Zod), reaproveitando `Form`/`Input`/`Button` do shadcn.
-- [ ] Layout base da área `app/personal/**` (ex. `app/personal/layout.tsx`) com verificação de sessão de PT, redirecionando para `/personal/auth` se não autenticado.
+- [x] Página `app/personal/auth/page.tsx` — login/cadastro de PT via e-mail/senha, com abas.
+- [x] Componentes de formulário de login/cadastro (RHF + Zod).
+- [x] Layout `app/personal/(dashboard)/layout.tsx` com verificação de sessão de PT.
+- [x] (Antecipado da Fase 6) Botão "Sou Personal Trainer" em `/auth` + tabela de preços em `/personal/auth`.
 
 ---
 
-## Fase 2 — Gestão de alunos, e-mail de boas-vindas e expiração de acesso
+## Fase 2 — Gestão de alunos, e-mail de boas-vindas, expiração de acesso e histórico de pagamentos ✅ concluída
 
-> Pré-requisito: provedor de e-mail confirmado (assunção: Resend).
+> Provedor de e-mail: **Resend** (free tier 3.000 e-mails/mês). Sem `RESEND_API_KEY` configurada, o e-mail é apenas logado no console (modo dev) — validado assim nesta fase.
+> Decisão do usuário (2026-08-04): pagamento aluno→PT **sem gateway**, apenas um histórico manual (data, valor, situação) lançado pelo próprio PT — ver PRD §7.8.
 
 **Backend**
-- [ ] Adicionar dependência do provedor de e-mail escolhido e client em `src/lib/email.ts`.
-- [ ] Usecase `CreateStudent` (`src/usecases/CreateStudent.ts`): gera senha aleatória segura, cria a conta via `auth.api.signUpEmail` (server-side) e atualiza os campos de negócio via `prisma.user.update` (`role=STUDENT`, `trainerId`, `injuries`, `metabolicConditions`, `accessExpiresAt = now + defaultAccessDurationInDays`), envia e-mail de boas-vindas com login/senha.
-- [ ] Usecase `ListStudents` (`src/usecases/ListStudents.ts`): lista alunos do PT autenticado com status de acesso (ativo/expira em N dias/expirado).
-- [ ] Usecase `UpdateStudent` (`src/usecases/UpdateStudent.ts`): edita nome, lesões, problemas metabólicos, `accessExpiresAt` (estender prazo).
-- [ ] Usecase `DeactivateStudent` / reativação, se necessário para o fluxo de negócio (soft-delete, sem apagar histórico).
-- [ ] Usecase/config `UpsertPersonalTrainerSettings`: define `defaultAccessDurationInDays` por PT.
-- [ ] Rotas Fastify: `POST/GET/PATCH /personal/students`, `PATCH /personal/settings`. Zod schemas correspondentes em `src/schemas/index.ts`.
-- [ ] Regra de negócio: bloquear criação de aluno se `alunos ativos >= limite do plano vigente` (ver Fase 5 para de onde vem o plano vigente — nesta fase pode usar um valor default/mock até a assinatura existir).
-- [ ] Atualizar rotas/usecases existentes que dependem de sessão de aluno (ex. treino, água, refeições) para usar o helper da Fase 0, garantindo bloqueio quando `accessExpiresAt` vencer.
+- [x] Migration: model `StudentPaymentRecord` + enum `StudentPaymentStatus` (`PAID`/`PENDING`/`OVERDUE`).
+- [x] Dependência `resend` + `src/lib/email.ts` com `sendWelcomeEmail`.
+- [x] Usecase `CreateStudent`: gera senha aleatória segura (`src/lib/generate-random-password.ts`), cria a conta via `auth.api.signUpEmail` e atualiza os campos de negócio via `prisma.user.update`, envia e-mail de boas-vindas.
+- [x] Usecases `ListStudents` e `GetStudent`: status de acesso (ativo/expirado) calculado com `dayjs`.
+- [x] Usecase `UpdateStudent`: edita nome, lesões, problemas metabólicos, `accessExpiresAt` (estender prazo).
+- [x] Usecases `Get/UpsertPersonalTrainerSettings`: `defaultAccessDurationInDays` por PT.
+- [x] Usecases `CreateStudentPaymentRecord` / `ListStudentPaymentRecords`: validam que o aluno pertence ao PT autenticado antes de ler/escrever.
+- [x] Helper `src/lib/require-personal-trainer.ts`: centraliza a checagem de sessão + `role=PERSONAL_TRAINER` para as novas rotas.
+- [x] Rotas Fastify: `POST/GET /personal/students`, `GET/PATCH /personal/students/:studentId`, `POST/GET /personal/students/:studentId/payments`, `GET/PATCH /personal/settings`.
+- [x] Limite de alunos por plano (Fase 5) **não aplicado nesta fase** — sem bloqueio de cadastro por enquanto.
+- [ ] Pendente (não incluído nesta fase): retrofit das rotas de aluno existentes (treino, água, refeições) para usar `getAuthenticatedSession` e bloquear de fato quando `accessExpiresAt` vencer.
 
 **Frontend**
-- [ ] `app/personal/students/page.tsx` — lista de alunos com status e link para "Adicionar aluno".
-- [ ] `app/personal/students/new/page.tsx` + Server Action — formulário (nome, e-mail, lesões, problemas metabólicos, prazo de acesso) via RHF + Zod.
-- [ ] `app/personal/students/[studentId]/page.tsx` — detalhe do aluno: dados cadastrais, status de acesso, botão para estender prazo.
-- [ ] Tela/estado de "acesso expirado" para o aluno (ex. interceptar erro `ACCESS_EXPIRED` no client de auth e mostrar mensagem dedicada em vez do fluxo normal de app).
-- [ ] `npx orval` para gerar os novos tipos/funções de API assim que as rotas acima existirem no backend.
+- [x] `app/personal/(dashboard)/students/page.tsx` — lista de alunos com status e link para "Adicionar aluno".
+- [x] `app/personal/(dashboard)/students/new/page.tsx` + Server Action — formulário (nome, e-mail, lesões, problemas metabólicos, prazo de acesso) via RHF + Zod.
+- [x] `app/personal/(dashboard)/students/[studentId]/page.tsx` — dados cadastrais, status de acesso, botão "Renovar por 30 dias", e histórico de pagamentos (lista + formulário para lançar novo pagamento com data/valor/situação).
+- [x] `npx orval` para gerar os tipos/funções de API.
+- [x] Testado ponta a ponta no navegador: cadastro de aluno → e-mail logado no console → lançamento de pagamento → renovação de acesso.
 
 ---
 

@@ -1,4 +1,7 @@
+import Link from "next/link";
+import { Users } from "lucide-react";
 import { getPersonalTrainer } from "@/app/_lib/api/fetch-generated";
+import { Button } from "@/components/ui/button";
 import { PersonalLogoutButton } from "./_components/personal-logout-button";
 
 export default async function PersonalDashboardPage() {
@@ -13,9 +16,16 @@ export default async function PersonalDashboardPage() {
           Olá, {trainerName}
         </h1>
         <p className="font-heading text-sm text-muted-foreground">
-          Em breve você poderá cadastrar e gerenciar seus alunos por aqui.
+          Gerencie seus alunos e acompanhe o treino de cada um.
         </p>
       </div>
+
+      <Button asChild className="w-full gap-2 rounded-xl">
+        <Link href="/personal/students">
+          <Users className="size-4" />
+          Meus alunos
+        </Link>
+      </Button>
 
       <PersonalLogoutButton />
     </div>

@@ -1342,6 +1342,297 @@ export type SignUpPersonalTrainer500 = {
   code: string;
 };
 
+export type GetPersonalTrainerSettings200 = {
+  /** @maximum 9007199254740991 */
+  defaultAccessDurationInDays: number;
+};
+
+export type GetPersonalTrainerSettings401 = {
+  error: string;
+  code: string;
+};
+
+export type GetPersonalTrainerSettings403 = {
+  error: string;
+  code: string;
+};
+
+export type GetPersonalTrainerSettings500 = {
+  error: string;
+  code: string;
+};
+
+export type UpsertPersonalTrainerSettingsBody = {
+  /** @maximum 9007199254740991 */
+  defaultAccessDurationInDays: number;
+};
+
+export type UpsertPersonalTrainerSettings200 = {
+  /** @maximum 9007199254740991 */
+  defaultAccessDurationInDays: number;
+};
+
+export type UpsertPersonalTrainerSettings401 = {
+  error: string;
+  code: string;
+};
+
+export type UpsertPersonalTrainerSettings403 = {
+  error: string;
+  code: string;
+};
+
+export type UpsertPersonalTrainerSettings500 = {
+  error: string;
+  code: string;
+};
+
+export type CreateStudentBody = {
+  /** @minLength 1 */
+  name: string;
+  /** @pattern ^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\-]*\.)+[A-Za-z]{2,}$ */
+  email: string;
+  injuries?: string;
+  metabolicConditions?: string;
+  /** @maximum 9007199254740991 */
+  accessDurationInDays?: number;
+};
+
+export type CreateStudent201 = {
+  id: string;
+  name: string;
+  /** @pattern ^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\-]*\.)+[A-Za-z]{2,}$ */
+  email: string;
+  injuries?: string;
+  metabolicConditions?: string;
+  /**
+   * @nullable
+   * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+   */
+  accessExpiresAt: string | null;
+  isAccessExpired: boolean;
+};
+
+export type CreateStudent401 = {
+  error: string;
+  code: string;
+};
+
+export type CreateStudent403 = {
+  error: string;
+  code: string;
+};
+
+export type CreateStudent409 = {
+  error: string;
+  code: string;
+};
+
+export type CreateStudent500 = {
+  error: string;
+  code: string;
+};
+
+export type ListStudents200Item = {
+  id: string;
+  name: string;
+  /** @pattern ^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\-]*\.)+[A-Za-z]{2,}$ */
+  email: string;
+  injuries?: string;
+  metabolicConditions?: string;
+  /**
+   * @nullable
+   * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+   */
+  accessExpiresAt: string | null;
+  isAccessExpired: boolean;
+};
+
+export type ListStudents401 = {
+  error: string;
+  code: string;
+};
+
+export type ListStudents403 = {
+  error: string;
+  code: string;
+};
+
+export type ListStudents500 = {
+  error: string;
+  code: string;
+};
+
+export type GetStudent200 = {
+  id: string;
+  name: string;
+  /** @pattern ^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\-]*\.)+[A-Za-z]{2,}$ */
+  email: string;
+  injuries?: string;
+  metabolicConditions?: string;
+  /**
+   * @nullable
+   * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+   */
+  accessExpiresAt: string | null;
+  isAccessExpired: boolean;
+};
+
+export type GetStudent401 = {
+  error: string;
+  code: string;
+};
+
+export type GetStudent403 = {
+  error: string;
+  code: string;
+};
+
+export type GetStudent404 = {
+  error: string;
+  code: string;
+};
+
+export type GetStudent500 = {
+  error: string;
+  code: string;
+};
+
+export type UpdateStudentBody = {
+  /** @minLength 1 */
+  name?: string;
+  injuries?: string;
+  metabolicConditions?: string;
+  /** @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$ */
+  accessExpiresAt?: string;
+};
+
+export type UpdateStudent200 = {
+  id: string;
+  name: string;
+  /** @pattern ^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\-]*\.)+[A-Za-z]{2,}$ */
+  email: string;
+  injuries?: string;
+  metabolicConditions?: string;
+  /**
+   * @nullable
+   * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+   */
+  accessExpiresAt: string | null;
+  isAccessExpired: boolean;
+};
+
+export type UpdateStudent401 = {
+  error: string;
+  code: string;
+};
+
+export type UpdateStudent403 = {
+  error: string;
+  code: string;
+};
+
+export type UpdateStudent404 = {
+  error: string;
+  code: string;
+};
+
+export type UpdateStudent500 = {
+  error: string;
+  code: string;
+};
+
+export type CreateStudentPaymentRecordBodyStatus =
+  (typeof CreateStudentPaymentRecordBodyStatus)[keyof typeof CreateStudentPaymentRecordBodyStatus];
+
+export const CreateStudentPaymentRecordBodyStatus = {
+  PAID: "PAID",
+  PENDING: "PENDING",
+  OVERDUE: "OVERDUE",
+} as const;
+
+export type CreateStudentPaymentRecordBody = {
+  /** @maximum 9007199254740991 */
+  amountInCents: number;
+  /** @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$ */
+  paymentDate: string;
+  status: CreateStudentPaymentRecordBodyStatus;
+};
+
+export type CreateStudentPaymentRecord201Status =
+  (typeof CreateStudentPaymentRecord201Status)[keyof typeof CreateStudentPaymentRecord201Status];
+
+export const CreateStudentPaymentRecord201Status = {
+  PAID: "PAID",
+  PENDING: "PENDING",
+  OVERDUE: "OVERDUE",
+} as const;
+
+export type CreateStudentPaymentRecord201 = {
+  id: string;
+  amountInCents: number;
+  /** @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$ */
+  paymentDate: string;
+  status: CreateStudentPaymentRecord201Status;
+};
+
+export type CreateStudentPaymentRecord401 = {
+  error: string;
+  code: string;
+};
+
+export type CreateStudentPaymentRecord403 = {
+  error: string;
+  code: string;
+};
+
+export type CreateStudentPaymentRecord404 = {
+  error: string;
+  code: string;
+};
+
+export type CreateStudentPaymentRecord500 = {
+  error: string;
+  code: string;
+};
+
+export type ListStudentPaymentRecords200ItemStatus =
+  (typeof ListStudentPaymentRecords200ItemStatus)[keyof typeof ListStudentPaymentRecords200ItemStatus];
+
+export const ListStudentPaymentRecords200ItemStatus = {
+  PAID: "PAID",
+  PENDING: "PENDING",
+  OVERDUE: "OVERDUE",
+} as const;
+
+export type ListStudentPaymentRecords200Item = {
+  id: string;
+  amountInCents: number;
+  /** @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$ */
+  paymentDate: string;
+  status: ListStudentPaymentRecords200ItemStatus;
+};
+
+export type ListStudentPaymentRecords401 = {
+  error: string;
+  code: string;
+};
+
+export type ListStudentPaymentRecords403 = {
+  error: string;
+  code: string;
+};
+
+export type ListStudentPaymentRecords404 = {
+  error: string;
+  code: string;
+};
+
+export type ListStudentPaymentRecords500 = {
+  error: string;
+  code: string;
+};
+
 export type Get200 = {
   message: string;
 };
@@ -3287,6 +3578,476 @@ export const signUpPersonalTrainer = async (
       method: "POST",
       headers: { "Content-Type": "application/json", ...options?.headers },
       body: JSON.stringify(signUpPersonalTrainerBody),
+    },
+  );
+};
+
+/**
+ * @summary Get the authenticated personal trainer's settings
+ */
+export type getPersonalTrainerSettingsResponse200 = {
+  data: GetPersonalTrainerSettings200;
+  status: 200;
+};
+
+export type getPersonalTrainerSettingsResponse401 = {
+  data: GetPersonalTrainerSettings401;
+  status: 401;
+};
+
+export type getPersonalTrainerSettingsResponse403 = {
+  data: GetPersonalTrainerSettings403;
+  status: 403;
+};
+
+export type getPersonalTrainerSettingsResponse500 = {
+  data: GetPersonalTrainerSettings500;
+  status: 500;
+};
+
+export type getPersonalTrainerSettingsResponseSuccess =
+  getPersonalTrainerSettingsResponse200 & {
+    headers: Headers;
+  };
+export type getPersonalTrainerSettingsResponseError = (
+  | getPersonalTrainerSettingsResponse401
+  | getPersonalTrainerSettingsResponse403
+  | getPersonalTrainerSettingsResponse500
+) & {
+  headers: Headers;
+};
+
+export type getPersonalTrainerSettingsResponse =
+  | getPersonalTrainerSettingsResponseSuccess
+  | getPersonalTrainerSettingsResponseError;
+
+export const getGetPersonalTrainerSettingsUrl = () => {
+  return `/personal/settings`;
+};
+
+export const getPersonalTrainerSettings = async (
+  options?: RequestInit,
+): Promise<getPersonalTrainerSettingsResponse> => {
+  return customFetch<getPersonalTrainerSettingsResponse>(
+    getGetPersonalTrainerSettingsUrl(),
+    {
+      ...options,
+      method: "GET",
+    },
+  );
+};
+
+/**
+ * @summary Update the authenticated personal trainer's settings
+ */
+export type upsertPersonalTrainerSettingsResponse200 = {
+  data: UpsertPersonalTrainerSettings200;
+  status: 200;
+};
+
+export type upsertPersonalTrainerSettingsResponse401 = {
+  data: UpsertPersonalTrainerSettings401;
+  status: 401;
+};
+
+export type upsertPersonalTrainerSettingsResponse403 = {
+  data: UpsertPersonalTrainerSettings403;
+  status: 403;
+};
+
+export type upsertPersonalTrainerSettingsResponse500 = {
+  data: UpsertPersonalTrainerSettings500;
+  status: 500;
+};
+
+export type upsertPersonalTrainerSettingsResponseSuccess =
+  upsertPersonalTrainerSettingsResponse200 & {
+    headers: Headers;
+  };
+export type upsertPersonalTrainerSettingsResponseError = (
+  | upsertPersonalTrainerSettingsResponse401
+  | upsertPersonalTrainerSettingsResponse403
+  | upsertPersonalTrainerSettingsResponse500
+) & {
+  headers: Headers;
+};
+
+export type upsertPersonalTrainerSettingsResponse =
+  | upsertPersonalTrainerSettingsResponseSuccess
+  | upsertPersonalTrainerSettingsResponseError;
+
+export const getUpsertPersonalTrainerSettingsUrl = () => {
+  return `/personal/settings`;
+};
+
+export const upsertPersonalTrainerSettings = async (
+  upsertPersonalTrainerSettingsBody: UpsertPersonalTrainerSettingsBody,
+  options?: RequestInit,
+): Promise<upsertPersonalTrainerSettingsResponse> => {
+  return customFetch<upsertPersonalTrainerSettingsResponse>(
+    getUpsertPersonalTrainerSettingsUrl(),
+    {
+      ...options,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json", ...options?.headers },
+      body: JSON.stringify(upsertPersonalTrainerSettingsBody),
+    },
+  );
+};
+
+/**
+ * @summary Create a student for the authenticated personal trainer
+ */
+export type createStudentResponse201 = {
+  data: CreateStudent201;
+  status: 201;
+};
+
+export type createStudentResponse401 = {
+  data: CreateStudent401;
+  status: 401;
+};
+
+export type createStudentResponse403 = {
+  data: CreateStudent403;
+  status: 403;
+};
+
+export type createStudentResponse409 = {
+  data: CreateStudent409;
+  status: 409;
+};
+
+export type createStudentResponse500 = {
+  data: CreateStudent500;
+  status: 500;
+};
+
+export type createStudentResponseSuccess = createStudentResponse201 & {
+  headers: Headers;
+};
+export type createStudentResponseError = (
+  | createStudentResponse401
+  | createStudentResponse403
+  | createStudentResponse409
+  | createStudentResponse500
+) & {
+  headers: Headers;
+};
+
+export type createStudentResponse =
+  | createStudentResponseSuccess
+  | createStudentResponseError;
+
+export const getCreateStudentUrl = () => {
+  return `/personal/students/`;
+};
+
+export const createStudent = async (
+  createStudentBody: CreateStudentBody,
+  options?: RequestInit,
+): Promise<createStudentResponse> => {
+  return customFetch<createStudentResponse>(getCreateStudentUrl(), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(createStudentBody),
+  });
+};
+
+/**
+ * @summary List the authenticated personal trainer's students
+ */
+export type listStudentsResponse200 = {
+  data: ListStudents200Item[];
+  status: 200;
+};
+
+export type listStudentsResponse401 = {
+  data: ListStudents401;
+  status: 401;
+};
+
+export type listStudentsResponse403 = {
+  data: ListStudents403;
+  status: 403;
+};
+
+export type listStudentsResponse500 = {
+  data: ListStudents500;
+  status: 500;
+};
+
+export type listStudentsResponseSuccess = listStudentsResponse200 & {
+  headers: Headers;
+};
+export type listStudentsResponseError = (
+  | listStudentsResponse401
+  | listStudentsResponse403
+  | listStudentsResponse500
+) & {
+  headers: Headers;
+};
+
+export type listStudentsResponse =
+  | listStudentsResponseSuccess
+  | listStudentsResponseError;
+
+export const getListStudentsUrl = () => {
+  return `/personal/students/`;
+};
+
+export const listStudents = async (
+  options?: RequestInit,
+): Promise<listStudentsResponse> => {
+  return customFetch<listStudentsResponse>(getListStudentsUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+/**
+ * @summary Get a student of the authenticated personal trainer
+ */
+export type getStudentResponse200 = {
+  data: GetStudent200;
+  status: 200;
+};
+
+export type getStudentResponse401 = {
+  data: GetStudent401;
+  status: 401;
+};
+
+export type getStudentResponse403 = {
+  data: GetStudent403;
+  status: 403;
+};
+
+export type getStudentResponse404 = {
+  data: GetStudent404;
+  status: 404;
+};
+
+export type getStudentResponse500 = {
+  data: GetStudent500;
+  status: 500;
+};
+
+export type getStudentResponseSuccess = getStudentResponse200 & {
+  headers: Headers;
+};
+export type getStudentResponseError = (
+  | getStudentResponse401
+  | getStudentResponse403
+  | getStudentResponse404
+  | getStudentResponse500
+) & {
+  headers: Headers;
+};
+
+export type getStudentResponse =
+  | getStudentResponseSuccess
+  | getStudentResponseError;
+
+export const getGetStudentUrl = (studentId: string) => {
+  return `/personal/students/${studentId}`;
+};
+
+export const getStudent = async (
+  studentId: string,
+  options?: RequestInit,
+): Promise<getStudentResponse> => {
+  return customFetch<getStudentResponse>(getGetStudentUrl(studentId), {
+    ...options,
+    method: "GET",
+  });
+};
+
+/**
+ * @summary Update a student of the authenticated personal trainer
+ */
+export type updateStudentResponse200 = {
+  data: UpdateStudent200;
+  status: 200;
+};
+
+export type updateStudentResponse401 = {
+  data: UpdateStudent401;
+  status: 401;
+};
+
+export type updateStudentResponse403 = {
+  data: UpdateStudent403;
+  status: 403;
+};
+
+export type updateStudentResponse404 = {
+  data: UpdateStudent404;
+  status: 404;
+};
+
+export type updateStudentResponse500 = {
+  data: UpdateStudent500;
+  status: 500;
+};
+
+export type updateStudentResponseSuccess = updateStudentResponse200 & {
+  headers: Headers;
+};
+export type updateStudentResponseError = (
+  | updateStudentResponse401
+  | updateStudentResponse403
+  | updateStudentResponse404
+  | updateStudentResponse500
+) & {
+  headers: Headers;
+};
+
+export type updateStudentResponse =
+  | updateStudentResponseSuccess
+  | updateStudentResponseError;
+
+export const getUpdateStudentUrl = (studentId: string) => {
+  return `/personal/students/${studentId}`;
+};
+
+export const updateStudent = async (
+  studentId: string,
+  updateStudentBody: UpdateStudentBody,
+  options?: RequestInit,
+): Promise<updateStudentResponse> => {
+  return customFetch<updateStudentResponse>(getUpdateStudentUrl(studentId), {
+    ...options,
+    method: "PATCH",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(updateStudentBody),
+  });
+};
+
+/**
+ * @summary Create a payment record for a student
+ */
+export type createStudentPaymentRecordResponse201 = {
+  data: CreateStudentPaymentRecord201;
+  status: 201;
+};
+
+export type createStudentPaymentRecordResponse401 = {
+  data: CreateStudentPaymentRecord401;
+  status: 401;
+};
+
+export type createStudentPaymentRecordResponse403 = {
+  data: CreateStudentPaymentRecord403;
+  status: 403;
+};
+
+export type createStudentPaymentRecordResponse404 = {
+  data: CreateStudentPaymentRecord404;
+  status: 404;
+};
+
+export type createStudentPaymentRecordResponse500 = {
+  data: CreateStudentPaymentRecord500;
+  status: 500;
+};
+
+export type createStudentPaymentRecordResponseSuccess =
+  createStudentPaymentRecordResponse201 & {
+    headers: Headers;
+  };
+export type createStudentPaymentRecordResponseError = (
+  | createStudentPaymentRecordResponse401
+  | createStudentPaymentRecordResponse403
+  | createStudentPaymentRecordResponse404
+  | createStudentPaymentRecordResponse500
+) & {
+  headers: Headers;
+};
+
+export type createStudentPaymentRecordResponse =
+  | createStudentPaymentRecordResponseSuccess
+  | createStudentPaymentRecordResponseError;
+
+export const getCreateStudentPaymentRecordUrl = (studentId: string) => {
+  return `/personal/students/${studentId}/payments`;
+};
+
+export const createStudentPaymentRecord = async (
+  studentId: string,
+  createStudentPaymentRecordBody: CreateStudentPaymentRecordBody,
+  options?: RequestInit,
+): Promise<createStudentPaymentRecordResponse> => {
+  return customFetch<createStudentPaymentRecordResponse>(
+    getCreateStudentPaymentRecordUrl(studentId),
+    {
+      ...options,
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...options?.headers },
+      body: JSON.stringify(createStudentPaymentRecordBody),
+    },
+  );
+};
+
+/**
+ * @summary List payment records for a student
+ */
+export type listStudentPaymentRecordsResponse200 = {
+  data: ListStudentPaymentRecords200Item[];
+  status: 200;
+};
+
+export type listStudentPaymentRecordsResponse401 = {
+  data: ListStudentPaymentRecords401;
+  status: 401;
+};
+
+export type listStudentPaymentRecordsResponse403 = {
+  data: ListStudentPaymentRecords403;
+  status: 403;
+};
+
+export type listStudentPaymentRecordsResponse404 = {
+  data: ListStudentPaymentRecords404;
+  status: 404;
+};
+
+export type listStudentPaymentRecordsResponse500 = {
+  data: ListStudentPaymentRecords500;
+  status: 500;
+};
+
+export type listStudentPaymentRecordsResponseSuccess =
+  listStudentPaymentRecordsResponse200 & {
+    headers: Headers;
+  };
+export type listStudentPaymentRecordsResponseError = (
+  | listStudentPaymentRecordsResponse401
+  | listStudentPaymentRecordsResponse403
+  | listStudentPaymentRecordsResponse404
+  | listStudentPaymentRecordsResponse500
+) & {
+  headers: Headers;
+};
+
+export type listStudentPaymentRecordsResponse =
+  | listStudentPaymentRecordsResponseSuccess
+  | listStudentPaymentRecordsResponseError;
+
+export const getListStudentPaymentRecordsUrl = (studentId: string) => {
+  return `/personal/students/${studentId}/payments`;
+};
+
+export const listStudentPaymentRecords = async (
+  studentId: string,
+  options?: RequestInit,
+): Promise<listStudentPaymentRecordsResponse> => {
+  return customFetch<listStudentPaymentRecordsResponse>(
+    getListStudentPaymentRecordsUrl(studentId),
+    {
+      ...options,
+      method: "GET",
     },
   );
 };

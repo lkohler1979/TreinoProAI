@@ -88,11 +88,17 @@ O usuário "autônomo" (fluxo atual, sem PT) continua existindo sem alteração.
 - Acesso expirado → aluno não consegue usar o app; tela informativa orientando contato com o PT.
 - PT pode configurar a duração padrão (dias) aplicada a novos alunos, e ajustar individualmente por aluno.
 
-### 7.7 Assinatura e cobrança
+### 7.7 Assinatura e cobrança (PT → plataforma)
 - 3 planos fixos, cobrança mensal recorrente: até 10 alunos (R$140), até 50 alunos (R$599), acima de 51 alunos (R$987).
 - PT precisa de assinatura ativa para cadastrar/manter alunos ativos além do limite do plano vigente.
 - Ao exceder o limite do plano atual, sistema bloqueia novo cadastro e sugere upgrade.
 - Página de billing no `/personal` mostra plano atual, uso (X/Y alunos) e link para gerenciar pagamento no portal do gateway escolhido.
+- **Ainda depende da confirmação do gateway de pagamento (ver §11)** — enquanto isso, os limites de plano não são aplicados automaticamente (nenhum bloqueio real na Fase 2).
+
+### 7.8 Histórico de pagamentos (aluno → PT)
+- Decisão explícita do usuário: **sem gateway de pagamento nesta relação**. O PT recebe de seus alunos por fora da plataforma (pix, dinheiro, etc.) e só precisa de um registro manual.
+- Para cada aluno, o PT pode lançar entradas de pagamento com **data, valor e situação** (`PAID`, `PENDING`, `OVERDUE`).
+- É apenas um histórico/checklist — não dispara cobrança, não integra com gateway, não envia lembrete automático (pode virar melhoria futura).
 
 ## 8. Modelo de dados (proposta, sujeita a revisão na fase de design técnico)
 
@@ -116,6 +122,10 @@ BioimpedanceRecord (novo)
 
 PersonalTrainerSettings (novo)
   trainerId (PK/FK User), defaultAccessDurationInDays @default(30)
+
+StudentPaymentRecord (novo)
+  id, studentId (FK User), amountInCents, paymentDate,
+  status (PAID | PENDING | OVERDUE), createdAt, updatedAt
 
 Subscription (novo)
   trainerId (PK/FK User), planTier, status,

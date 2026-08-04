@@ -1,6 +1,10 @@
 import z from "zod";
 
-import { WeekDay, WorkoutGoal } from "../generated/prisma/enums.js";
+import {
+  StudentPaymentStatus,
+  WeekDay,
+  WorkoutGoal,
+} from "../generated/prisma/enums.js";
 
 export const ErrorSchema = z.object({
   error: z.string(),
@@ -399,5 +403,56 @@ export const PersonalTrainerSchema = z.object({
   name: z.string(),
   email: z.email(),
 });
+
+export const CreateStudentBodySchema = z.object({
+  name: z.string().trim().min(1),
+  email: z.email(),
+  injuries: z.string().trim().optional(),
+  metabolicConditions: z.string().trim().optional(),
+  accessDurationInDays: z.number().int().positive().optional(),
+});
+
+export const StudentSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  email: z.email(),
+  injuries: z.string().optional(),
+  metabolicConditions: z.string().optional(),
+  accessExpiresAt: z.iso.datetime().nullable(),
+  isAccessExpired: z.boolean(),
+});
+
+export const ListStudentsSchema = z.array(StudentSchema);
+
+export const UpdateStudentBodySchema = z.object({
+  name: z.string().trim().min(1).optional(),
+  injuries: z.string().trim().optional(),
+  metabolicConditions: z.string().trim().optional(),
+  accessExpiresAt: z.iso.datetime().optional(),
+});
+
+export const PersonalTrainerSettingsSchema = z.object({
+  defaultAccessDurationInDays: z.number().int().positive(),
+});
+
+export const UpsertPersonalTrainerSettingsBodySchema =
+  PersonalTrainerSettingsSchema;
+
+export const CreateStudentPaymentRecordBodySchema = z.object({
+  amountInCents: z.number().int().positive(),
+  paymentDate: z.iso.datetime(),
+  status: z.enum(StudentPaymentStatus),
+});
+
+export const StudentPaymentRecordSchema = z.object({
+  id: z.string(),
+  amountInCents: z.number(),
+  paymentDate: z.iso.datetime(),
+  status: z.enum(StudentPaymentStatus),
+});
+
+export const ListStudentPaymentRecordsSchema = z.array(
+  StudentPaymentRecordSchema
+);
 
 export const UpdateExerciseTemplateBodySchema = CreateExerciseTemplateBodySchema;

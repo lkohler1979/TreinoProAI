@@ -12,6 +12,8 @@ const envSchema = z.object({
   GOOGLE_GENERATIVE_AI_API_KEY: z.string(),
   OPENAI_API_KEY: z.string().optional(),
   WEB_APP_BASE_URL: z.url(),
+  RESEND_API_KEY: z.string().optional(),
+  EMAIL_FROM: z.string().default("TreinoPro.AI <onboarding@resend.dev>"),
   NODE_ENV: z
     .enum(["development", "production", "test"])
     .default("development"),
