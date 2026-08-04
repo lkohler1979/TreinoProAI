@@ -16,7 +16,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { ListMuscleGroups200Item } from "@/app/_lib/api/fetch-generated";
-import { createWorkoutExerciseAction } from "../_actions";
+import type { WorkoutPlanEditActions } from "../_lib/actions-types";
 
 const numericString = () =>
   z.string().refine((value) => value !== "" && Number(value) > 0, {
@@ -37,12 +37,14 @@ interface AddExerciseFormProps {
   workoutPlanId: string;
   workoutDayId: string;
   muscleGroups: ListMuscleGroups200Item[];
+  actions: WorkoutPlanEditActions;
 }
 
 export function AddExerciseForm({
   workoutPlanId,
   workoutDayId,
   muscleGroups,
+  actions,
 }: AddExerciseFormProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
@@ -72,7 +74,7 @@ export function AddExerciseForm({
     );
 
     startTransition(async () => {
-      await createWorkoutExerciseAction(workoutPlanId, workoutDayId, {
+      await actions.createWorkoutExercise(workoutPlanId, workoutDayId, {
         name: exerciseTemplate?.name ?? "Exercício",
         sets: Number(values.sets),
         reps: Number(values.reps),

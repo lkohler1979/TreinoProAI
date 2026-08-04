@@ -9,10 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import type { GetWorkoutPlanDetails200WorkoutDaysItemExercisesItem } from "@/app/_lib/api/fetch-generated";
-import {
-  deleteWorkoutExerciseAction,
-  updateWorkoutExerciseAction,
-} from "../_actions";
+import type { WorkoutPlanEditActions } from "../_lib/actions-types";
 
 const numericString = () =>
   z.string().refine((value) => value !== "" && Number(value) > 0, {
@@ -31,12 +28,14 @@ interface EditExerciseRowProps {
   workoutPlanId: string;
   workoutDayId: string;
   exercise: GetWorkoutPlanDetails200WorkoutDaysItemExercisesItem;
+  actions: WorkoutPlanEditActions;
 }
 
 export function EditExerciseRow({
   workoutPlanId,
   workoutDayId,
   exercise,
+  actions,
 }: EditExerciseRowProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [isPending, startTransition] = useTransition();
@@ -52,19 +51,28 @@ export function EditExerciseRow({
 
   const onSubmit = (values: ExerciseFormValues) => {
     startTransition(async () => {
-      await updateWorkoutExerciseAction(workoutPlanId, workoutDayId, exercise.id, {
-        name: exercise.name,
-        sets: Number(values.sets),
-        reps: Number(values.reps),
-        restTimeInSeconds: Number(values.restTimeInSeconds),
-      });
+      await actions.updateWorkoutExercise(
+        workoutPlanId,
+        workoutDayId,
+        exercise.id,
+        {
+          name: exercise.name,
+          sets: Number(values.sets),
+          reps: Number(values.reps),
+          restTimeInSeconds: Number(values.restTimeInSeconds),
+        },
+      );
       setIsEditing(false);
     });
   };
 
   const handleDelete = () => {
     startTransition(async () => {
-      await deleteWorkoutExerciseAction(workoutPlanId, workoutDayId, exercise.id);
+      await actions.deleteWorkoutExercise(
+        workoutPlanId,
+        workoutDayId,
+        exercise.id,
+      );
     });
   };
 

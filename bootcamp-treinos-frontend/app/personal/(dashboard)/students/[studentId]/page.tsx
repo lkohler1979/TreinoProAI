@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import dayjs from "dayjs";
-import { ArrowLeft, Ruler } from "lucide-react";
+import { ArrowLeft, Dumbbell, Ruler } from "lucide-react";
 import {
   getStudent,
   listStudentPaymentRecords,
@@ -100,6 +100,13 @@ export default async function StudentDetailPage({
         )}
         <RenewAccessButton studentId={student.id} />
       </div>
+
+      <Button asChild variant="outline" className="w-full gap-2 rounded-xl">
+        <Link href={`/personal/students/${student.id}/workout-plans`}>
+          <Dumbbell className="size-4" />
+          Treinos
+        </Link>
+      </Button>
 
       <Button asChild variant="outline" className="w-full gap-2 rounded-xl">
         <Link href={`/personal/students/${student.id}/bioimpedance`}>

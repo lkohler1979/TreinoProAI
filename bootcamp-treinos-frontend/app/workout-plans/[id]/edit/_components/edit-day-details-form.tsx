@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import type { GetWorkoutPlanDetails200WorkoutDaysItem } from "@/app/_lib/api/fetch-generated";
-import { updateWorkoutDayAction } from "../_actions";
+import type { WorkoutPlanEditActions } from "../_lib/actions-types";
 
 const dayDetailsFormSchema = z.object({
   name: z.string().trim().min(1, "Informe o nome do dia"),
@@ -24,11 +24,13 @@ type DayDetailsFormValues = z.infer<typeof dayDetailsFormSchema>;
 interface EditDayDetailsFormProps {
   workoutPlanId: string;
   day: GetWorkoutPlanDetails200WorkoutDaysItem;
+  actions: WorkoutPlanEditActions;
 }
 
 export function EditDayDetailsForm({
   workoutPlanId,
   day,
+  actions,
 }: EditDayDetailsFormProps) {
   const [isPending, startTransition] = useTransition();
 
@@ -42,7 +44,7 @@ export function EditDayDetailsForm({
 
   const onSubmit = (values: DayDetailsFormValues) => {
     startTransition(async () => {
-      await updateWorkoutDayAction(workoutPlanId, day.id, {
+      await actions.updateWorkoutDay(workoutPlanId, day.id, {
         name: values.name,
         isRest: false,
         estimatedDurationInSeconds: Math.max(

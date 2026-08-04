@@ -1,51 +1,36 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
-import { authClient } from "@/app/_lib/auth-client";
-import { headers } from "next/headers";
+import { ArrowLeft } from "lucide-react";
 import {
-  getWorkoutPlanDetails,
+  getStudentWorkoutPlanDetails,
   listMuscleGroups,
 } from "@/app/_lib/api/fetch-generated";
-import { ArrowLeft } from "lucide-react";
-import Link from "next/link";
 import { Accordion } from "@/components/ui/accordion";
 import { WEEK_DAYS } from "@/app/_lib/week-days";
+import { EditWorkoutDaySection } from "@/app/workout-plans/[id]/edit/_components/edit-workout-day-section";
+import type { WorkoutPlanEditActions } from "@/app/workout-plans/[id]/edit/_lib/actions-types";
 import {
-  createWorkoutExerciseAction,
-  deleteWorkoutExerciseAction,
-  updateWorkoutDayAction,
-  updateWorkoutExerciseAction,
+  createStudentWorkoutExerciseAction,
+  deleteStudentWorkoutExerciseAction,
+  updateStudentWorkoutDayAction,
+  updateStudentWorkoutExerciseAction,
 } from "./_actions";
-import { EditWorkoutDaySection } from "./_components/edit-workout-day-section";
-import type { WorkoutPlanEditActions } from "./_lib/actions-types";
 
-const editActions: WorkoutPlanEditActions = {
-  updateWorkoutDay: updateWorkoutDayAction,
-  createWorkoutExercise: createWorkoutExerciseAction,
-  updateWorkoutExercise: updateWorkoutExerciseAction,
-  deleteWorkoutExercise: deleteWorkoutExerciseAction,
-};
-
-export default async function EditWorkoutPlanPage({
+export default async function EditStudentWorkoutPlanPage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ studentId: string; workoutPlanId: string }>;
 }) {
-  const session = await authClient.getSession({
-    fetchOptions: {
-      headers: await headers(),
-    },
-  });
-
-  if (!session.data?.user) redirect("/auth");
-
-  const { id } = await params;
+  const { studentId, workoutPlanId } = await params;
 
   const [planResponse, muscleGroupsResponse] = await Promise.all([
-    getWorkoutPlanDetails(id),
+    getStudentWorkoutPlanDetails(studentId, workoutPlanId),
     listMuscleGroups(),
   ]);
 
-  if (planResponse.status !== 200) redirect(`/workout-plans/${id}`);
+  if (planResponse.status !== 200) {
+    redirect(`/personal/students/${studentId}/workout-plans`);
+  }
   if (muscleGroupsResponse.status !== 200) {
     throw new Error("Failed to fetch muscle groups");
   }
@@ -54,10 +39,26 @@ export default async function EditWorkoutPlanPage({
     (a, b) => WEEK_DAYS.indexOf(a.weekDay) - WEEK_DAYS.indexOf(b.weekDay),
   );
 
+  const editActions: WorkoutPlanEditActions = {
+    updateWorkoutDay: updateStudentWorkoutDayAction.bind(null, studentId),
+    createWorkoutExercise: createStudentWorkoutExerciseAction.bind(
+      null,
+      studentId,
+    ),
+    updateWorkoutExercise: updateStudentWorkoutExerciseAction.bind(
+      null,
+      studentId,
+    ),
+    deleteWorkoutExercise: deleteStudentWorkoutExerciseAction.bind(
+      null,
+      studentId,
+    ),
+  };
+
   return (
     <div className="flex min-h-svh flex-col bg-background pb-10">
       <div className="flex h-14 items-center gap-3 px-5">
-        <Link href={`/workout-plans/${id}`}>
+        <Link href={`/personal/students/${studentId}/workout-plans`}>
           <ArrowLeft className="size-5 text-foreground" />
         </Link>
         <h1 className="font-heading text-lg font-semibold text-foreground">
@@ -70,7 +71,7 @@ export default async function EditWorkoutPlanPage({
           {sortedDays.map((day) => (
             <EditWorkoutDaySection
               key={day.id}
-              workoutPlanId={id}
+              workoutPlanId={workoutPlanId}
               day={day}
               muscleGroups={muscleGroupsResponse.data}
               actions={editActions}

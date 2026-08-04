@@ -1791,6 +1791,466 @@ export type ListBioimpedanceRecords500 = {
   code: string;
 };
 
+export type ListStudentWorkoutPlanHistory200ItemSessionsItemWeekDay =
+  (typeof ListStudentWorkoutPlanHistory200ItemSessionsItemWeekDay)[keyof typeof ListStudentWorkoutPlanHistory200ItemSessionsItemWeekDay];
+
+export const ListStudentWorkoutPlanHistory200ItemSessionsItemWeekDay = {
+  MONDAY: "MONDAY",
+  TUESDAY: "TUESDAY",
+  WEDNESDAY: "WEDNESDAY",
+  THURSDAY: "THURSDAY",
+  FRIDAY: "FRIDAY",
+  SATURDAY: "SATURDAY",
+  SUNDAY: "SUNDAY",
+} as const;
+
+export type ListStudentWorkoutPlanHistory200ItemSessionsItem = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  name: string;
+  weekDay: ListStudentWorkoutPlanHistory200ItemSessionsItemWeekDay;
+  /** @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$ */
+  startedAt: string;
+  /** @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$ */
+  completedAt: string;
+  durationInSeconds: number;
+  exercisesCount: number;
+};
+
+export type ListStudentWorkoutPlanHistory200Item = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  workoutPlanId: string;
+  workoutPlanName: string;
+  isActive: boolean;
+  completedWorkoutsCount: number;
+  totalTimeInSeconds: number;
+  sessions: ListStudentWorkoutPlanHistory200ItemSessionsItem[];
+};
+
+export type ListStudentWorkoutPlanHistory401 = {
+  error: string;
+  code: string;
+};
+
+export type ListStudentWorkoutPlanHistory403 = {
+  error: string;
+  code: string;
+};
+
+export type ListStudentWorkoutPlanHistory404 = {
+  error: string;
+  code: string;
+};
+
+export type ListStudentWorkoutPlanHistory500 = {
+  error: string;
+  code: string;
+};
+
+export type CreateStudentWorkoutPlanBodyGoal =
+  (typeof CreateStudentWorkoutPlanBodyGoal)[keyof typeof CreateStudentWorkoutPlanBodyGoal];
+
+export const CreateStudentWorkoutPlanBodyGoal = {
+  HYPERTROPHY: "HYPERTROPHY",
+  WEIGHT_LOSS: "WEIGHT_LOSS",
+  ENDURANCE: "ENDURANCE",
+  STRENGTH: "STRENGTH",
+  GENERAL_FITNESS: "GENERAL_FITNESS",
+} as const;
+
+export type CreateStudentWorkoutPlanBodyWorkoutDaysItemWeekDay =
+  (typeof CreateStudentWorkoutPlanBodyWorkoutDaysItemWeekDay)[keyof typeof CreateStudentWorkoutPlanBodyWorkoutDaysItemWeekDay];
+
+export const CreateStudentWorkoutPlanBodyWorkoutDaysItemWeekDay = {
+  MONDAY: "MONDAY",
+  TUESDAY: "TUESDAY",
+  WEDNESDAY: "WEDNESDAY",
+  THURSDAY: "THURSDAY",
+  FRIDAY: "FRIDAY",
+  SATURDAY: "SATURDAY",
+  SUNDAY: "SUNDAY",
+} as const;
+
+export type CreateStudentWorkoutPlanBodyWorkoutDaysItemExercisesItem = {
+  /** @minimum 0 */
+  order: number;
+  /** @minLength 1 */
+  name: string;
+  /** @minimum 1 */
+  sets: number;
+  /** @minimum 1 */
+  reps: number;
+  /** @minimum 1 */
+  restTimeInSeconds: number;
+};
+
+export type CreateStudentWorkoutPlanBodyWorkoutDaysItem = {
+  /** @minLength 1 */
+  name: string;
+  weekDay: CreateStudentWorkoutPlanBodyWorkoutDaysItemWeekDay;
+  isRest?: boolean;
+  /** @minimum 1 */
+  estimatedDurationInSeconds: number;
+  coverImageUrl?: string;
+  exercises: CreateStudentWorkoutPlanBodyWorkoutDaysItemExercisesItem[];
+};
+
+export type CreateStudentWorkoutPlanBodyMealsItem = {
+  /** @minimum 0 */
+  order: number;
+  /** @minLength 1 */
+  name: string;
+  time: string;
+  description: string;
+  /** @minimum 0 */
+  calories: number;
+  /** @minimum 0 */
+  proteinInGrams: number;
+  /** @minimum 0 */
+  carbsInGrams: number;
+  /** @minimum 0 */
+  fatInGrams: number;
+};
+
+export type CreateStudentWorkoutPlanBody = {
+  goal?: CreateStudentWorkoutPlanBodyGoal;
+  /** @minimum 0 */
+  dailyWaterGoalInMl: number;
+  workoutDays: CreateStudentWorkoutPlanBodyWorkoutDaysItem[];
+  meals: CreateStudentWorkoutPlanBodyMealsItem[];
+};
+
+export type CreateStudentWorkoutPlan201Goal =
+  (typeof CreateStudentWorkoutPlan201Goal)[keyof typeof CreateStudentWorkoutPlan201Goal];
+
+export const CreateStudentWorkoutPlan201Goal = {
+  HYPERTROPHY: "HYPERTROPHY",
+  WEIGHT_LOSS: "WEIGHT_LOSS",
+  ENDURANCE: "ENDURANCE",
+  STRENGTH: "STRENGTH",
+  GENERAL_FITNESS: "GENERAL_FITNESS",
+} as const;
+
+export type CreateStudentWorkoutPlan201WorkoutDaysItemWeekDay =
+  (typeof CreateStudentWorkoutPlan201WorkoutDaysItemWeekDay)[keyof typeof CreateStudentWorkoutPlan201WorkoutDaysItemWeekDay];
+
+export const CreateStudentWorkoutPlan201WorkoutDaysItemWeekDay = {
+  MONDAY: "MONDAY",
+  TUESDAY: "TUESDAY",
+  WEDNESDAY: "WEDNESDAY",
+  THURSDAY: "THURSDAY",
+  FRIDAY: "FRIDAY",
+  SATURDAY: "SATURDAY",
+  SUNDAY: "SUNDAY",
+} as const;
+
+export type CreateStudentWorkoutPlan201WorkoutDaysItemExercisesItem = {
+  /** @minimum 0 */
+  order: number;
+  /** @minLength 1 */
+  name: string;
+  /** @minimum 1 */
+  sets: number;
+  /** @minimum 1 */
+  reps: number;
+  /** @minimum 1 */
+  restTimeInSeconds: number;
+};
+
+export type CreateStudentWorkoutPlan201WorkoutDaysItem = {
+  /** @minLength 1 */
+  name: string;
+  weekDay: CreateStudentWorkoutPlan201WorkoutDaysItemWeekDay;
+  isRest: boolean;
+  /** @minimum 1 */
+  estimatedDurationInSeconds: number;
+  coverImageUrl?: string;
+  exercises: CreateStudentWorkoutPlan201WorkoutDaysItemExercisesItem[];
+};
+
+export type CreateStudentWorkoutPlan201MealsItem = {
+  /** @minimum 0 */
+  order: number;
+  /** @minLength 1 */
+  name: string;
+  time: string;
+  description: string;
+  /** @minimum 0 */
+  calories: number;
+  /** @minimum 0 */
+  proteinInGrams: number;
+  /** @minimum 0 */
+  carbsInGrams: number;
+  /** @minimum 0 */
+  fatInGrams: number;
+};
+
+export type CreateStudentWorkoutPlan201 = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  /** @minLength 1 */
+  name: string;
+  goal?: CreateStudentWorkoutPlan201Goal;
+  /** @minimum 0 */
+  dailyWaterGoalInMl: number;
+  workoutDays: CreateStudentWorkoutPlan201WorkoutDaysItem[];
+  meals: CreateStudentWorkoutPlan201MealsItem[];
+};
+
+export type CreateStudentWorkoutPlan401 = {
+  error: string;
+  code: string;
+};
+
+export type CreateStudentWorkoutPlan403 = {
+  error: string;
+  code: string;
+};
+
+export type CreateStudentWorkoutPlan404 = {
+  error: string;
+  code: string;
+};
+
+export type CreateStudentWorkoutPlan500 = {
+  error: string;
+  code: string;
+};
+
+export type GetStudentWorkoutPlanDetails200WorkoutDaysItemWeekDay =
+  (typeof GetStudentWorkoutPlanDetails200WorkoutDaysItemWeekDay)[keyof typeof GetStudentWorkoutPlanDetails200WorkoutDaysItemWeekDay];
+
+export const GetStudentWorkoutPlanDetails200WorkoutDaysItemWeekDay = {
+  MONDAY: "MONDAY",
+  TUESDAY: "TUESDAY",
+  WEDNESDAY: "WEDNESDAY",
+  THURSDAY: "THURSDAY",
+  FRIDAY: "FRIDAY",
+  SATURDAY: "SATURDAY",
+  SUNDAY: "SUNDAY",
+} as const;
+
+export type GetStudentWorkoutPlanDetails200WorkoutDaysItemExercisesItem = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  order: number;
+  name: string;
+  sets: number;
+  reps: number;
+  restTimeInSeconds: number;
+};
+
+export type GetStudentWorkoutPlanDetails200WorkoutDaysItem = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  name: string;
+  weekDay: GetStudentWorkoutPlanDetails200WorkoutDaysItemWeekDay;
+  isRest: boolean;
+  estimatedDurationInSeconds: number;
+  coverImageUrl?: string;
+  exercises: GetStudentWorkoutPlanDetails200WorkoutDaysItemExercisesItem[];
+};
+
+export type GetStudentWorkoutPlanDetails200 = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  name: string;
+  workoutDays: GetStudentWorkoutPlanDetails200WorkoutDaysItem[];
+};
+
+export type GetStudentWorkoutPlanDetails401 = {
+  error: string;
+  code: string;
+};
+
+export type GetStudentWorkoutPlanDetails403 = {
+  error: string;
+  code: string;
+};
+
+export type GetStudentWorkoutPlanDetails404 = {
+  error: string;
+  code: string;
+};
+
+export type GetStudentWorkoutPlanDetails500 = {
+  error: string;
+  code: string;
+};
+
+export type DeleteStudentWorkoutPlan401 = {
+  error: string;
+  code: string;
+};
+
+export type DeleteStudentWorkoutPlan403 = {
+  error: string;
+  code: string;
+};
+
+export type DeleteStudentWorkoutPlan404 = {
+  error: string;
+  code: string;
+};
+
+export type DeleteStudentWorkoutPlan500 = {
+  error: string;
+  code: string;
+};
+
+export type UpdateStudentWorkoutDayBody = {
+  /** @minLength 1 */
+  name: string;
+  isRest: boolean;
+  /** @minimum 1 */
+  estimatedDurationInSeconds: number;
+};
+
+export type UpdateStudentWorkoutDay200WeekDay =
+  (typeof UpdateStudentWorkoutDay200WeekDay)[keyof typeof UpdateStudentWorkoutDay200WeekDay];
+
+export const UpdateStudentWorkoutDay200WeekDay = {
+  MONDAY: "MONDAY",
+  TUESDAY: "TUESDAY",
+  WEDNESDAY: "WEDNESDAY",
+  THURSDAY: "THURSDAY",
+  FRIDAY: "FRIDAY",
+  SATURDAY: "SATURDAY",
+  SUNDAY: "SUNDAY",
+} as const;
+
+export type UpdateStudentWorkoutDay200 = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  name: string;
+  isRest: boolean;
+  weekDay: UpdateStudentWorkoutDay200WeekDay;
+  estimatedDurationInSeconds: number;
+  coverImageUrl?: string;
+};
+
+export type UpdateStudentWorkoutDay401 = {
+  error: string;
+  code: string;
+};
+
+export type UpdateStudentWorkoutDay403 = {
+  error: string;
+  code: string;
+};
+
+export type UpdateStudentWorkoutDay404 = {
+  error: string;
+  code: string;
+};
+
+export type UpdateStudentWorkoutDay500 = {
+  error: string;
+  code: string;
+};
+
+export type CreateStudentWorkoutExerciseBody = {
+  /** @minLength 1 */
+  name: string;
+  /** @minimum 1 */
+  sets: number;
+  /** @minimum 1 */
+  reps: number;
+  /** @minimum 1 */
+  restTimeInSeconds: number;
+};
+
+export type CreateStudentWorkoutExercise201 = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  order: number;
+  name: string;
+  sets: number;
+  reps: number;
+  restTimeInSeconds: number;
+};
+
+export type CreateStudentWorkoutExercise401 = {
+  error: string;
+  code: string;
+};
+
+export type CreateStudentWorkoutExercise403 = {
+  error: string;
+  code: string;
+};
+
+export type CreateStudentWorkoutExercise404 = {
+  error: string;
+  code: string;
+};
+
+export type CreateStudentWorkoutExercise500 = {
+  error: string;
+  code: string;
+};
+
+export type UpdateStudentWorkoutExerciseBody = {
+  /** @minLength 1 */
+  name: string;
+  /** @minimum 1 */
+  sets: number;
+  /** @minimum 1 */
+  reps: number;
+  /** @minimum 1 */
+  restTimeInSeconds: number;
+};
+
+export type UpdateStudentWorkoutExercise200 = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  order: number;
+  name: string;
+  sets: number;
+  reps: number;
+  restTimeInSeconds: number;
+};
+
+export type UpdateStudentWorkoutExercise401 = {
+  error: string;
+  code: string;
+};
+
+export type UpdateStudentWorkoutExercise403 = {
+  error: string;
+  code: string;
+};
+
+export type UpdateStudentWorkoutExercise404 = {
+  error: string;
+  code: string;
+};
+
+export type UpdateStudentWorkoutExercise500 = {
+  error: string;
+  code: string;
+};
+
+export type DeleteStudentWorkoutExercise401 = {
+  error: string;
+  code: string;
+};
+
+export type DeleteStudentWorkoutExercise403 = {
+  error: string;
+  code: string;
+};
+
+export type DeleteStudentWorkoutExercise404 = {
+  error: string;
+  code: string;
+};
+
+export type DeleteStudentWorkoutExercise500 = {
+  error: string;
+  code: string;
+};
+
 export type Get200 = {
   message: string;
 };
@@ -4333,6 +4793,560 @@ export const listBioimpedanceRecords = async (
     {
       ...options,
       method: "GET",
+    },
+  );
+};
+
+/**
+ * @summary List a student's workout plans with completed sessions
+ */
+export type listStudentWorkoutPlanHistoryResponse200 = {
+  data: ListStudentWorkoutPlanHistory200Item[];
+  status: 200;
+};
+
+export type listStudentWorkoutPlanHistoryResponse401 = {
+  data: ListStudentWorkoutPlanHistory401;
+  status: 401;
+};
+
+export type listStudentWorkoutPlanHistoryResponse403 = {
+  data: ListStudentWorkoutPlanHistory403;
+  status: 403;
+};
+
+export type listStudentWorkoutPlanHistoryResponse404 = {
+  data: ListStudentWorkoutPlanHistory404;
+  status: 404;
+};
+
+export type listStudentWorkoutPlanHistoryResponse500 = {
+  data: ListStudentWorkoutPlanHistory500;
+  status: 500;
+};
+
+export type listStudentWorkoutPlanHistoryResponseSuccess =
+  listStudentWorkoutPlanHistoryResponse200 & {
+    headers: Headers;
+  };
+export type listStudentWorkoutPlanHistoryResponseError = (
+  | listStudentWorkoutPlanHistoryResponse401
+  | listStudentWorkoutPlanHistoryResponse403
+  | listStudentWorkoutPlanHistoryResponse404
+  | listStudentWorkoutPlanHistoryResponse500
+) & {
+  headers: Headers;
+};
+
+export type listStudentWorkoutPlanHistoryResponse =
+  | listStudentWorkoutPlanHistoryResponseSuccess
+  | listStudentWorkoutPlanHistoryResponseError;
+
+export const getListStudentWorkoutPlanHistoryUrl = (studentId: string) => {
+  return `/personal/students/${studentId}/workout-plan-history`;
+};
+
+export const listStudentWorkoutPlanHistory = async (
+  studentId: string,
+  options?: RequestInit,
+): Promise<listStudentWorkoutPlanHistoryResponse> => {
+  return customFetch<listStudentWorkoutPlanHistoryResponse>(
+    getListStudentWorkoutPlanHistoryUrl(studentId),
+    {
+      ...options,
+      method: "GET",
+    },
+  );
+};
+
+/**
+ * @summary Create a workout plan for a student
+ */
+export type createStudentWorkoutPlanResponse201 = {
+  data: CreateStudentWorkoutPlan201;
+  status: 201;
+};
+
+export type createStudentWorkoutPlanResponse401 = {
+  data: CreateStudentWorkoutPlan401;
+  status: 401;
+};
+
+export type createStudentWorkoutPlanResponse403 = {
+  data: CreateStudentWorkoutPlan403;
+  status: 403;
+};
+
+export type createStudentWorkoutPlanResponse404 = {
+  data: CreateStudentWorkoutPlan404;
+  status: 404;
+};
+
+export type createStudentWorkoutPlanResponse500 = {
+  data: CreateStudentWorkoutPlan500;
+  status: 500;
+};
+
+export type createStudentWorkoutPlanResponseSuccess =
+  createStudentWorkoutPlanResponse201 & {
+    headers: Headers;
+  };
+export type createStudentWorkoutPlanResponseError = (
+  | createStudentWorkoutPlanResponse401
+  | createStudentWorkoutPlanResponse403
+  | createStudentWorkoutPlanResponse404
+  | createStudentWorkoutPlanResponse500
+) & {
+  headers: Headers;
+};
+
+export type createStudentWorkoutPlanResponse =
+  | createStudentWorkoutPlanResponseSuccess
+  | createStudentWorkoutPlanResponseError;
+
+export const getCreateStudentWorkoutPlanUrl = (studentId: string) => {
+  return `/personal/students/${studentId}/workout-plans`;
+};
+
+export const createStudentWorkoutPlan = async (
+  studentId: string,
+  createStudentWorkoutPlanBody: CreateStudentWorkoutPlanBody,
+  options?: RequestInit,
+): Promise<createStudentWorkoutPlanResponse> => {
+  return customFetch<createStudentWorkoutPlanResponse>(
+    getCreateStudentWorkoutPlanUrl(studentId),
+    {
+      ...options,
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...options?.headers },
+      body: JSON.stringify(createStudentWorkoutPlanBody),
+    },
+  );
+};
+
+/**
+ * @summary Get a student's workout plan with all days and exercises
+ */
+export type getStudentWorkoutPlanDetailsResponse200 = {
+  data: GetStudentWorkoutPlanDetails200;
+  status: 200;
+};
+
+export type getStudentWorkoutPlanDetailsResponse401 = {
+  data: GetStudentWorkoutPlanDetails401;
+  status: 401;
+};
+
+export type getStudentWorkoutPlanDetailsResponse403 = {
+  data: GetStudentWorkoutPlanDetails403;
+  status: 403;
+};
+
+export type getStudentWorkoutPlanDetailsResponse404 = {
+  data: GetStudentWorkoutPlanDetails404;
+  status: 404;
+};
+
+export type getStudentWorkoutPlanDetailsResponse500 = {
+  data: GetStudentWorkoutPlanDetails500;
+  status: 500;
+};
+
+export type getStudentWorkoutPlanDetailsResponseSuccess =
+  getStudentWorkoutPlanDetailsResponse200 & {
+    headers: Headers;
+  };
+export type getStudentWorkoutPlanDetailsResponseError = (
+  | getStudentWorkoutPlanDetailsResponse401
+  | getStudentWorkoutPlanDetailsResponse403
+  | getStudentWorkoutPlanDetailsResponse404
+  | getStudentWorkoutPlanDetailsResponse500
+) & {
+  headers: Headers;
+};
+
+export type getStudentWorkoutPlanDetailsResponse =
+  | getStudentWorkoutPlanDetailsResponseSuccess
+  | getStudentWorkoutPlanDetailsResponseError;
+
+export const getGetStudentWorkoutPlanDetailsUrl = (
+  studentId: string,
+  workoutPlanId: string,
+) => {
+  return `/personal/students/${studentId}/workout-plans/${workoutPlanId}/details`;
+};
+
+export const getStudentWorkoutPlanDetails = async (
+  studentId: string,
+  workoutPlanId: string,
+  options?: RequestInit,
+): Promise<getStudentWorkoutPlanDetailsResponse> => {
+  return customFetch<getStudentWorkoutPlanDetailsResponse>(
+    getGetStudentWorkoutPlanDetailsUrl(studentId, workoutPlanId),
+    {
+      ...options,
+      method: "GET",
+    },
+  );
+};
+
+/**
+ * @summary Delete a student's workout plan
+ */
+export type deleteStudentWorkoutPlanResponse204 = {
+  data: unknown;
+  status: 204;
+};
+
+export type deleteStudentWorkoutPlanResponse401 = {
+  data: DeleteStudentWorkoutPlan401;
+  status: 401;
+};
+
+export type deleteStudentWorkoutPlanResponse403 = {
+  data: DeleteStudentWorkoutPlan403;
+  status: 403;
+};
+
+export type deleteStudentWorkoutPlanResponse404 = {
+  data: DeleteStudentWorkoutPlan404;
+  status: 404;
+};
+
+export type deleteStudentWorkoutPlanResponse500 = {
+  data: DeleteStudentWorkoutPlan500;
+  status: 500;
+};
+
+export type deleteStudentWorkoutPlanResponseSuccess =
+  deleteStudentWorkoutPlanResponse204 & {
+    headers: Headers;
+  };
+export type deleteStudentWorkoutPlanResponseError = (
+  | deleteStudentWorkoutPlanResponse401
+  | deleteStudentWorkoutPlanResponse403
+  | deleteStudentWorkoutPlanResponse404
+  | deleteStudentWorkoutPlanResponse500
+) & {
+  headers: Headers;
+};
+
+export type deleteStudentWorkoutPlanResponse =
+  | deleteStudentWorkoutPlanResponseSuccess
+  | deleteStudentWorkoutPlanResponseError;
+
+export const getDeleteStudentWorkoutPlanUrl = (
+  studentId: string,
+  workoutPlanId: string,
+) => {
+  return `/personal/students/${studentId}/workout-plans/${workoutPlanId}`;
+};
+
+export const deleteStudentWorkoutPlan = async (
+  studentId: string,
+  workoutPlanId: string,
+  options?: RequestInit,
+): Promise<deleteStudentWorkoutPlanResponse> => {
+  return customFetch<deleteStudentWorkoutPlanResponse>(
+    getDeleteStudentWorkoutPlanUrl(studentId, workoutPlanId),
+    {
+      ...options,
+      method: "DELETE",
+    },
+  );
+};
+
+/**
+ * @summary Update a workout day of a student's plan
+ */
+export type updateStudentWorkoutDayResponse200 = {
+  data: UpdateStudentWorkoutDay200;
+  status: 200;
+};
+
+export type updateStudentWorkoutDayResponse401 = {
+  data: UpdateStudentWorkoutDay401;
+  status: 401;
+};
+
+export type updateStudentWorkoutDayResponse403 = {
+  data: UpdateStudentWorkoutDay403;
+  status: 403;
+};
+
+export type updateStudentWorkoutDayResponse404 = {
+  data: UpdateStudentWorkoutDay404;
+  status: 404;
+};
+
+export type updateStudentWorkoutDayResponse500 = {
+  data: UpdateStudentWorkoutDay500;
+  status: 500;
+};
+
+export type updateStudentWorkoutDayResponseSuccess =
+  updateStudentWorkoutDayResponse200 & {
+    headers: Headers;
+  };
+export type updateStudentWorkoutDayResponseError = (
+  | updateStudentWorkoutDayResponse401
+  | updateStudentWorkoutDayResponse403
+  | updateStudentWorkoutDayResponse404
+  | updateStudentWorkoutDayResponse500
+) & {
+  headers: Headers;
+};
+
+export type updateStudentWorkoutDayResponse =
+  | updateStudentWorkoutDayResponseSuccess
+  | updateStudentWorkoutDayResponseError;
+
+export const getUpdateStudentWorkoutDayUrl = (
+  studentId: string,
+  workoutPlanId: string,
+  workoutDayId: string,
+) => {
+  return `/personal/students/${studentId}/workout-plans/${workoutPlanId}/days/${workoutDayId}`;
+};
+
+export const updateStudentWorkoutDay = async (
+  studentId: string,
+  workoutPlanId: string,
+  workoutDayId: string,
+  updateStudentWorkoutDayBody: UpdateStudentWorkoutDayBody,
+  options?: RequestInit,
+): Promise<updateStudentWorkoutDayResponse> => {
+  return customFetch<updateStudentWorkoutDayResponse>(
+    getUpdateStudentWorkoutDayUrl(studentId, workoutPlanId, workoutDayId),
+    {
+      ...options,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json", ...options?.headers },
+      body: JSON.stringify(updateStudentWorkoutDayBody),
+    },
+  );
+};
+
+/**
+ * @summary Add an exercise to a student's workout day
+ */
+export type createStudentWorkoutExerciseResponse201 = {
+  data: CreateStudentWorkoutExercise201;
+  status: 201;
+};
+
+export type createStudentWorkoutExerciseResponse401 = {
+  data: CreateStudentWorkoutExercise401;
+  status: 401;
+};
+
+export type createStudentWorkoutExerciseResponse403 = {
+  data: CreateStudentWorkoutExercise403;
+  status: 403;
+};
+
+export type createStudentWorkoutExerciseResponse404 = {
+  data: CreateStudentWorkoutExercise404;
+  status: 404;
+};
+
+export type createStudentWorkoutExerciseResponse500 = {
+  data: CreateStudentWorkoutExercise500;
+  status: 500;
+};
+
+export type createStudentWorkoutExerciseResponseSuccess =
+  createStudentWorkoutExerciseResponse201 & {
+    headers: Headers;
+  };
+export type createStudentWorkoutExerciseResponseError = (
+  | createStudentWorkoutExerciseResponse401
+  | createStudentWorkoutExerciseResponse403
+  | createStudentWorkoutExerciseResponse404
+  | createStudentWorkoutExerciseResponse500
+) & {
+  headers: Headers;
+};
+
+export type createStudentWorkoutExerciseResponse =
+  | createStudentWorkoutExerciseResponseSuccess
+  | createStudentWorkoutExerciseResponseError;
+
+export const getCreateStudentWorkoutExerciseUrl = (
+  studentId: string,
+  workoutPlanId: string,
+  workoutDayId: string,
+) => {
+  return `/personal/students/${studentId}/workout-plans/${workoutPlanId}/days/${workoutDayId}/exercises`;
+};
+
+export const createStudentWorkoutExercise = async (
+  studentId: string,
+  workoutPlanId: string,
+  workoutDayId: string,
+  createStudentWorkoutExerciseBody: CreateStudentWorkoutExerciseBody,
+  options?: RequestInit,
+): Promise<createStudentWorkoutExerciseResponse> => {
+  return customFetch<createStudentWorkoutExerciseResponse>(
+    getCreateStudentWorkoutExerciseUrl(studentId, workoutPlanId, workoutDayId),
+    {
+      ...options,
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...options?.headers },
+      body: JSON.stringify(createStudentWorkoutExerciseBody),
+    },
+  );
+};
+
+/**
+ * @summary Update an exercise in a student's workout day
+ */
+export type updateStudentWorkoutExerciseResponse200 = {
+  data: UpdateStudentWorkoutExercise200;
+  status: 200;
+};
+
+export type updateStudentWorkoutExerciseResponse401 = {
+  data: UpdateStudentWorkoutExercise401;
+  status: 401;
+};
+
+export type updateStudentWorkoutExerciseResponse403 = {
+  data: UpdateStudentWorkoutExercise403;
+  status: 403;
+};
+
+export type updateStudentWorkoutExerciseResponse404 = {
+  data: UpdateStudentWorkoutExercise404;
+  status: 404;
+};
+
+export type updateStudentWorkoutExerciseResponse500 = {
+  data: UpdateStudentWorkoutExercise500;
+  status: 500;
+};
+
+export type updateStudentWorkoutExerciseResponseSuccess =
+  updateStudentWorkoutExerciseResponse200 & {
+    headers: Headers;
+  };
+export type updateStudentWorkoutExerciseResponseError = (
+  | updateStudentWorkoutExerciseResponse401
+  | updateStudentWorkoutExerciseResponse403
+  | updateStudentWorkoutExerciseResponse404
+  | updateStudentWorkoutExerciseResponse500
+) & {
+  headers: Headers;
+};
+
+export type updateStudentWorkoutExerciseResponse =
+  | updateStudentWorkoutExerciseResponseSuccess
+  | updateStudentWorkoutExerciseResponseError;
+
+export const getUpdateStudentWorkoutExerciseUrl = (
+  studentId: string,
+  workoutPlanId: string,
+  workoutDayId: string,
+  exerciseId: string,
+) => {
+  return `/personal/students/${studentId}/workout-plans/${workoutPlanId}/days/${workoutDayId}/exercises/${exerciseId}`;
+};
+
+export const updateStudentWorkoutExercise = async (
+  studentId: string,
+  workoutPlanId: string,
+  workoutDayId: string,
+  exerciseId: string,
+  updateStudentWorkoutExerciseBody: UpdateStudentWorkoutExerciseBody,
+  options?: RequestInit,
+): Promise<updateStudentWorkoutExerciseResponse> => {
+  return customFetch<updateStudentWorkoutExerciseResponse>(
+    getUpdateStudentWorkoutExerciseUrl(
+      studentId,
+      workoutPlanId,
+      workoutDayId,
+      exerciseId,
+    ),
+    {
+      ...options,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json", ...options?.headers },
+      body: JSON.stringify(updateStudentWorkoutExerciseBody),
+    },
+  );
+};
+
+/**
+ * @summary Delete an exercise from a student's workout day
+ */
+export type deleteStudentWorkoutExerciseResponse204 = {
+  data: unknown;
+  status: 204;
+};
+
+export type deleteStudentWorkoutExerciseResponse401 = {
+  data: DeleteStudentWorkoutExercise401;
+  status: 401;
+};
+
+export type deleteStudentWorkoutExerciseResponse403 = {
+  data: DeleteStudentWorkoutExercise403;
+  status: 403;
+};
+
+export type deleteStudentWorkoutExerciseResponse404 = {
+  data: DeleteStudentWorkoutExercise404;
+  status: 404;
+};
+
+export type deleteStudentWorkoutExerciseResponse500 = {
+  data: DeleteStudentWorkoutExercise500;
+  status: 500;
+};
+
+export type deleteStudentWorkoutExerciseResponseSuccess =
+  deleteStudentWorkoutExerciseResponse204 & {
+    headers: Headers;
+  };
+export type deleteStudentWorkoutExerciseResponseError = (
+  | deleteStudentWorkoutExerciseResponse401
+  | deleteStudentWorkoutExerciseResponse403
+  | deleteStudentWorkoutExerciseResponse404
+  | deleteStudentWorkoutExerciseResponse500
+) & {
+  headers: Headers;
+};
+
+export type deleteStudentWorkoutExerciseResponse =
+  | deleteStudentWorkoutExerciseResponseSuccess
+  | deleteStudentWorkoutExerciseResponseError;
+
+export const getDeleteStudentWorkoutExerciseUrl = (
+  studentId: string,
+  workoutPlanId: string,
+  workoutDayId: string,
+  exerciseId: string,
+) => {
+  return `/personal/students/${studentId}/workout-plans/${workoutPlanId}/days/${workoutDayId}/exercises/${exerciseId}`;
+};
+
+export const deleteStudentWorkoutExercise = async (
+  studentId: string,
+  workoutPlanId: string,
+  workoutDayId: string,
+  exerciseId: string,
+  options?: RequestInit,
+): Promise<deleteStudentWorkoutExerciseResponse> => {
+  return customFetch<deleteStudentWorkoutExerciseResponse>(
+    getDeleteStudentWorkoutExerciseUrl(
+      studentId,
+      workoutPlanId,
+      workoutDayId,
+      exerciseId,
+    ),
+    {
+      ...options,
+      method: "DELETE",
     },
   );
 };

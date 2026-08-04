@@ -84,15 +84,21 @@ Referência: [`PRD.md`](./PRD.md). Este documento quebra o PRD em tarefas de eng
 
 ---
 
-## Fase 4 — Treinos montados pelo Personal (com histórico de versões)
+## Fase 4 — Treinos montados pelo Personal (com histórico de versões) ✅ concluída
+
+> Achado importante: `CreateWorkoutPlan` já implementava "manter histórico" desde antes desta fase (desativa o plano ativo anterior em vez de apagar, ao criar um novo) — reaproveitado sem alteração.
 
 **Backend**
-- [ ] Rotas espelhadas às já existentes de `workout-plans`, mas com prefixo `/personal/students/:studentId/workout-plans/...`, reaproveitando os usecases atuais de criação/edição de plano (parametrizando o `userId` alvo em vez do usuário da sessão), sempre validando vínculo PT↔aluno antes de delegar.
-- [ ] Regra de negócio "manter histórico ao editar": ao criar um novo plano para o aluno, o(s) plano(s) anterior(is) passam a `isActive=false` (ou equivalente já existente no schema) em vez de serem apagados — confirmar se esse comportamento já existe hoje para o fluxo autônomo e reaproveitar; caso não exista, implementar aqui.
+- [x] Rotas espelhadas em `src/routes/personal-workout-plan.ts` (prefixo `/personal/students`), reaproveitando os usecases **existentes e inalterados** (`CreateWorkoutPlan`, `GetWorkoutPlanDetails`, `DeleteWorkoutPlan`, `UpdateWorkoutDay`, `Create/Update/DeleteWorkoutExercise`, `ListWorkoutPlanHistory`) com `userId = studentId` — nenhuma lógica de negócio duplicada.
+- [x] Helper `src/lib/require-trainer-student.ts` (`isTrainerStudent`): valida o vínculo PT↔aluno na rota antes de delegar ao usecase.
+- [x] Regra "manter histórico": confirmado que já existia (ver achado acima); validado no navegador criando 2 planos para o mesmo aluno — o 1º permanece na lista sem a badge "Ativo", o 2º passa a ativo.
 
 **Frontend**
-- [ ] Reaproveitar as telas existentes do construtor manual (`app/workout-plans/new`, `app/workout-plans/[id]/edit`) através de uma rota espelhada em `app/personal/students/[studentId]/workout-plans/...`, ajustando apenas a origem dos dados (endpoints "as trainer") — evitar duplicar componentes de UI, só trocar a camada de dados/Server Actions.
-- [ ] Tela de histórico de planos do aluno (reaproveitar `app/workout-plans/[id]/history` como referência).
+- [x] `ManualWorkoutPlanForm` e a árvore de edição (`EditWorkoutDaySection`/`EditDayDetailsForm`/`AddExerciseForm`/`EditExerciseRow`) refatoradas para receber as Server Actions via prop (`onCreate` / bundle `WorkoutPlanEditActions` em `app/workout-plans/[id]/edit/_lib/actions-types.ts`) em vez de importar diretamente — permite reaproveitar os MESMOS componentes de UI no fluxo do PT sem duplicar nada visual. O fluxo self-service (`/workout-plans/new`, `/workout-plans/[id]/edit`) continua funcionando sem alteração de comportamento.
+- [x] **Pegadinha do React Server Components**: passar uma arrow function fechando sobre `studentId` como prop para um Client Component quebra ("Event handlers cannot be passed to Client Component props") — resolvido usando `.bind(null, studentId)` nas Server Actions, que o Next.js reconhece como referência de Server Action válida.
+- [x] `app/personal/(dashboard)/students/[studentId]/workout-plans/new/page.tsx`, `.../[workoutPlanId]/edit/page.tsx` e `.../workout-plans/page.tsx` (histórico, reaproveitando `SessionHistoryItem` e um `StudentPlanHistorySection`/`DeleteStudentPlanButton` próprios para o link de editar + exclusão).
+- [x] Link "Treinos" na tela de detalhe do aluno.
+- [x] `npx orval` + testado ponta a ponta no navegador/via API: criar plano → editar dia/exercício → segundo plano criado → histórico preserva o plano antigo (inativo) e mostra o novo como ativo.
 
 ---
 

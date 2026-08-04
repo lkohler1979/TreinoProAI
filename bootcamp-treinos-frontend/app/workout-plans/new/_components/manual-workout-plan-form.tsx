@@ -23,7 +23,6 @@ import type {
   CreateWorkoutPlanBody,
   ListMuscleGroups200Item,
 } from "@/app/_lib/api/fetch-generated";
-import { createManualWorkoutPlanAction } from "../_actions";
 import {
   GOAL_OPTIONS,
   WEEK_DAYS,
@@ -36,10 +35,12 @@ const DEFAULT_DAILY_WATER_GOAL_IN_ML = 2000;
 
 interface ManualWorkoutPlanFormProps {
   muscleGroups: ListMuscleGroups200Item[];
+  onCreate: (payload: CreateWorkoutPlanBody) => Promise<void>;
 }
 
 export function ManualWorkoutPlanForm({
   muscleGroups,
+  onCreate,
 }: ManualWorkoutPlanFormProps) {
   const [isPending, startTransition] = useTransition();
 
@@ -98,7 +99,7 @@ export function ManualWorkoutPlanForm({
     };
 
     startTransition(async () => {
-      await createManualWorkoutPlanAction(payload);
+      await onCreate(payload);
     });
   };
 

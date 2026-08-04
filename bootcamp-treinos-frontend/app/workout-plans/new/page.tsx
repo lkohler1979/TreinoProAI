@@ -7,6 +7,7 @@ import {
 } from "@/app/_lib/api/fetch-generated";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import { createManualWorkoutPlanAction } from "./_actions";
 import { ManualWorkoutPlanForm } from "./_components/manual-workout-plan-form";
 
 export default async function NewWorkoutPlanPage() {
@@ -40,7 +41,10 @@ export default async function NewWorkoutPlanPage() {
       </div>
 
       <div className="px-5">
-        <ManualWorkoutPlanForm muscleGroups={muscleGroupsResponse.data} />
+        <ManualWorkoutPlanForm
+          muscleGroups={muscleGroupsResponse.data}
+          onCreate={createManualWorkoutPlanAction}
+        />
       </div>
     </div>
   );

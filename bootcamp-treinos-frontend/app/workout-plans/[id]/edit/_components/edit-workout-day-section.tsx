@@ -12,7 +12,7 @@ import type {
   ListMuscleGroups200Item,
 } from "@/app/_lib/api/fetch-generated";
 import { WEEK_DAY_LABELS } from "@/app/_lib/week-days";
-import { updateWorkoutDayAction } from "../_actions";
+import type { WorkoutPlanEditActions } from "../_lib/actions-types";
 import { AddExerciseForm } from "./add-exercise-form";
 import { EditDayDetailsForm } from "./edit-day-details-form";
 import { EditExerciseRow } from "./edit-exercise-row";
@@ -21,18 +21,20 @@ interface EditWorkoutDaySectionProps {
   workoutPlanId: string;
   day: GetWorkoutPlanDetails200WorkoutDaysItem;
   muscleGroups: ListMuscleGroups200Item[];
+  actions: WorkoutPlanEditActions;
 }
 
 export function EditWorkoutDaySection({
   workoutPlanId,
   day,
   muscleGroups,
+  actions,
 }: EditWorkoutDaySectionProps) {
   const [isPending, startTransition] = useTransition();
 
   const handleToggleRest = (isRest: boolean) => {
     startTransition(async () => {
-      await updateWorkoutDayAction(workoutPlanId, day.id, {
+      await actions.updateWorkoutDay(workoutPlanId, day.id, {
         name: isRest ? "Descanso" : "Novo treino",
         isRest,
         estimatedDurationInSeconds: isRest ? 1 : 3600,
@@ -69,7 +71,11 @@ export function EditWorkoutDaySection({
 
         {!day.isRest && (
           <>
-            <EditDayDetailsForm workoutPlanId={workoutPlanId} day={day} />
+            <EditDayDetailsForm
+              workoutPlanId={workoutPlanId}
+              day={day}
+              actions={actions}
+            />
 
             <div className="flex flex-col gap-2">
               {day.exercises.map((exercise) => (
@@ -78,6 +84,7 @@ export function EditWorkoutDaySection({
                   workoutPlanId={workoutPlanId}
                   workoutDayId={day.id}
                   exercise={exercise}
+                  actions={actions}
                 />
               ))}
             </div>
@@ -86,6 +93,7 @@ export function EditWorkoutDaySection({
               workoutPlanId={workoutPlanId}
               workoutDayId={day.id}
               muscleGroups={muscleGroups}
+              actions={actions}
             />
           </>
         )}
