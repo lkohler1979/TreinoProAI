@@ -1633,6 +1633,164 @@ export type ListStudentPaymentRecords500 = {
   code: string;
 };
 
+export type CreateBioimpedanceRecordBody = {
+  /** @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$ */
+  recordedAt: string;
+  /** @maximum 9007199254740991 */
+  heightInCentimeters?: number;
+  /** @maximum 9007199254740991 */
+  weightInGrams?: number;
+  /** @exclusiveMinimum 0 */
+  bodyMassIndex?: number;
+  /** @maximum 9007199254740991 */
+  idealWeightInGrams?: number;
+  /**
+   * @minimum 0
+   * @maximum 100
+   */
+  bodyFatPercentage?: number;
+  /**
+   * @minimum 0
+   * @maximum 100
+   */
+  leanMassPercentage?: number;
+  /** @maximum 9007199254740991 */
+  fatMassInGrams?: number;
+  /** @maximum 9007199254740991 */
+  leanMassInGrams?: number;
+  /** @exclusiveMinimum 0 */
+  armMuscleAreaInCm2?: number;
+  /** @exclusiveMinimum 0 */
+  armFatAreaInCm2?: number;
+  /** @exclusiveMinimum 0 */
+  waistCircumferenceInCm?: number;
+  /** @exclusiveMinimum 0 */
+  abdomenCircumferenceInCm?: number;
+  /** @exclusiveMinimum 0 */
+  rightThighCircumferenceInCm?: number;
+  /** @exclusiveMinimum 0 */
+  leftThighCircumferenceInCm?: number;
+  /** @exclusiveMinimum 0 */
+  rightArmCircumferenceInCm?: number;
+  /** @exclusiveMinimum 0 */
+  leftArmCircumferenceInCm?: number;
+  /** @exclusiveMinimum 0 */
+  bicepsSkinfoldInMm?: number;
+  /** @exclusiveMinimum 0 */
+  tricepsSkinfoldInMm?: number;
+  /** @exclusiveMinimum 0 */
+  abdominalSkinfoldInMm?: number;
+  /** @exclusiveMinimum 0 */
+  midAxillarySkinfoldInMm?: number;
+  /** @exclusiveMinimum 0 */
+  suprailiacSkinfoldInMm?: number;
+  /** @exclusiveMinimum 0 */
+  subscapularSkinfoldInMm?: number;
+  /** @exclusiveMinimum 0 */
+  chestSkinfoldInMm?: number;
+  notes?: string;
+};
+
+export type CreateBioimpedanceRecord201 = {
+  id: string;
+  /** @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$ */
+  recordedAt: string;
+  heightInCentimeters?: number;
+  weightInGrams?: number;
+  bodyMassIndex?: number;
+  idealWeightInGrams?: number;
+  bodyFatPercentage?: number;
+  leanMassPercentage?: number;
+  fatMassInGrams?: number;
+  leanMassInGrams?: number;
+  armMuscleAreaInCm2?: number;
+  armFatAreaInCm2?: number;
+  waistCircumferenceInCm?: number;
+  abdomenCircumferenceInCm?: number;
+  rightThighCircumferenceInCm?: number;
+  leftThighCircumferenceInCm?: number;
+  rightArmCircumferenceInCm?: number;
+  leftArmCircumferenceInCm?: number;
+  bicepsSkinfoldInMm?: number;
+  tricepsSkinfoldInMm?: number;
+  abdominalSkinfoldInMm?: number;
+  midAxillarySkinfoldInMm?: number;
+  suprailiacSkinfoldInMm?: number;
+  subscapularSkinfoldInMm?: number;
+  chestSkinfoldInMm?: number;
+  notes?: string;
+};
+
+export type CreateBioimpedanceRecord401 = {
+  error: string;
+  code: string;
+};
+
+export type CreateBioimpedanceRecord403 = {
+  error: string;
+  code: string;
+};
+
+export type CreateBioimpedanceRecord404 = {
+  error: string;
+  code: string;
+};
+
+export type CreateBioimpedanceRecord500 = {
+  error: string;
+  code: string;
+};
+
+export type ListBioimpedanceRecords200Item = {
+  id: string;
+  /** @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$ */
+  recordedAt: string;
+  heightInCentimeters?: number;
+  weightInGrams?: number;
+  bodyMassIndex?: number;
+  idealWeightInGrams?: number;
+  bodyFatPercentage?: number;
+  leanMassPercentage?: number;
+  fatMassInGrams?: number;
+  leanMassInGrams?: number;
+  armMuscleAreaInCm2?: number;
+  armFatAreaInCm2?: number;
+  waistCircumferenceInCm?: number;
+  abdomenCircumferenceInCm?: number;
+  rightThighCircumferenceInCm?: number;
+  leftThighCircumferenceInCm?: number;
+  rightArmCircumferenceInCm?: number;
+  leftArmCircumferenceInCm?: number;
+  bicepsSkinfoldInMm?: number;
+  tricepsSkinfoldInMm?: number;
+  abdominalSkinfoldInMm?: number;
+  midAxillarySkinfoldInMm?: number;
+  suprailiacSkinfoldInMm?: number;
+  subscapularSkinfoldInMm?: number;
+  chestSkinfoldInMm?: number;
+  notes?: string;
+};
+
+export type ListBioimpedanceRecords401 = {
+  error: string;
+  code: string;
+};
+
+export type ListBioimpedanceRecords403 = {
+  error: string;
+  code: string;
+};
+
+export type ListBioimpedanceRecords404 = {
+  error: string;
+  code: string;
+};
+
+export type ListBioimpedanceRecords500 = {
+  error: string;
+  code: string;
+};
+
 export type Get200 = {
   message: string;
 };
@@ -4045,6 +4203,133 @@ export const listStudentPaymentRecords = async (
 ): Promise<listStudentPaymentRecordsResponse> => {
   return customFetch<listStudentPaymentRecordsResponse>(
     getListStudentPaymentRecordsUrl(studentId),
+    {
+      ...options,
+      method: "GET",
+    },
+  );
+};
+
+/**
+ * @summary Create a bioimpedance record for a student
+ */
+export type createBioimpedanceRecordResponse201 = {
+  data: CreateBioimpedanceRecord201;
+  status: 201;
+};
+
+export type createBioimpedanceRecordResponse401 = {
+  data: CreateBioimpedanceRecord401;
+  status: 401;
+};
+
+export type createBioimpedanceRecordResponse403 = {
+  data: CreateBioimpedanceRecord403;
+  status: 403;
+};
+
+export type createBioimpedanceRecordResponse404 = {
+  data: CreateBioimpedanceRecord404;
+  status: 404;
+};
+
+export type createBioimpedanceRecordResponse500 = {
+  data: CreateBioimpedanceRecord500;
+  status: 500;
+};
+
+export type createBioimpedanceRecordResponseSuccess =
+  createBioimpedanceRecordResponse201 & {
+    headers: Headers;
+  };
+export type createBioimpedanceRecordResponseError = (
+  | createBioimpedanceRecordResponse401
+  | createBioimpedanceRecordResponse403
+  | createBioimpedanceRecordResponse404
+  | createBioimpedanceRecordResponse500
+) & {
+  headers: Headers;
+};
+
+export type createBioimpedanceRecordResponse =
+  | createBioimpedanceRecordResponseSuccess
+  | createBioimpedanceRecordResponseError;
+
+export const getCreateBioimpedanceRecordUrl = (studentId: string) => {
+  return `/personal/students/${studentId}/bioimpedance-records`;
+};
+
+export const createBioimpedanceRecord = async (
+  studentId: string,
+  createBioimpedanceRecordBody: CreateBioimpedanceRecordBody,
+  options?: RequestInit,
+): Promise<createBioimpedanceRecordResponse> => {
+  return customFetch<createBioimpedanceRecordResponse>(
+    getCreateBioimpedanceRecordUrl(studentId),
+    {
+      ...options,
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...options?.headers },
+      body: JSON.stringify(createBioimpedanceRecordBody),
+    },
+  );
+};
+
+/**
+ * @summary List bioimpedance records for a student
+ */
+export type listBioimpedanceRecordsResponse200 = {
+  data: ListBioimpedanceRecords200Item[];
+  status: 200;
+};
+
+export type listBioimpedanceRecordsResponse401 = {
+  data: ListBioimpedanceRecords401;
+  status: 401;
+};
+
+export type listBioimpedanceRecordsResponse403 = {
+  data: ListBioimpedanceRecords403;
+  status: 403;
+};
+
+export type listBioimpedanceRecordsResponse404 = {
+  data: ListBioimpedanceRecords404;
+  status: 404;
+};
+
+export type listBioimpedanceRecordsResponse500 = {
+  data: ListBioimpedanceRecords500;
+  status: 500;
+};
+
+export type listBioimpedanceRecordsResponseSuccess =
+  listBioimpedanceRecordsResponse200 & {
+    headers: Headers;
+  };
+export type listBioimpedanceRecordsResponseError = (
+  | listBioimpedanceRecordsResponse401
+  | listBioimpedanceRecordsResponse403
+  | listBioimpedanceRecordsResponse404
+  | listBioimpedanceRecordsResponse500
+) & {
+  headers: Headers;
+};
+
+export type listBioimpedanceRecordsResponse =
+  | listBioimpedanceRecordsResponseSuccess
+  | listBioimpedanceRecordsResponseError;
+
+export const getListBioimpedanceRecordsUrl = (studentId: string) => {
+  return `/personal/students/${studentId}/bioimpedance-records`;
+};
+
+export const listBioimpedanceRecords = async (
+  studentId: string,
+  options?: RequestInit,
+): Promise<listBioimpedanceRecordsResponse> => {
+  return customFetch<listBioimpedanceRecordsResponse>(
+    getListBioimpedanceRecordsUrl(studentId),
     {
       ...options,
       method: "GET",

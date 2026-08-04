@@ -74,8 +74,8 @@ O usuário "autônomo" (fluxo atual, sem PT) continua existindo sem alteração.
 - Lista de alunos mostra status (ativo, expira em N dias, expirado) e contagem frente ao limite do plano.
 
 ### 7.4 Bio-impedância com histórico
-- PT pode adicionar uma nova medição para o aluno em qualquer data (peso, %gordura, e opcionalmente massa muscular, gordura visceral, % água, massa óssea, taxa metabólica basal, observações).
-- Histórico completo (lista/gráfico) por aluno, ordenado por data.
+- PT pode adicionar uma nova medição para o aluno em qualquer data, com os campos da ficha antropométrica real usada em avaliações físicas: altura, peso, IMC, peso ideal, % massa gorda, % massa magra, massa gorda (kg), massa magra (kg), área muscular do braço, área de gordura do braço; circunferências (cm) de cintura, abdômen, coxa direita/esquerda, braço relaxado direito/esquerdo; e pregas cutâneas (mm) de bíceps, tríceps, abdominal, axilar média, suprailíaca, subescapular e tórax. **Todos os campos de medida são opcionais** — o PT preenche apenas o que mediu naquela avaliação.
+- Histórico completo (lista) por aluno, ordenado por data, mostrando apenas os campos preenchidos em cada registro.
 - Isso é um novo registro histórico, distinto e adicional aos campos "snapshot" já existentes em `User` (peso/altura/idade/%gordura atuais, usados pelo app de treino/IA).
 
 ### 7.5 Treinos montados pelo PT
@@ -114,11 +114,17 @@ User (alterações)
   injuries             String?
   metabolicConditions  String?
 
-BioimpedanceRecord (novo)
-  id, studentId (FK User), recordedAt, weightInGrams,
-  bodyFatPercentage?, muscleMassInGrams?, visceralFatLevel?,
-  waterPercentage?, boneMassInGrams?, basalMetabolicRateInKcal?,
-  notes?, createdAt
+BioimpedanceRecord (novo) — espelha a ficha antropométrica real do PT; todos os campos de medida são opcionais
+  id, studentId (FK User), recordedAt,
+  heightInCentimeters?, weightInGrams?, bodyMassIndex?, idealWeightInGrams?,
+  bodyFatPercentage?, leanMassPercentage?, fatMassInGrams?, leanMassInGrams?,
+  armMuscleAreaInCm2?, armFatAreaInCm2?,
+  waistCircumferenceInCm?, abdomenCircumferenceInCm?,
+  rightThighCircumferenceInCm?, leftThighCircumferenceInCm?,
+  rightArmCircumferenceInCm?, leftArmCircumferenceInCm?,
+  bicepsSkinfoldInMm?, tricepsSkinfoldInMm?, abdominalSkinfoldInMm?,
+  midAxillarySkinfoldInMm?, suprailiacSkinfoldInMm?, subscapularSkinfoldInMm?,
+  chestSkinfoldInMm?, notes?, createdAt
 
 PersonalTrainerSettings (novo)
   trainerId (PK/FK User), defaultAccessDurationInDays @default(30)

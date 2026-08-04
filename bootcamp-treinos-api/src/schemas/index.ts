@@ -455,4 +455,63 @@ export const ListStudentPaymentRecordsSchema = z.array(
   StudentPaymentRecordSchema
 );
 
+export const CreateBioimpedanceRecordBodySchema = z.object({
+  recordedAt: z.iso.datetime(),
+  heightInCentimeters: z.number().int().positive().optional(),
+  weightInGrams: z.number().int().positive().optional(),
+  bodyMassIndex: z.number().positive().optional(),
+  idealWeightInGrams: z.number().int().positive().optional(),
+  bodyFatPercentage: z.number().int().min(0).max(100).optional(),
+  leanMassPercentage: z.number().int().min(0).max(100).optional(),
+  fatMassInGrams: z.number().int().positive().optional(),
+  leanMassInGrams: z.number().int().positive().optional(),
+  armMuscleAreaInCm2: z.number().positive().optional(),
+  armFatAreaInCm2: z.number().positive().optional(),
+  waistCircumferenceInCm: z.number().positive().optional(),
+  abdomenCircumferenceInCm: z.number().positive().optional(),
+  rightThighCircumferenceInCm: z.number().positive().optional(),
+  leftThighCircumferenceInCm: z.number().positive().optional(),
+  rightArmCircumferenceInCm: z.number().positive().optional(),
+  leftArmCircumferenceInCm: z.number().positive().optional(),
+  bicepsSkinfoldInMm: z.number().positive().optional(),
+  tricepsSkinfoldInMm: z.number().positive().optional(),
+  abdominalSkinfoldInMm: z.number().positive().optional(),
+  midAxillarySkinfoldInMm: z.number().positive().optional(),
+  suprailiacSkinfoldInMm: z.number().positive().optional(),
+  subscapularSkinfoldInMm: z.number().positive().optional(),
+  chestSkinfoldInMm: z.number().positive().optional(),
+  notes: z.string().trim().optional(),
+});
+
+export const BioimpedanceRecordSchema = z.object({
+  id: z.string(),
+  recordedAt: z.iso.datetime(),
+  heightInCentimeters: z.number().optional(),
+  weightInGrams: z.number().optional(),
+  bodyMassIndex: z.number().optional(),
+  idealWeightInGrams: z.number().optional(),
+  bodyFatPercentage: z.number().optional(),
+  leanMassPercentage: z.number().optional(),
+  fatMassInGrams: z.number().optional(),
+  leanMassInGrams: z.number().optional(),
+  armMuscleAreaInCm2: z.number().optional(),
+  armFatAreaInCm2: z.number().optional(),
+  waistCircumferenceInCm: z.number().optional(),
+  abdomenCircumferenceInCm: z.number().optional(),
+  rightThighCircumferenceInCm: z.number().optional(),
+  leftThighCircumferenceInCm: z.number().optional(),
+  rightArmCircumferenceInCm: z.number().optional(),
+  leftArmCircumferenceInCm: z.number().optional(),
+  bicepsSkinfoldInMm: z.number().optional(),
+  tricepsSkinfoldInMm: z.number().optional(),
+  abdominalSkinfoldInMm: z.number().optional(),
+  midAxillarySkinfoldInMm: z.number().optional(),
+  suprailiacSkinfoldInMm: z.number().optional(),
+  subscapularSkinfoldInMm: z.number().optional(),
+  chestSkinfoldInMm: z.number().optional(),
+  notes: z.string().optional(),
+});
+
+export const ListBioimpedanceRecordsSchema = z.array(BioimpedanceRecordSchema);
+
 export const UpdateExerciseTemplateBodySchema = CreateExerciseTemplateBodySchema;

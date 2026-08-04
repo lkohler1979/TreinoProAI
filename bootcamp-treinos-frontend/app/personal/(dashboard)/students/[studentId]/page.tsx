@@ -1,11 +1,12 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import dayjs from "dayjs";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Ruler } from "lucide-react";
 import {
   getStudent,
   listStudentPaymentRecords,
 } from "@/app/_lib/api/fetch-generated";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { AddPaymentRecordForm } from "./_components/add-payment-record-form";
 import { RenewAccessButton } from "./_components/renew-access-button";
@@ -99,6 +100,13 @@ export default async function StudentDetailPage({
         )}
         <RenewAccessButton studentId={student.id} />
       </div>
+
+      <Button asChild variant="outline" className="w-full gap-2 rounded-xl">
+        <Link href={`/personal/students/${student.id}/bioimpedance`}>
+          <Ruler className="size-4" />
+          Bio-impedância
+        </Link>
+      </Button>
 
       <div className="flex flex-col gap-3">
         <h2 className="font-heading text-lg font-semibold text-foreground">

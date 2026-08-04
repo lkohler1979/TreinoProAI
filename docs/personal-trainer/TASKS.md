@@ -67,18 +67,20 @@ Referência: [`PRD.md`](./PRD.md). Este documento quebra o PRD em tarefas de eng
 
 ---
 
-## Fase 3 — Bio-impedância com histórico
+## Fase 3 — Bio-impedância com histórico ✅ concluída
+
+> Decisão do usuário (2026-08-04): o modelo de medição segue exatamente a ficha antropométrica real do personal trainer (altura, peso, IMC, peso ideal, % massa gorda/magra, massa gorda/magra em kg, área muscular/gordura do braço, circunferências de cintura/abdômen/coxas/braços, e pregas cutâneas de bíceps/tríceps/abdominal/axilar média/suprailíaca/subescapular/tórax) — todos os campos são sempre opcionais.
 
 **Backend**
-- [ ] Migration: model `BioimpedanceRecord` (ver PRD §8).
-- [ ] Usecase `CreateBioimpedanceRecord` e `ListBioimpedanceRecords` (por `studentId`, ordenado por `recordedAt`).
-- [ ] Rotas: `POST/GET /personal/students/:studentId/bioimpedance-records`. Zod schemas correspondentes.
-- [ ] Autorização: validar que `studentId` pertence ao PT autenticado antes de qualquer leitura/escrita.
+- [x] Migration: model `BioimpedanceRecord` com os ~22 campos da ficha (todos opcionais, exceto `recordedAt`).
+- [x] Usecases `CreateBioimpedanceRecord` e `ListBioimpedanceRecords` (por `studentId`, ordenado por `recordedAt` desc), validando que o aluno pertence ao PT autenticado.
+- [x] Rotas: `POST/GET /personal/students/:studentId/bioimpedance-records`. Zod schemas correspondentes em `src/schemas/index.ts`.
 
 **Frontend**
-- [ ] `app/personal/students/[studentId]/bioimpedance/page.tsx` — histórico (lista, e opcionalmente gráfico simples de evolução de peso/%gordura) + botão para nova medição.
-- [ ] Formulário de nova medição (RHF + Zod), com campo de data (dayjs) e campos numéricos opcionais.
-- [ ] `npx orval` para os novos endpoints.
+- [x] `app/personal/(dashboard)/students/[studentId]/bioimpedance/page.tsx` — histórico em cards, mostrando apenas os campos preenchidos de cada medição, + botão "Nova medição".
+- [x] Formulário de nova medição (RHF + Zod) gerado dinamicamente a partir de `_lib/fields.ts` (agrupado em Medidas gerais / Circunferências / Pregas cutâneas), com campo de data e todos os campos numéricos opcionais.
+- [x] Link "Bio-impedância" na tela de detalhe do aluno.
+- [x] `npx orval` + testado ponta a ponta no navegador (medição salva e exibida corretamente, conversão kg↔gramas confirmada no banco).
 
 ---
 

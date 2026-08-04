@@ -5,18 +5,23 @@ import z from "zod";
 import { ConflictError, NotFoundError } from "../errors/index.js";
 import { requirePersonalTrainer } from "../lib/require-personal-trainer.js";
 import {
+  BioimpedanceRecordSchema,
+  CreateBioimpedanceRecordBodySchema,
   CreateStudentBodySchema,
   CreateStudentPaymentRecordBodySchema,
   ErrorSchema,
+  ListBioimpedanceRecordsSchema,
   ListStudentPaymentRecordsSchema,
   ListStudentsSchema,
   StudentPaymentRecordSchema,
   StudentSchema,
   UpdateStudentBodySchema,
 } from "../schemas/index.js";
+import { CreateBioimpedanceRecord } from "../usecases/CreateBioimpedanceRecord.js";
 import { CreateStudent } from "../usecases/CreateStudent.js";
 import { CreateStudentPaymentRecord } from "../usecases/CreateStudentPaymentRecord.js";
 import { GetStudent } from "../usecases/GetStudent.js";
+import { ListBioimpedanceRecords } from "../usecases/ListBioimpedanceRecords.js";
 import { ListStudentPaymentRecords } from "../usecases/ListStudentPaymentRecords.js";
 import { ListStudents } from "../usecases/ListStudents.js";
 import { UpdateStudent } from "../usecases/UpdateStudent.js";
@@ -293,6 +298,100 @@ export const personalStudentRoutes = async (app: FastifyInstance) => {
 
         const listStudentPaymentRecords = new ListStudentPaymentRecords();
         const result = await listStudentPaymentRecords.execute({
+          trainerId: authResult.trainerId,
+          studentId: request.params.studentId,
+        });
+
+        return reply.status(200).send(result);
+      } catch (error) {
+        app.log.error(error);
+        if (error instanceof NotFoundError) {
+          return reply.status(404).send({
+            error: error.message,
+            code: "NOT_FOUND_ERROR",
+          });
+        }
+        return reply.status(500).send({
+          error: "Internal server error",
+          code: "INTERNAL_SERVER_ERROR",
+        });
+      }
+    },
+  });
+
+  app.withTypeProvider<ZodTypeProvider>().route({
+    method: "POST",
+    url: "/:studentId/bioimpedance-records",
+    schema: {
+      operationId: "createBioimpedanceRecord",
+      tags: ["Personal Trainer"],
+      summary: "Create a bioimpedance record for a student",
+      params: z.object({ studentId: z.string() }),
+      body: CreateBioimpedanceRecordBodySchema,
+      response: {
+        201: BioimpedanceRecordSchema,
+        401: ErrorSchema,
+        403: ErrorSchema,
+        404: ErrorSchema,
+        500: ErrorSchema,
+      },
+    },
+    handler: async (request, reply) => {
+      try {
+        const authResult = await requirePersonalTrainer(request);
+        if (authResult.status !== "ok") {
+          return respondAuthFailure(reply, authResult.status);
+        }
+
+        const createBioimpedanceRecord = new CreateBioimpedanceRecord();
+        const result = await createBioimpedanceRecord.execute({
+          trainerId: authResult.trainerId,
+          studentId: request.params.studentId,
+          ...request.body,
+        });
+
+        return reply.status(201).send(result);
+      } catch (error) {
+        app.log.error(error);
+        if (error instanceof NotFoundError) {
+          return reply.status(404).send({
+            error: error.message,
+            code: "NOT_FOUND_ERROR",
+          });
+        }
+        return reply.status(500).send({
+          error: "Internal server error",
+          code: "INTERNAL_SERVER_ERROR",
+        });
+      }
+    },
+  });
+
+  app.withTypeProvider<ZodTypeProvider>().route({
+    method: "GET",
+    url: "/:studentId/bioimpedance-records",
+    schema: {
+      operationId: "listBioimpedanceRecords",
+      tags: ["Personal Trainer"],
+      summary: "List bioimpedance records for a student",
+      params: z.object({ studentId: z.string() }),
+      response: {
+        200: ListBioimpedanceRecordsSchema,
+        401: ErrorSchema,
+        403: ErrorSchema,
+        404: ErrorSchema,
+        500: ErrorSchema,
+      },
+    },
+    handler: async (request, reply) => {
+      try {
+        const authResult = await requirePersonalTrainer(request);
+        if (authResult.status !== "ok") {
+          return respondAuthFailure(reply, authResult.status);
+        }
+
+        const listBioimpedanceRecords = new ListBioimpedanceRecords();
+        const result = await listBioimpedanceRecords.execute({
           trainerId: authResult.trainerId,
           studentId: request.params.studentId,
         });

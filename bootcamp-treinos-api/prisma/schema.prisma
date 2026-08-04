@@ -14,14 +14,14 @@ datasource db {
 }
 
 model User {
-  id                  String             @id
+  id                  String                   @id
   workoutPlans        WorkoutPlan[]
   name                String
   email               String
-  emailVerified       Boolean            @default(false)
+  emailVerified       Boolean                  @default(false)
   image               String?
-  createdAt           DateTime           @default(now())
-  updatedAt           DateTime           @updatedAt
+  createdAt           DateTime                 @default(now())
+  updatedAt           DateTime                 @updatedAt
   sessions            Session[]
   accounts            Account[]
   weightInGrams       Int?
@@ -32,15 +32,16 @@ model User {
   goal                WorkoutGoal?
   isAnonymous         Boolean?
   waterIntakeEntries  WaterIntakeEntry[]
-  role                UserRole           @default(STUDENT)
+  role                UserRole                 @default(STUDENT)
   trainerId           String?
-  trainer             User?              @relation("TrainerStudents", fields: [trainerId], references: [id], onDelete: SetNull)
-  students            User[]             @relation("TrainerStudents")
+  trainer             User?                    @relation("TrainerStudents", fields: [trainerId], references: [id], onDelete: SetNull)
+  students            User[]                   @relation("TrainerStudents")
   accessExpiresAt     DateTime?
   injuries            String?
   metabolicConditions String?
   trainerSettings     PersonalTrainerSettings?
   paymentRecords      StudentPaymentRecord[]
+  bioimpedanceRecords BioimpedanceRecord[]
 
   @@unique([email])
   @@map("user")
@@ -58,20 +59,52 @@ model PersonalTrainerSettings {
 }
 
 model StudentPaymentRecord {
-  id            String              @id @default(uuid())
+  id            String               @id @default(uuid())
   studentId     String
-  student       User                @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  student       User                 @relation(fields: [studentId], references: [id], onDelete: Cascade)
   amountInCents Int
-  paymentDate   DateTime            @db.Timestamptz()
+  paymentDate   DateTime             @db.Timestamptz()
   status        StudentPaymentStatus
-  createdAt     DateTime            @default(now()) @db.Timestamptz()
-  updatedAt     DateTime            @updatedAt @db.Timestamptz()
+  createdAt     DateTime             @default(now()) @db.Timestamptz()
+  updatedAt     DateTime             @updatedAt @db.Timestamptz()
 }
 
 enum StudentPaymentStatus {
   PAID
   PENDING
   OVERDUE
+}
+
+model BioimpedanceRecord {
+  id                          String   @id @default(uuid())
+  studentId                   String
+  student                     User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  recordedAt                  DateTime @db.Timestamptz()
+  heightInCentimeters         Int?
+  weightInGrams               Int?
+  bodyMassIndex               Float?
+  idealWeightInGrams          Int?
+  bodyFatPercentage           Int? // 100 representa 100%
+  leanMassPercentage          Int? // 100 representa 100%
+  fatMassInGrams              Int?
+  leanMassInGrams             Int?
+  armMuscleAreaInCm2          Float?
+  armFatAreaInCm2             Float?
+  waistCircumferenceInCm      Float?
+  abdomenCircumferenceInCm    Float?
+  rightThighCircumferenceInCm Float?
+  leftThighCircumferenceInCm  Float?
+  rightArmCircumferenceInCm   Float?
+  leftArmCircumferenceInCm    Float?
+  bicepsSkinfoldInMm          Float?
+  tricepsSkinfoldInMm         Float?
+  abdominalSkinfoldInMm       Float?
+  midAxillarySkinfoldInMm     Float?
+  suprailiacSkinfoldInMm      Float?
+  subscapularSkinfoldInMm     Float?
+  chestSkinfoldInMm           Float?
+  notes                       String?
+  createdAt                   DateTime @default(now()) @db.Timestamptz()
 }
 
 model WorkoutPlan {
