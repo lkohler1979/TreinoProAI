@@ -28,8 +28,7 @@ Referência: [`PRD.md`](./PRD.md). Este documento quebra o PRD em tarefas de eng
 ## Fase 1 — Autenticação e conta do Personal Trainer
 
 **Backend**
-- [ ] Habilitar plugin `emailAndPassword` do better-auth em `src/lib/auth.ts`.
-- [ ] Habilitar plugin `admin` do better-auth (necessário para a Fase 2 criar contas de aluno com senha pré-definida em nome do PT).
+- [ ] Habilitar plugin `emailAndPassword` do better-auth em `src/lib/auth.ts` (plugin `admin` descartado — ver PRD §9).
 - [ ] Rota/usecase de cadastro de PT (`role=PERSONAL_TRAINER`) — pode reaproveitar o signup padrão do better-auth, apenas setando `role` corretamente após a criação.
 - [ ] Middleware/guard simples (dentro do helper de sessão da Fase 0) para diferenciar rotas exclusivas de PT das rotas de aluno.
 
@@ -46,7 +45,7 @@ Referência: [`PRD.md`](./PRD.md). Este documento quebra o PRD em tarefas de eng
 
 **Backend**
 - [ ] Adicionar dependência do provedor de e-mail escolhido e client em `src/lib/email.ts`.
-- [ ] Usecase `CreateStudent` (`src/usecases/CreateStudent.ts`): gera senha aleatória segura, cria usuário via `admin` plugin do better-auth (`role=STUDENT`, `trainerId`, `injuries`, `metabolicConditions`, `accessExpiresAt = now + defaultAccessDurationInDays`), envia e-mail de boas-vindas com login/senha.
+- [ ] Usecase `CreateStudent` (`src/usecases/CreateStudent.ts`): gera senha aleatória segura, cria a conta via `auth.api.signUpEmail` (server-side) e atualiza os campos de negócio via `prisma.user.update` (`role=STUDENT`, `trainerId`, `injuries`, `metabolicConditions`, `accessExpiresAt = now + defaultAccessDurationInDays`), envia e-mail de boas-vindas com login/senha.
 - [ ] Usecase `ListStudents` (`src/usecases/ListStudents.ts`): lista alunos do PT autenticado com status de acesso (ativo/expira em N dias/expirado).
 - [ ] Usecase `UpdateStudent` (`src/usecases/UpdateStudent.ts`): edita nome, lesões, problemas metabólicos, `accessExpiresAt` (estender prazo).
 - [ ] Usecase `DeactivateStudent` / reativação, se necessário para o fluxo de negócio (soft-delete, sem apagar histórico).

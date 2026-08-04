@@ -32,9 +32,28 @@ model User {
   goal                WorkoutGoal?
   isAnonymous         Boolean?
   waterIntakeEntries  WaterIntakeEntry[]
+  role                UserRole           @default(STUDENT)
+  trainerId           String?
+  trainer             User?              @relation("TrainerStudents", fields: [trainerId], references: [id], onDelete: SetNull)
+  students            User[]             @relation("TrainerStudents")
+  accessExpiresAt     DateTime?
+  injuries            String?
+  metabolicConditions String?
+  trainerSettings     PersonalTrainerSettings?
 
   @@unique([email])
   @@map("user")
+}
+
+enum UserRole {
+  STUDENT
+  PERSONAL_TRAINER
+}
+
+model PersonalTrainerSettings {
+  trainerId                   String @id
+  trainer                     User   @relation(fields: [trainerId], references: [id], onDelete: Cascade)
+  defaultAccessDurationInDays Int    @default(30)
 }
 
 model WorkoutPlan {

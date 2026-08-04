@@ -388,4 +388,16 @@ export const CreateExerciseTemplateBodySchema = z.object({
   name: z.string().trim().min(1),
 });
 
+export const SignUpPersonalTrainerBodySchema = z.object({
+  name: z.string().trim().min(1),
+  email: z.email(),
+  password: z.string().min(8),
+});
+
+export const PersonalTrainerSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  email: z.email(),
+});
+
 export const UpdateExerciseTemplateBodySchema = CreateExerciseTemplateBodySchema;

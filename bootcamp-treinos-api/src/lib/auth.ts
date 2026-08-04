@@ -18,6 +18,9 @@ export const auth = betterAuth({
       scope: ["openid", "email", "profile"]
     },
   },
+  emailAndPassword: {
+    enabled: true,
+  },
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),

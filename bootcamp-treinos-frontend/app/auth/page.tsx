@@ -1,7 +1,9 @@
 import Image from "next/image";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { authClient } from "@/app/_lib/auth-client";
 import { headers } from "next/headers";
+import { Button } from "@/components/ui/button";
 import { InstallPwaButton } from "@/app/_components/install-pwa-button";
 import { SignInWithGoogle } from "./_components/sign-in-with-google";
 import { SignInAnonymous } from "./_components/sign-in-anonymous";
@@ -44,6 +46,14 @@ export default async function AuthPage() {
           {process.env.NODE_ENV !== "production" && <SignInAnonymous />}
           <InstallPwaButton />
         </div>
+
+        <Button
+          asChild
+          variant="ghost"
+          className="h-[38px] rounded-full text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground"
+        >
+          <Link href="/personal/auth">Sou Personal Trainer</Link>
+        </Button>
 
         <p className="font-heading text-xs leading-[1.4] text-primary-foreground/70">
           ©2026 Copyright TreinoPro.AI. Todos os direitos reservados

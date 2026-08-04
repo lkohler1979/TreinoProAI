@@ -1296,6 +1296,52 @@ export type DeleteExerciseTemplate500 = {
   code: string;
 };
 
+/**
+ * @nullable
+ */
+export type GetPersonalTrainer200 = {
+  id: string;
+  name: string;
+  /** @pattern ^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\-]*\.)+[A-Za-z]{2,}$ */
+  email: string;
+} | null;
+
+export type GetPersonalTrainer401 = {
+  error: string;
+  code: string;
+};
+
+export type GetPersonalTrainer500 = {
+  error: string;
+  code: string;
+};
+
+export type SignUpPersonalTrainerBody = {
+  /** @minLength 1 */
+  name: string;
+  /** @pattern ^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\-]*\.)+[A-Za-z]{2,}$ */
+  email: string;
+  /** @minLength 8 */
+  password: string;
+};
+
+export type SignUpPersonalTrainer201 = {
+  id: string;
+  name: string;
+  /** @pattern ^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\-]*\.)+[A-Za-z]{2,}$ */
+  email: string;
+};
+
+export type SignUpPersonalTrainer409 = {
+  error: string;
+  code: string;
+};
+
+export type SignUpPersonalTrainer500 = {
+  error: string;
+  code: string;
+};
+
 export type Get200 = {
   message: string;
 };
@@ -3143,6 +3189,104 @@ export const deleteExerciseTemplate = async (
     {
       ...options,
       method: "DELETE",
+    },
+  );
+};
+
+/**
+ * @summary Get the authenticated personal trainer
+ */
+export type getPersonalTrainerResponse200 = {
+  data: GetPersonalTrainer200;
+  status: 200;
+};
+
+export type getPersonalTrainerResponse401 = {
+  data: GetPersonalTrainer401;
+  status: 401;
+};
+
+export type getPersonalTrainerResponse500 = {
+  data: GetPersonalTrainer500;
+  status: 500;
+};
+
+export type getPersonalTrainerResponseSuccess =
+  getPersonalTrainerResponse200 & {
+    headers: Headers;
+  };
+export type getPersonalTrainerResponseError = (
+  | getPersonalTrainerResponse401
+  | getPersonalTrainerResponse500
+) & {
+  headers: Headers;
+};
+
+export type getPersonalTrainerResponse =
+  | getPersonalTrainerResponseSuccess
+  | getPersonalTrainerResponseError;
+
+export const getGetPersonalTrainerUrl = () => {
+  return `/personal/me`;
+};
+
+export const getPersonalTrainer = async (
+  options?: RequestInit,
+): Promise<getPersonalTrainerResponse> => {
+  return customFetch<getPersonalTrainerResponse>(getGetPersonalTrainerUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+/**
+ * @summary Sign up a personal trainer
+ */
+export type signUpPersonalTrainerResponse201 = {
+  data: SignUpPersonalTrainer201;
+  status: 201;
+};
+
+export type signUpPersonalTrainerResponse409 = {
+  data: SignUpPersonalTrainer409;
+  status: 409;
+};
+
+export type signUpPersonalTrainerResponse500 = {
+  data: SignUpPersonalTrainer500;
+  status: 500;
+};
+
+export type signUpPersonalTrainerResponseSuccess =
+  signUpPersonalTrainerResponse201 & {
+    headers: Headers;
+  };
+export type signUpPersonalTrainerResponseError = (
+  | signUpPersonalTrainerResponse409
+  | signUpPersonalTrainerResponse500
+) & {
+  headers: Headers;
+};
+
+export type signUpPersonalTrainerResponse =
+  | signUpPersonalTrainerResponseSuccess
+  | signUpPersonalTrainerResponseError;
+
+export const getSignUpPersonalTrainerUrl = () => {
+  return `/personal/sign-up`;
+};
+
+export const signUpPersonalTrainer = async (
+  signUpPersonalTrainerBody: SignUpPersonalTrainerBody,
+  options?: RequestInit,
+): Promise<signUpPersonalTrainerResponse> => {
+  return customFetch<signUpPersonalTrainerResponse>(
+    getSignUpPersonalTrainerUrl(),
+    {
+      ...options,
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...options?.headers },
+      body: JSON.stringify(signUpPersonalTrainerBody),
     },
   );
 };

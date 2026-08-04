@@ -23,6 +23,7 @@ import { homeRoutes } from "./routes/home.js";
 import { meRoutes } from "./routes/me.js";
 import { mealPhotoRoutes } from "./routes/meal-photo.js";
 import { muscleGroupRoutes } from "./routes/muscle-group.js";
+import { personalTrainerRoutes } from "./routes/personal-trainer.js";
 import { statsRoutes } from "./routes/stats.js";
 import { waterIntakeRoutes } from "./routes/water-intake.js";
 import { workoutPlanRoutes } from "./routes/workout-plan.js";
@@ -97,6 +98,7 @@ await app.register(workoutSessionRoutes, { prefix: "/workout-sessions" });
 await app.register(exerciseRoutes, { prefix: "/exercises" });
 await app.register(waterIntakeRoutes, { prefix: "/water-intake" });
 await app.register(muscleGroupRoutes, { prefix: "/muscle-groups" });
+await app.register(personalTrainerRoutes, { prefix: "/personal" });
 await app.register(aiRoutes, { prefix: "/ai" });
 
 app.withTypeProvider<ZodTypeProvider>().route({
