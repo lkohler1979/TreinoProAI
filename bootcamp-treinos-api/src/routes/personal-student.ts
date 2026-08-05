@@ -2,7 +2,12 @@ import { FastifyInstance, FastifyReply } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 import z from "zod";
 
-import { ConflictError, NotFoundError } from "../errors/index.js";
+import {
+  ConflictError,
+  NotFoundError,
+  StudentLimitReachedError,
+  SubscriptionRequiredError,
+} from "../errors/index.js";
 import { requirePersonalTrainer } from "../lib/require-personal-trainer.js";
 import {
   BioimpedanceRecordSchema,
@@ -50,6 +55,7 @@ export const personalStudentRoutes = async (app: FastifyInstance) => {
       response: {
         201: StudentSchema,
         401: ErrorSchema,
+        402: ErrorSchema,
         403: ErrorSchema,
         409: ErrorSchema,
         500: ErrorSchema,
@@ -75,6 +81,18 @@ export const personalStudentRoutes = async (app: FastifyInstance) => {
         return reply.status(201).send(result);
       } catch (error) {
         app.log.error(error);
+        if (error instanceof SubscriptionRequiredError) {
+          return reply.status(402).send({
+            error: error.message,
+            code: "SUBSCRIPTION_REQUIRED_ERROR",
+          });
+        }
+        if (error instanceof StudentLimitReachedError) {
+          return reply.status(403).send({
+            error: error.message,
+            code: "STUDENT_LIMIT_REACHED_ERROR",
+          });
+        }
         if (error instanceof ConflictError) {
           return reply.status(409).send({
             error: error.message,

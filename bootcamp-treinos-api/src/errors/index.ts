@@ -25,3 +25,17 @@ export class ConflictError extends Error {
     this.name = "ConflictError";
   }
 }
+
+export class SubscriptionRequiredError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "SubscriptionRequiredError";
+  }
+}
+
+export class StudentLimitReachedError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "StudentLimitReachedError";
+  }
+}

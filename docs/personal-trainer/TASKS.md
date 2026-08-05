@@ -102,20 +102,22 @@ Referência: [`PRD.md`](./PRD.md). Este documento quebra o PRD em tarefas de eng
 
 ---
 
-## Fase 5 — Assinatura e cobrança
+## Fase 5 — Assinatura e cobrança ✅ concluída (sem gateway real, por decisão do usuário)
 
-> Pré-requisito: gateway de pagamento confirmado (assunção: Mercado Pago Assinaturas).
+> Decisão do usuário (2026-08-05): implementar o modelo de assinatura e o enforcement de limite **sem gateway de pagamento real** por enquanto — ativação de plano é simulada (instantânea, sem cobrança de fato). A integração com um gateway real (Mercado Pago/Asaas/Stripe) fica para uma fase futura, quando credenciais estiverem disponíveis.
 
 **Backend**
-- [ ] Migration: model `Subscription` (ver PRD §8).
-- [ ] Integração com o gateway escolhido: criação de assinatura/checkout hospedado por tier, webhook de confirmação/renovação/falha de pagamento (idempotente).
-- [ ] Usecase `GetSubscriptionStatus` / `ChangeSubscriptionPlan`.
-- [ ] Enforcement real do limite de alunos por tier (substituindo o valor mock/default da Fase 2) nas rotas de criação de aluno.
-- [ ] Rotas: `GET /personal/subscription`, `POST /personal/subscription/checkout`, `POST /webhooks/<gateway>`.
+- [x] Migration: model `Subscription` (`trainerId`, `planTier`, `status`, `currentPeriodEnd`, campos de payment provider deixados nulos por enquanto) + enums `SubscriptionPlanTier` (`UP_TO_10`/`UP_TO_50`/`ABOVE_51`) e `SubscriptionStatus` (`ACTIVE`/`CANCELED` — `TRIALING`/`PAST_DUE` ficam para quando houver gateway real).
+- [x] `src/lib/plan-tiers.ts` promovido para usar o enum Prisma `SubscriptionPlanTier` (era um union type local).
+- [x] Usecases `GetSubscription` (retorna plano/status/uso atual/limite), `ActivateSubscription` (upsert simulando checkout aprovado na hora, `currentPeriodEnd = +30 dias`), `CancelSubscription`.
+- [x] Novos erros `SubscriptionRequiredError` (402) e `StudentLimitReachedError` (403); `CreateStudent` agora valida assinatura ativa e limite de alunos do plano **antes** de criar a conta.
+- [x] Rotas `GET/POST/DELETE /personal/subscription` em `personal-trainer.ts`; rota de criação de aluno atualizada para tratar 402/403.
 
 **Frontend**
-- [ ] `app/personal/billing/page.tsx` — plano atual, uso (X/Y alunos), botão de upgrade/checkout, link ao portal do gateway.
-- [ ] Bloqueio de UI ("Adicionar aluno") com aviso de upgrade quando o limite for atingido.
+- [x] `app/personal/(dashboard)/billing/page.tsx` — plano atual, status, uso (X/Y alunos ou "ilimitado"), data de renovação, e os 3 cards de plano com botão "Assinar" (ativação simulada) — com aviso explícito de que o pagamento é simulado nesta versão.
+- [x] Mensagem clara no formulário de cadastro de aluno quando faltar assinatura (402) ou o limite for atingido (403), apontando para a tela de Assinatura.
+- [x] Link "Assinatura" no dashboard do PT.
+- [x] Testado ponta a ponta no navegador: cadastro de aluno bloqueado sem assinatura → ativação do plano "Até 10 alunos" → cadastro liberado → limite atingido (10/10, simulado via 9 alunos inseridos direto no banco) → 11º aluno bloqueado com a mensagem de upgrade.
 
 ---
 

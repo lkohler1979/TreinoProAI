@@ -1387,6 +1387,145 @@ export type UpsertPersonalTrainerSettings500 = {
   code: string;
 };
 
+/**
+ * @nullable
+ */
+export type GetSubscription200PlanTier =
+  | (typeof GetSubscription200PlanTier)[keyof typeof GetSubscription200PlanTier]
+  | null;
+
+export const GetSubscription200PlanTier = {
+  UP_TO_10: "UP_TO_10",
+  UP_TO_50: "UP_TO_50",
+  ABOVE_51: "ABOVE_51",
+} as const;
+
+/**
+ * @nullable
+ */
+export type GetSubscription200Status =
+  | (typeof GetSubscription200Status)[keyof typeof GetSubscription200Status]
+  | null;
+
+export const GetSubscription200Status = {
+  ACTIVE: "ACTIVE",
+  CANCELED: "CANCELED",
+} as const;
+
+export type GetSubscription200 = {
+  /** @nullable */
+  planTier: GetSubscription200PlanTier;
+  /** @nullable */
+  status: GetSubscription200Status;
+  /** @nullable */
+  maxStudents: number | null;
+  activeStudentsCount: number;
+  /**
+   * @nullable
+   * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+   */
+  currentPeriodEnd: string | null;
+};
+
+export type GetSubscription401 = {
+  error: string;
+  code: string;
+};
+
+export type GetSubscription403 = {
+  error: string;
+  code: string;
+};
+
+export type GetSubscription500 = {
+  error: string;
+  code: string;
+};
+
+export type ActivateSubscriptionBodyPlanTier =
+  (typeof ActivateSubscriptionBodyPlanTier)[keyof typeof ActivateSubscriptionBodyPlanTier];
+
+export const ActivateSubscriptionBodyPlanTier = {
+  UP_TO_10: "UP_TO_10",
+  UP_TO_50: "UP_TO_50",
+  ABOVE_51: "ABOVE_51",
+} as const;
+
+export type ActivateSubscriptionBody = {
+  planTier: ActivateSubscriptionBodyPlanTier;
+};
+
+export type ActivateSubscription200PlanTier =
+  (typeof ActivateSubscription200PlanTier)[keyof typeof ActivateSubscription200PlanTier];
+
+export const ActivateSubscription200PlanTier = {
+  UP_TO_10: "UP_TO_10",
+  UP_TO_50: "UP_TO_50",
+  ABOVE_51: "ABOVE_51",
+} as const;
+
+export type ActivateSubscription200Status =
+  (typeof ActivateSubscription200Status)[keyof typeof ActivateSubscription200Status];
+
+export const ActivateSubscription200Status = {
+  ACTIVE: "ACTIVE",
+  CANCELED: "CANCELED",
+} as const;
+
+export type ActivateSubscription200 = {
+  planTier: ActivateSubscription200PlanTier;
+  status: ActivateSubscription200Status;
+  /** @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$ */
+  currentPeriodEnd: string;
+};
+
+export type ActivateSubscription401 = {
+  error: string;
+  code: string;
+};
+
+export type ActivateSubscription403 = {
+  error: string;
+  code: string;
+};
+
+export type ActivateSubscription500 = {
+  error: string;
+  code: string;
+};
+
+export type CancelSubscription200Status =
+  (typeof CancelSubscription200Status)[keyof typeof CancelSubscription200Status];
+
+export const CancelSubscription200Status = {
+  ACTIVE: "ACTIVE",
+  CANCELED: "CANCELED",
+} as const;
+
+export type CancelSubscription200 = {
+  status: CancelSubscription200Status;
+};
+
+export type CancelSubscription401 = {
+  error: string;
+  code: string;
+};
+
+export type CancelSubscription403 = {
+  error: string;
+  code: string;
+};
+
+export type CancelSubscription404 = {
+  error: string;
+  code: string;
+};
+
+export type CancelSubscription500 = {
+  error: string;
+  code: string;
+};
+
 export type CreateStudentBody = {
   /** @minLength 1 */
   name: string;
@@ -1414,6 +1553,11 @@ export type CreateStudent201 = {
 };
 
 export type CreateStudent401 = {
+  error: string;
+  code: string;
+};
+
+export type CreateStudent402 = {
   error: string;
   code: string;
 };
@@ -4314,6 +4458,173 @@ export const upsertPersonalTrainerSettings = async (
 };
 
 /**
+ * @summary Get the authenticated personal trainer's subscription
+ */
+export type getSubscriptionResponse200 = {
+  data: GetSubscription200;
+  status: 200;
+};
+
+export type getSubscriptionResponse401 = {
+  data: GetSubscription401;
+  status: 401;
+};
+
+export type getSubscriptionResponse403 = {
+  data: GetSubscription403;
+  status: 403;
+};
+
+export type getSubscriptionResponse500 = {
+  data: GetSubscription500;
+  status: 500;
+};
+
+export type getSubscriptionResponseSuccess = getSubscriptionResponse200 & {
+  headers: Headers;
+};
+export type getSubscriptionResponseError = (
+  | getSubscriptionResponse401
+  | getSubscriptionResponse403
+  | getSubscriptionResponse500
+) & {
+  headers: Headers;
+};
+
+export type getSubscriptionResponse =
+  | getSubscriptionResponseSuccess
+  | getSubscriptionResponseError;
+
+export const getGetSubscriptionUrl = () => {
+  return `/personal/subscription`;
+};
+
+export const getSubscription = async (
+  options?: RequestInit,
+): Promise<getSubscriptionResponse> => {
+  return customFetch<getSubscriptionResponse>(getGetSubscriptionUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+/**
+ * @summary Activate or change the personal trainer's subscription plan
+ */
+export type activateSubscriptionResponse200 = {
+  data: ActivateSubscription200;
+  status: 200;
+};
+
+export type activateSubscriptionResponse401 = {
+  data: ActivateSubscription401;
+  status: 401;
+};
+
+export type activateSubscriptionResponse403 = {
+  data: ActivateSubscription403;
+  status: 403;
+};
+
+export type activateSubscriptionResponse500 = {
+  data: ActivateSubscription500;
+  status: 500;
+};
+
+export type activateSubscriptionResponseSuccess =
+  activateSubscriptionResponse200 & {
+    headers: Headers;
+  };
+export type activateSubscriptionResponseError = (
+  | activateSubscriptionResponse401
+  | activateSubscriptionResponse403
+  | activateSubscriptionResponse500
+) & {
+  headers: Headers;
+};
+
+export type activateSubscriptionResponse =
+  | activateSubscriptionResponseSuccess
+  | activateSubscriptionResponseError;
+
+export const getActivateSubscriptionUrl = () => {
+  return `/personal/subscription`;
+};
+
+export const activateSubscription = async (
+  activateSubscriptionBody: ActivateSubscriptionBody,
+  options?: RequestInit,
+): Promise<activateSubscriptionResponse> => {
+  return customFetch<activateSubscriptionResponse>(
+    getActivateSubscriptionUrl(),
+    {
+      ...options,
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...options?.headers },
+      body: JSON.stringify(activateSubscriptionBody),
+    },
+  );
+};
+
+/**
+ * @summary Cancel the personal trainer's subscription
+ */
+export type cancelSubscriptionResponse200 = {
+  data: CancelSubscription200;
+  status: 200;
+};
+
+export type cancelSubscriptionResponse401 = {
+  data: CancelSubscription401;
+  status: 401;
+};
+
+export type cancelSubscriptionResponse403 = {
+  data: CancelSubscription403;
+  status: 403;
+};
+
+export type cancelSubscriptionResponse404 = {
+  data: CancelSubscription404;
+  status: 404;
+};
+
+export type cancelSubscriptionResponse500 = {
+  data: CancelSubscription500;
+  status: 500;
+};
+
+export type cancelSubscriptionResponseSuccess =
+  cancelSubscriptionResponse200 & {
+    headers: Headers;
+  };
+export type cancelSubscriptionResponseError = (
+  | cancelSubscriptionResponse401
+  | cancelSubscriptionResponse403
+  | cancelSubscriptionResponse404
+  | cancelSubscriptionResponse500
+) & {
+  headers: Headers;
+};
+
+export type cancelSubscriptionResponse =
+  | cancelSubscriptionResponseSuccess
+  | cancelSubscriptionResponseError;
+
+export const getCancelSubscriptionUrl = () => {
+  return `/personal/subscription`;
+};
+
+export const cancelSubscription = async (
+  options?: RequestInit,
+): Promise<cancelSubscriptionResponse> => {
+  return customFetch<cancelSubscriptionResponse>(getCancelSubscriptionUrl(), {
+    ...options,
+    method: "DELETE",
+  });
+};
+
+/**
  * @summary Create a student for the authenticated personal trainer
  */
 export type createStudentResponse201 = {
@@ -4324,6 +4635,11 @@ export type createStudentResponse201 = {
 export type createStudentResponse401 = {
   data: CreateStudent401;
   status: 401;
+};
+
+export type createStudentResponse402 = {
+  data: CreateStudent402;
+  status: 402;
 };
 
 export type createStudentResponse403 = {
@@ -4346,6 +4662,7 @@ export type createStudentResponseSuccess = createStudentResponse201 & {
 };
 export type createStudentResponseError = (
   | createStudentResponse401
+  | createStudentResponse402
   | createStudentResponse403
   | createStudentResponse409
   | createStudentResponse500

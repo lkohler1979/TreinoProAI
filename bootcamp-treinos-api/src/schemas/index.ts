@@ -2,6 +2,8 @@ import z from "zod";
 
 import {
   StudentPaymentStatus,
+  SubscriptionPlanTier,
+  SubscriptionStatus,
   WeekDay,
   WorkoutGoal,
 } from "../generated/prisma/enums.js";
@@ -515,3 +517,25 @@ export const BioimpedanceRecordSchema = z.object({
 export const ListBioimpedanceRecordsSchema = z.array(BioimpedanceRecordSchema);
 
 export const UpdateExerciseTemplateBodySchema = CreateExerciseTemplateBodySchema;
+
+export const ActivateSubscriptionBodySchema = z.object({
+  planTier: z.enum(SubscriptionPlanTier),
+});
+
+export const SubscriptionSchema = z.object({
+  planTier: z.enum(SubscriptionPlanTier).nullable(),
+  status: z.enum(SubscriptionStatus).nullable(),
+  maxStudents: z.number().nullable(),
+  activeStudentsCount: z.number(),
+  currentPeriodEnd: z.iso.datetime().nullable(),
+});
+
+export const ActivatedSubscriptionSchema = z.object({
+  planTier: z.enum(SubscriptionPlanTier),
+  status: z.enum(SubscriptionStatus),
+  currentPeriodEnd: z.iso.datetime(),
+});
+
+export const CanceledSubscriptionSchema = z.object({
+  status: z.enum(SubscriptionStatus),
+});

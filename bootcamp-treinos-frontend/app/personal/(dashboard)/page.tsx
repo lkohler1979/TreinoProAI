@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Users } from "lucide-react";
+import { CreditCard, Users } from "lucide-react";
 import { getPersonalTrainer } from "@/app/_lib/api/fetch-generated";
 import { Button } from "@/components/ui/button";
 import { PersonalLogoutButton } from "./_components/personal-logout-button";
@@ -24,6 +24,13 @@ export default async function PersonalDashboardPage() {
         <Link href="/personal/students">
           <Users className="size-4" />
           Meus alunos
+        </Link>
+      </Button>
+
+      <Button asChild variant="outline" className="w-full gap-2 rounded-xl">
+        <Link href="/personal/billing">
+          <CreditCard className="size-4" />
+          Assinatura
         </Link>
       </Button>
 

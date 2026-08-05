@@ -42,6 +42,7 @@ model User {
   trainerSettings     PersonalTrainerSettings?
   paymentRecords      StudentPaymentRecord[]
   bioimpedanceRecords BioimpedanceRecord[]
+  subscription        Subscription?
 
   @@unique([email])
   @@map("user")
@@ -56,6 +57,29 @@ model PersonalTrainerSettings {
   trainerId                   String @id
   trainer                     User   @relation(fields: [trainerId], references: [id], onDelete: Cascade)
   defaultAccessDurationInDays Int    @default(30)
+}
+
+model Subscription {
+  trainerId                     String               @id
+  trainer                       User                 @relation(fields: [trainerId], references: [id], onDelete: Cascade)
+  planTier                      SubscriptionPlanTier
+  status                        SubscriptionStatus   @default(ACTIVE)
+  currentPeriodEnd              DateTime?            @db.Timestamptz()
+  paymentProviderCustomerId     String?
+  paymentProviderSubscriptionId String?
+  createdAt                     DateTime             @default(now()) @db.Timestamptz()
+  updatedAt                     DateTime             @updatedAt @db.Timestamptz()
+}
+
+enum SubscriptionPlanTier {
+  UP_TO_10
+  UP_TO_50
+  ABOVE_51
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELED
 }
 
 model StudentPaymentRecord {

@@ -1,12 +1,17 @@
 import { APIError } from "better-auth/api";
 import dayjs from "dayjs";
 
-import { ConflictError } from "../errors/index.js";
-import { UserRole } from "../generated/prisma/enums.js";
+import {
+  ConflictError,
+  StudentLimitReachedError,
+  SubscriptionRequiredError,
+} from "../errors/index.js";
+import { SubscriptionStatus, UserRole } from "../generated/prisma/enums.js";
 import { auth } from "../lib/auth.js";
 import { prisma } from "../lib/db.js";
 import { sendWelcomeEmail } from "../lib/email.js";
 import { generateRandomPassword } from "../lib/generate-random-password.js";
+import { PLAN_TIERS } from "../lib/plan-tiers.js";
 
 interface InputDto {
   trainerId: string;
@@ -29,6 +34,29 @@ interface OutputDto {
 
 export class CreateStudent {
   async execute(dto: InputDto): Promise<OutputDto> {
+    const subscription = await prisma.subscription.findUnique({
+      where: { trainerId: dto.trainerId },
+    });
+
+    if (!subscription || subscription.status !== SubscriptionStatus.ACTIVE) {
+      throw new SubscriptionRequiredError(
+        "Assinatura ativa necessária para cadastrar alunos",
+      );
+    }
+
+    const planTierConfig = PLAN_TIERS.find(
+      (tier) => tier.tier === subscription.planTier,
+    );
+    const activeStudentsCount = await prisma.user.count({
+      where: { trainerId: dto.trainerId, role: UserRole.STUDENT },
+    });
+
+    if (planTierConfig && activeStudentsCount >= planTierConfig.maxStudents) {
+      throw new StudentLimitReachedError(
+        "Limite de alunos do plano atual atingido",
+      );
+    }
+
     const password = generateRandomPassword();
 
     try {

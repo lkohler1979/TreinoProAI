@@ -92,8 +92,8 @@ O usuário "autônomo" (fluxo atual, sem PT) continua existindo sem alteração.
 - 3 planos fixos, cobrança mensal recorrente: até 10 alunos (R$140), até 50 alunos (R$599), acima de 51 alunos (R$987).
 - PT precisa de assinatura ativa para cadastrar/manter alunos ativos além do limite do plano vigente.
 - Ao exceder o limite do plano atual, sistema bloqueia novo cadastro e sugere upgrade.
-- Página de billing no `/personal` mostra plano atual, uso (X/Y alunos) e link para gerenciar pagamento no portal do gateway escolhido.
-- **Ainda depende da confirmação do gateway de pagamento (ver §11)** — enquanto isso, os limites de plano não são aplicados automaticamente (nenhum bloqueio real na Fase 2).
+- Página de billing no `/personal` mostra plano atual, uso (X/Y alunos) e os planos disponíveis.
+- **Decisão do usuário (2026-08-05): implementado sem gateway de pagamento real por enquanto.** A ativação de plano em `/personal/billing` é simulada (instantânea, sem cobrança de fato) — já com o enforcement real do limite de alunos por plano. A integração com um gateway real (ver §11) fica para uma fase futura.
 
 ### 7.8 Histórico de pagamentos (aluno → PT)
 - Decisão explícita do usuário: **sem gateway de pagamento nesta relação**. O PT recebe de seus alunos por fora da plataforma (pix, dinheiro, etc.) e só precisa de um registro manual.
@@ -134,9 +134,10 @@ StudentPaymentRecord (novo)
   status (PAID | PENDING | OVERDUE), createdAt, updatedAt
 
 Subscription (novo)
-  trainerId (PK/FK User), planTier, status,
-  currentPeriodEnd?, paymentProviderCustomerId?,
-  paymentProviderSubscriptionId?, createdAt, updatedAt
+  trainerId (PK/FK User), planTier (SubscriptionPlanTier),
+  status (SubscriptionStatus: ACTIVE | CANCELED — TRIALING/PAST_DUE reservados para quando houver gateway real),
+  currentPeriodEnd?, paymentProviderCustomerId? (nulo enquanto não há gateway),
+  paymentProviderSubscriptionId? (nulo enquanto não há gateway), createdAt, updatedAt
 ```
 
 Observação: `WorkoutPlan` já existente não precisa mudar de schema — "manter histórico ao editar" é resolvido mantendo planos antigos como inativos/arquivados em vez de deletados (mesmo padrão que planos hoje já suportam múltiplos registros por usuário).
@@ -158,7 +159,7 @@ Observação: `WorkoutPlan` já existente não precisa mudar de schema — "mant
 ## 11. Riscos e questões abertas
 
 1. Provedor de e-mail transacional — confirmar antes da Fase 2 (bloqueia envio de boas-vindas).
-2. Gateway de pagamento — confirmar antes da Fase 5 (bloqueia cobrança recorrente).
+2. Gateway de pagamento — decisão do usuário (2026-08-05): adiado. Fase 5 foi implementada com ativação de plano simulada (sem cobrança real). Confirmar gateway (Mercado Pago/Asaas/Stripe) quando for integrar de fato — vai exigir migration adicional para os status `TRIALING`/`PAST_DUE` e para preencher `paymentProviderCustomerId`/`paymentProviderSubscriptionId`.
 3. O que acontece com os dados do aluno quando o PT cancela a assinatura ou o aluno é removido? (v1: soft-delete + bloqueio de acesso; exclusão definitiva fica para v2/LGPD self-service).
 4. Alunos cadastrados por PT podem também logar via Google? (Recomendação v1: não — login exclusivamente e-mail/senha para simplificar controle de expiração e vínculo com o PT.)
 5. Consentimento explícito do aluno para tratamento de dado de saúde: quem coleta — o PT no cadastro, ou o próprio aluno no primeiro login? (Recomendação: checkbox de aceite no primeiro login do aluno, já que é ele o titular do dado.)
