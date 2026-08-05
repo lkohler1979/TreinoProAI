@@ -1,4 +1,10 @@
-import { WeekDay, WorkoutGoal } from "../generated/prisma/enums.js";
+import {
+  ExerciseMethod,
+  WeekDay,
+  WorkoutCategory,
+  WorkoutGoal,
+  WorkoutLevel,
+} from "../generated/prisma/enums.js";
 import { prisma } from "../lib/db.js";
 
 interface InputDto {
@@ -10,6 +16,8 @@ interface OutputDto {
   id: string;
   name: string;
   goal?: WorkoutGoal;
+  category?: WorkoutCategory;
+  level?: WorkoutLevel;
   isActive: boolean;
   workoutDays: Array<{
     id: string;
@@ -25,6 +33,7 @@ interface OutputDto {
       sets: number;
       reps: number;
       restTimeInSeconds: number;
+      method: ExerciseMethod;
     }>;
   }>;
 }
@@ -50,6 +59,8 @@ export class ListWorkoutPlans {
       id: plan.id,
       name: plan.name,
       goal: plan.goal ?? undefined,
+      category: plan.category ?? undefined,
+      level: plan.level ?? undefined,
       isActive: plan.isActive,
       workoutDays: plan.workoutDays.map((day) => ({
         id: day.id,
@@ -65,6 +76,7 @@ export class ListWorkoutPlans {
           sets: exercise.sets,
           reps: exercise.reps,
           restTimeInSeconds: exercise.restTimeInSeconds,
+          method: exercise.method,
         })),
       })),
     }));

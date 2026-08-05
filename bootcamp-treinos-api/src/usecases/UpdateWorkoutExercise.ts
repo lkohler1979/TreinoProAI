@@ -1,4 +1,5 @@
 import { NotFoundError } from "../errors/index.js";
+import { ExerciseMethod } from "../generated/prisma/enums.js";
 import { prisma } from "../lib/db.js";
 
 interface InputDto {
@@ -10,6 +11,7 @@ interface InputDto {
   sets: number;
   reps: number;
   restTimeInSeconds: number;
+  method?: ExerciseMethod;
 }
 
 interface OutputDto {
@@ -19,6 +21,7 @@ interface OutputDto {
   sets: number;
   reps: number;
   restTimeInSeconds: number;
+  method: ExerciseMethod;
 }
 
 export class UpdateWorkoutExercise {
@@ -44,6 +47,7 @@ export class UpdateWorkoutExercise {
         sets: dto.sets,
         reps: dto.reps,
         restTimeInSeconds: dto.restTimeInSeconds,
+        method: dto.method,
       },
     });
 
@@ -54,6 +58,7 @@ export class UpdateWorkoutExercise {
       sets: updated.sets,
       reps: updated.reps,
       restTimeInSeconds: updated.restTimeInSeconds,
+      method: updated.method,
     };
   }
 }

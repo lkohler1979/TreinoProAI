@@ -1,3 +1,5 @@
+import type { ExerciseMethod } from "@/app/_lib/exercise-methods";
+
 export interface WorkoutDayUpdateInput {
   name: string;
   isRest: boolean;
@@ -9,6 +11,7 @@ export interface WorkoutExerciseInput {
   sets: number;
   reps: number;
   restTimeInSeconds: number;
+  method?: ExerciseMethod;
 }
 
 export interface WorkoutPlanEditActions {

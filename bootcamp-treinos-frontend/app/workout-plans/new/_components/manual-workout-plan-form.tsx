@@ -2,7 +2,7 @@
 
 import { useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useFieldArray, useForm, useWatch } from "react-hook-form";
 import { Accordion } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import {
@@ -21,8 +21,14 @@ import {
 } from "@/components/ui/select";
 import type {
   CreateWorkoutPlanBody,
+  GetWorkoutTemplate200,
   ListMuscleGroups200Item,
 } from "@/app/_lib/api/fetch-generated";
+import {
+  WORKOUT_CATEGORY_LABELS,
+  type WorkoutCategory,
+} from "@/app/_lib/workout-categories";
+import { WORKOUT_LEVEL_OPTIONS } from "@/app/_lib/workout-levels";
 import {
   GOAL_OPTIONS,
   WEEK_DAYS,
@@ -35,11 +41,15 @@ const DEFAULT_DAILY_WATER_GOAL_IN_ML = 2000;
 
 interface ManualWorkoutPlanFormProps {
   muscleGroups: ListMuscleGroups200Item[];
+  workoutTemplates: GetWorkoutTemplate200[];
+  initialCategory?: WorkoutCategory;
   onCreate: (payload: CreateWorkoutPlanBody) => Promise<void>;
 }
 
 export function ManualWorkoutPlanForm({
   muscleGroups,
+  workoutTemplates,
+  initialCategory,
   onCreate,
 }: ManualWorkoutPlanFormProps) {
   const [isPending, startTransition] = useTransition();
@@ -48,6 +58,8 @@ export function ManualWorkoutPlanForm({
     resolver: zodResolver(manualWorkoutPlanFormSchema),
     defaultValues: {
       goal: "",
+      category: initialCategory ?? "",
+      level: "",
       workoutDays: WEEK_DAYS.map((weekDay) => ({
         weekDay,
         isRest: true,
@@ -63,10 +75,19 @@ export function ManualWorkoutPlanForm({
     name: "workoutDays",
   });
 
+  const category = useWatch({ control: form.control, name: "category" });
+  const level = useWatch({ control: form.control, name: "level" });
+
   const onSubmit = (values: ManualWorkoutPlanFormValues) => {
     const payload: CreateWorkoutPlanBody = {
       goal: values.goal
         ? (values.goal as CreateWorkoutPlanBody["goal"])
+        : undefined,
+      category: values.category
+        ? (values.category as CreateWorkoutPlanBody["category"])
+        : undefined,
+      level: values.level
+        ? (values.level as CreateWorkoutPlanBody["level"])
         : undefined,
       dailyWaterGoalInMl: DEFAULT_DAILY_WATER_GOAL_IN_ML,
       meals: [],
@@ -93,6 +114,8 @@ export function ManualWorkoutPlanForm({
                 sets: Number(exercise.sets),
                 reps: Number(exercise.reps),
                 restTimeInSeconds: Number(exercise.restTimeInSeconds),
+                method:
+                  exercise.method as CreateWorkoutPlanBody["workoutDays"][number]["exercises"][number]["method"],
               };
             }),
       })),
@@ -109,6 +132,56 @@ export function ManualWorkoutPlanForm({
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col gap-4 pb-10"
       >
+        <FormField
+          control={form.control}
+          name="category"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Categoria</FormLabel>
+              <Select onValueChange={field.onChange} value={field.value}>
+                <FormControl>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Selecione a categoria" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {Object.entries(WORKOUT_CATEGORY_LABELS).map(
+                    ([value, label]) => (
+                      <SelectItem key={value} value={value}>
+                        {label}
+                      </SelectItem>
+                    ),
+                  )}
+                </SelectContent>
+              </Select>
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="level"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Nível</FormLabel>
+              <Select onValueChange={field.onChange} value={field.value}>
+                <FormControl>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Selecione o nível" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {WORKOUT_LEVEL_OPTIONS.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </FormItem>
+          )}
+        />
+
         <FormField
           control={form.control}
           name="goal"
@@ -139,6 +212,9 @@ export function ManualWorkoutPlanForm({
               key={field.id}
               dayIndex={index}
               muscleGroups={muscleGroups}
+              workoutTemplates={workoutTemplates}
+              category={category || undefined}
+              level={level || undefined}
             />
           ))}
         </Accordion>

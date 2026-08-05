@@ -1,7 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import { useFieldArray, useFormContext, useWatch } from "react-hook-form";
-import { Plus } from "lucide-react";
+import { Plus, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   AccordionContent,
@@ -16,20 +17,34 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
-import type { ListMuscleGroups200Item } from "@/app/_lib/api/fetch-generated";
+import type {
+  GetWorkoutTemplate200,
+  ListMuscleGroups200Item,
+} from "@/app/_lib/api/fetch-generated";
+import type { WorkoutCategory } from "@/app/_lib/workout-categories";
+import type { WorkoutLevel } from "@/app/_lib/workout-levels";
 import { WEEK_DAY_LABELS, type ManualWorkoutPlanFormValues } from "../_lib/schema";
 import { ExerciseFieldsRow } from "./exercise-fields-row";
+import { UseWorkoutTemplateDialog } from "./use-workout-template-dialog";
 
 interface WorkoutDayFormSectionProps {
   dayIndex: number;
   muscleGroups: ListMuscleGroups200Item[];
+  workoutTemplates: GetWorkoutTemplate200[];
+  category?: WorkoutCategory;
+  level?: WorkoutLevel;
 }
 
 export function WorkoutDayFormSection({
   dayIndex,
   muscleGroups,
+  workoutTemplates,
+  category,
+  level,
 }: WorkoutDayFormSectionProps) {
-  const { control, formState } = useFormContext<ManualWorkoutPlanFormValues>();
+  const [isTemplateDialogOpen, setIsTemplateDialogOpen] = useState(false);
+  const { control, formState, setValue } =
+    useFormContext<ManualWorkoutPlanFormValues>();
   const isRestName = `workoutDays.${dayIndex}.isRest` as const;
   const nameName = `workoutDays.${dayIndex}.name` as const;
   const durationName = `workoutDays.${dayIndex}.durationInMinutes` as const;
@@ -40,12 +55,47 @@ export function WorkoutDayFormSection({
   const isRest = useWatch({ control, name: isRestName });
   const dayName = useWatch({ control, name: nameName });
 
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, remove, replace } = useFieldArray({
     control,
     name: exercisesName,
   });
 
   const exercisesError = formState.errors.workoutDays?.[dayIndex]?.exercises?.root?.message;
+
+  const availableTemplates = workoutTemplates.filter(
+    (template) =>
+      (!category || template.category === category) &&
+      (!level || template.level === level),
+  );
+
+  const handleApplyTemplate = (template: GetWorkoutTemplate200) => {
+    setValue(nameName, template.name, { shouldValidate: true });
+    setValue(
+      durationName,
+      String(Math.max(1, Math.round(template.estimatedDurationInSeconds / 60))),
+      { shouldValidate: true },
+    );
+
+    replace(
+      template.exercises.map((exercise) => {
+        const group = muscleGroups.find((item) =>
+          item.exerciseTemplates.some(
+            (exerciseTemplate) =>
+              exerciseTemplate.id === exercise.exerciseTemplateId,
+          ),
+        );
+
+        return {
+          muscleGroupId: group?.id ?? "",
+          exerciseTemplateId: exercise.exerciseTemplateId,
+          sets: String(exercise.sets),
+          reps: String(exercise.reps),
+          restTimeInSeconds: String(exercise.restTimeInSeconds),
+          method: exercise.method,
+        };
+      }),
+    );
+  };
 
   return (
     <AccordionItem
@@ -117,6 +167,31 @@ export function WorkoutDayFormSection({
               )}
             />
 
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              disabled={!category || !level}
+              className="justify-center gap-1.5"
+              onClick={() => setIsTemplateDialogOpen(true)}
+            >
+              <Sparkles className="size-3.5" />
+              Usar template
+            </Button>
+            {(!category || !level) && (
+              <p className="font-heading text-xs text-muted-foreground">
+                Selecione a categoria e o nível do plano para usar um
+                template.
+              </p>
+            )}
+
+            <UseWorkoutTemplateDialog
+              open={isTemplateDialogOpen}
+              onOpenChange={setIsTemplateDialogOpen}
+              templates={availableTemplates}
+              onSelect={handleApplyTemplate}
+            />
+
             <div className="flex flex-col gap-2">
               {fields.map((field, exerciseIndex) => (
                 <ExerciseFieldsRow
@@ -147,6 +222,7 @@ export function WorkoutDayFormSection({
                   sets: "3",
                   reps: "12",
                   restTimeInSeconds: "60",
+                  method: "NORMAL",
                 })
               }
             >

@@ -217,6 +217,25 @@ export const ListWorkoutPlans200ItemGoal = {
   GENERAL_FITNESS: "GENERAL_FITNESS",
 } as const;
 
+export type ListWorkoutPlans200ItemCategory =
+  (typeof ListWorkoutPlans200ItemCategory)[keyof typeof ListWorkoutPlans200ItemCategory];
+
+export const ListWorkoutPlans200ItemCategory = {
+  MUSCULACAO: "MUSCULACAO",
+  CROSSFIT: "CROSSFIT",
+  CALISTENIA: "CALISTENIA",
+  FUNCIONAL: "FUNCIONAL",
+} as const;
+
+export type ListWorkoutPlans200ItemLevel =
+  (typeof ListWorkoutPlans200ItemLevel)[keyof typeof ListWorkoutPlans200ItemLevel];
+
+export const ListWorkoutPlans200ItemLevel = {
+  BEGINNER: "BEGINNER",
+  INTERMEDIATE: "INTERMEDIATE",
+  ADVANCED: "ADVANCED",
+} as const;
+
 export type ListWorkoutPlans200ItemWorkoutDaysItemWeekDay =
   (typeof ListWorkoutPlans200ItemWorkoutDaysItemWeekDay)[keyof typeof ListWorkoutPlans200ItemWorkoutDaysItemWeekDay];
 
@@ -230,6 +249,17 @@ export const ListWorkoutPlans200ItemWorkoutDaysItemWeekDay = {
   SUNDAY: "SUNDAY",
 } as const;
 
+export type ListWorkoutPlans200ItemWorkoutDaysItemExercisesItemMethod =
+  (typeof ListWorkoutPlans200ItemWorkoutDaysItemExercisesItemMethod)[keyof typeof ListWorkoutPlans200ItemWorkoutDaysItemExercisesItemMethod];
+
+export const ListWorkoutPlans200ItemWorkoutDaysItemExercisesItemMethod = {
+  NORMAL: "NORMAL",
+  DROP_SET: "DROP_SET",
+  REST_PAUSE: "REST_PAUSE",
+  BI_SET: "BI_SET",
+  PYRAMID: "PYRAMID",
+} as const;
+
 export type ListWorkoutPlans200ItemWorkoutDaysItemExercisesItem = {
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
   id: string;
@@ -238,6 +268,7 @@ export type ListWorkoutPlans200ItemWorkoutDaysItemExercisesItem = {
   sets: number;
   reps: number;
   restTimeInSeconds: number;
+  method: ListWorkoutPlans200ItemWorkoutDaysItemExercisesItemMethod;
 };
 
 export type ListWorkoutPlans200ItemWorkoutDaysItem = {
@@ -256,6 +287,8 @@ export type ListWorkoutPlans200Item = {
   id: string;
   name: string;
   goal?: ListWorkoutPlans200ItemGoal;
+  category?: ListWorkoutPlans200ItemCategory;
+  level?: ListWorkoutPlans200ItemLevel;
   isActive: boolean;
   workoutDays: ListWorkoutPlans200ItemWorkoutDaysItem[];
 };
@@ -281,6 +314,25 @@ export const CreateWorkoutPlanBodyGoal = {
   GENERAL_FITNESS: "GENERAL_FITNESS",
 } as const;
 
+export type CreateWorkoutPlanBodyCategory =
+  (typeof CreateWorkoutPlanBodyCategory)[keyof typeof CreateWorkoutPlanBodyCategory];
+
+export const CreateWorkoutPlanBodyCategory = {
+  MUSCULACAO: "MUSCULACAO",
+  CROSSFIT: "CROSSFIT",
+  CALISTENIA: "CALISTENIA",
+  FUNCIONAL: "FUNCIONAL",
+} as const;
+
+export type CreateWorkoutPlanBodyLevel =
+  (typeof CreateWorkoutPlanBodyLevel)[keyof typeof CreateWorkoutPlanBodyLevel];
+
+export const CreateWorkoutPlanBodyLevel = {
+  BEGINNER: "BEGINNER",
+  INTERMEDIATE: "INTERMEDIATE",
+  ADVANCED: "ADVANCED",
+} as const;
+
 export type CreateWorkoutPlanBodyWorkoutDaysItemWeekDay =
   (typeof CreateWorkoutPlanBodyWorkoutDaysItemWeekDay)[keyof typeof CreateWorkoutPlanBodyWorkoutDaysItemWeekDay];
 
@@ -294,6 +346,17 @@ export const CreateWorkoutPlanBodyWorkoutDaysItemWeekDay = {
   SUNDAY: "SUNDAY",
 } as const;
 
+export type CreateWorkoutPlanBodyWorkoutDaysItemExercisesItemMethod =
+  (typeof CreateWorkoutPlanBodyWorkoutDaysItemExercisesItemMethod)[keyof typeof CreateWorkoutPlanBodyWorkoutDaysItemExercisesItemMethod];
+
+export const CreateWorkoutPlanBodyWorkoutDaysItemExercisesItemMethod = {
+  NORMAL: "NORMAL",
+  DROP_SET: "DROP_SET",
+  REST_PAUSE: "REST_PAUSE",
+  BI_SET: "BI_SET",
+  PYRAMID: "PYRAMID",
+} as const;
+
 export type CreateWorkoutPlanBodyWorkoutDaysItemExercisesItem = {
   /** @minimum 0 */
   order: number;
@@ -305,6 +368,7 @@ export type CreateWorkoutPlanBodyWorkoutDaysItemExercisesItem = {
   reps: number;
   /** @minimum 1 */
   restTimeInSeconds: number;
+  method?: CreateWorkoutPlanBodyWorkoutDaysItemExercisesItemMethod;
 };
 
 export type CreateWorkoutPlanBodyWorkoutDaysItem = {
@@ -337,6 +401,8 @@ export type CreateWorkoutPlanBodyMealsItem = {
 
 export type CreateWorkoutPlanBody = {
   goal?: CreateWorkoutPlanBodyGoal;
+  category?: CreateWorkoutPlanBodyCategory;
+  level?: CreateWorkoutPlanBodyLevel;
   /** @minimum 0 */
   dailyWaterGoalInMl: number;
   workoutDays: CreateWorkoutPlanBodyWorkoutDaysItem[];
@@ -354,6 +420,25 @@ export const CreateWorkoutPlan201Goal = {
   GENERAL_FITNESS: "GENERAL_FITNESS",
 } as const;
 
+export type CreateWorkoutPlan201Category =
+  (typeof CreateWorkoutPlan201Category)[keyof typeof CreateWorkoutPlan201Category];
+
+export const CreateWorkoutPlan201Category = {
+  MUSCULACAO: "MUSCULACAO",
+  CROSSFIT: "CROSSFIT",
+  CALISTENIA: "CALISTENIA",
+  FUNCIONAL: "FUNCIONAL",
+} as const;
+
+export type CreateWorkoutPlan201Level =
+  (typeof CreateWorkoutPlan201Level)[keyof typeof CreateWorkoutPlan201Level];
+
+export const CreateWorkoutPlan201Level = {
+  BEGINNER: "BEGINNER",
+  INTERMEDIATE: "INTERMEDIATE",
+  ADVANCED: "ADVANCED",
+} as const;
+
 export type CreateWorkoutPlan201WorkoutDaysItemWeekDay =
   (typeof CreateWorkoutPlan201WorkoutDaysItemWeekDay)[keyof typeof CreateWorkoutPlan201WorkoutDaysItemWeekDay];
 
@@ -367,6 +452,17 @@ export const CreateWorkoutPlan201WorkoutDaysItemWeekDay = {
   SUNDAY: "SUNDAY",
 } as const;
 
+export type CreateWorkoutPlan201WorkoutDaysItemExercisesItemMethod =
+  (typeof CreateWorkoutPlan201WorkoutDaysItemExercisesItemMethod)[keyof typeof CreateWorkoutPlan201WorkoutDaysItemExercisesItemMethod];
+
+export const CreateWorkoutPlan201WorkoutDaysItemExercisesItemMethod = {
+  NORMAL: "NORMAL",
+  DROP_SET: "DROP_SET",
+  REST_PAUSE: "REST_PAUSE",
+  BI_SET: "BI_SET",
+  PYRAMID: "PYRAMID",
+} as const;
+
 export type CreateWorkoutPlan201WorkoutDaysItemExercisesItem = {
   /** @minimum 0 */
   order: number;
@@ -378,6 +474,7 @@ export type CreateWorkoutPlan201WorkoutDaysItemExercisesItem = {
   reps: number;
   /** @minimum 1 */
   restTimeInSeconds: number;
+  method?: CreateWorkoutPlan201WorkoutDaysItemExercisesItemMethod;
 };
 
 export type CreateWorkoutPlan201WorkoutDaysItem = {
@@ -414,6 +511,8 @@ export type CreateWorkoutPlan201 = {
   /** @minLength 1 */
   name: string;
   goal?: CreateWorkoutPlan201Goal;
+  category?: CreateWorkoutPlan201Category;
+  level?: CreateWorkoutPlan201Level;
   /** @minimum 0 */
   dailyWaterGoalInMl: number;
   workoutDays: CreateWorkoutPlan201WorkoutDaysItem[];
@@ -449,6 +548,25 @@ export const GetWorkoutPlan200Goal = {
   ENDURANCE: "ENDURANCE",
   STRENGTH: "STRENGTH",
   GENERAL_FITNESS: "GENERAL_FITNESS",
+} as const;
+
+export type GetWorkoutPlan200Category =
+  (typeof GetWorkoutPlan200Category)[keyof typeof GetWorkoutPlan200Category];
+
+export const GetWorkoutPlan200Category = {
+  MUSCULACAO: "MUSCULACAO",
+  CROSSFIT: "CROSSFIT",
+  CALISTENIA: "CALISTENIA",
+  FUNCIONAL: "FUNCIONAL",
+} as const;
+
+export type GetWorkoutPlan200Level =
+  (typeof GetWorkoutPlan200Level)[keyof typeof GetWorkoutPlan200Level];
+
+export const GetWorkoutPlan200Level = {
+  BEGINNER: "BEGINNER",
+  INTERMEDIATE: "INTERMEDIATE",
+  ADVANCED: "ADVANCED",
 } as const;
 
 export type GetWorkoutPlan200WorkoutDaysItemWeekDay =
@@ -493,6 +611,8 @@ export type GetWorkoutPlan200 = {
   id: string;
   name: string;
   goal?: GetWorkoutPlan200Goal;
+  category?: GetWorkoutPlan200Category;
+  level?: GetWorkoutPlan200Level;
   dailyWaterGoalInMl?: number;
   workoutDays: GetWorkoutPlan200WorkoutDaysItem[];
   meals: GetWorkoutPlan200MealsItem[];
@@ -528,6 +648,25 @@ export type DeleteWorkoutPlan500 = {
   code: string;
 };
 
+export type GetWorkoutPlanDetails200Category =
+  (typeof GetWorkoutPlanDetails200Category)[keyof typeof GetWorkoutPlanDetails200Category];
+
+export const GetWorkoutPlanDetails200Category = {
+  MUSCULACAO: "MUSCULACAO",
+  CROSSFIT: "CROSSFIT",
+  CALISTENIA: "CALISTENIA",
+  FUNCIONAL: "FUNCIONAL",
+} as const;
+
+export type GetWorkoutPlanDetails200Level =
+  (typeof GetWorkoutPlanDetails200Level)[keyof typeof GetWorkoutPlanDetails200Level];
+
+export const GetWorkoutPlanDetails200Level = {
+  BEGINNER: "BEGINNER",
+  INTERMEDIATE: "INTERMEDIATE",
+  ADVANCED: "ADVANCED",
+} as const;
+
 export type GetWorkoutPlanDetails200WorkoutDaysItemWeekDay =
   (typeof GetWorkoutPlanDetails200WorkoutDaysItemWeekDay)[keyof typeof GetWorkoutPlanDetails200WorkoutDaysItemWeekDay];
 
@@ -541,6 +680,17 @@ export const GetWorkoutPlanDetails200WorkoutDaysItemWeekDay = {
   SUNDAY: "SUNDAY",
 } as const;
 
+export type GetWorkoutPlanDetails200WorkoutDaysItemExercisesItemMethod =
+  (typeof GetWorkoutPlanDetails200WorkoutDaysItemExercisesItemMethod)[keyof typeof GetWorkoutPlanDetails200WorkoutDaysItemExercisesItemMethod];
+
+export const GetWorkoutPlanDetails200WorkoutDaysItemExercisesItemMethod = {
+  NORMAL: "NORMAL",
+  DROP_SET: "DROP_SET",
+  REST_PAUSE: "REST_PAUSE",
+  BI_SET: "BI_SET",
+  PYRAMID: "PYRAMID",
+} as const;
+
 export type GetWorkoutPlanDetails200WorkoutDaysItemExercisesItem = {
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
   id: string;
@@ -549,6 +699,7 @@ export type GetWorkoutPlanDetails200WorkoutDaysItemExercisesItem = {
   sets: number;
   reps: number;
   restTimeInSeconds: number;
+  method: GetWorkoutPlanDetails200WorkoutDaysItemExercisesItemMethod;
 };
 
 export type GetWorkoutPlanDetails200WorkoutDaysItem = {
@@ -566,6 +717,8 @@ export type GetWorkoutPlanDetails200 = {
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
   id: string;
   name: string;
+  category?: GetWorkoutPlanDetails200Category;
+  level?: GetWorkoutPlanDetails200Level;
   workoutDays: GetWorkoutPlanDetails200WorkoutDaysItem[];
 };
 
@@ -597,6 +750,17 @@ export const GetWorkoutDay200WeekDay = {
   SUNDAY: "SUNDAY",
 } as const;
 
+export type GetWorkoutDay200ExercisesItemMethod =
+  (typeof GetWorkoutDay200ExercisesItemMethod)[keyof typeof GetWorkoutDay200ExercisesItemMethod];
+
+export const GetWorkoutDay200ExercisesItemMethod = {
+  NORMAL: "NORMAL",
+  DROP_SET: "DROP_SET",
+  REST_PAUSE: "REST_PAUSE",
+  BI_SET: "BI_SET",
+  PYRAMID: "PYRAMID",
+} as const;
+
 export type GetWorkoutDay200ExercisesItem = {
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
   id: string;
@@ -607,6 +771,7 @@ export type GetWorkoutDay200ExercisesItem = {
   sets: number;
   reps: number;
   restTimeInSeconds: number;
+  method: GetWorkoutDay200ExercisesItemMethod;
   loadInKg?: number;
 };
 
@@ -694,6 +859,17 @@ export type UpdateWorkoutDay500 = {
   code: string;
 };
 
+export type CreateWorkoutExerciseBodyMethod =
+  (typeof CreateWorkoutExerciseBodyMethod)[keyof typeof CreateWorkoutExerciseBodyMethod];
+
+export const CreateWorkoutExerciseBodyMethod = {
+  NORMAL: "NORMAL",
+  DROP_SET: "DROP_SET",
+  REST_PAUSE: "REST_PAUSE",
+  BI_SET: "BI_SET",
+  PYRAMID: "PYRAMID",
+} as const;
+
 export type CreateWorkoutExerciseBody = {
   /** @minLength 1 */
   name: string;
@@ -703,7 +879,19 @@ export type CreateWorkoutExerciseBody = {
   reps: number;
   /** @minimum 1 */
   restTimeInSeconds: number;
+  method?: CreateWorkoutExerciseBodyMethod;
 };
+
+export type CreateWorkoutExercise201Method =
+  (typeof CreateWorkoutExercise201Method)[keyof typeof CreateWorkoutExercise201Method];
+
+export const CreateWorkoutExercise201Method = {
+  NORMAL: "NORMAL",
+  DROP_SET: "DROP_SET",
+  REST_PAUSE: "REST_PAUSE",
+  BI_SET: "BI_SET",
+  PYRAMID: "PYRAMID",
+} as const;
 
 export type CreateWorkoutExercise201 = {
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
@@ -713,6 +901,7 @@ export type CreateWorkoutExercise201 = {
   sets: number;
   reps: number;
   restTimeInSeconds: number;
+  method: CreateWorkoutExercise201Method;
 };
 
 export type CreateWorkoutExercise401 = {
@@ -730,6 +919,17 @@ export type CreateWorkoutExercise500 = {
   code: string;
 };
 
+export type UpdateWorkoutExerciseBodyMethod =
+  (typeof UpdateWorkoutExerciseBodyMethod)[keyof typeof UpdateWorkoutExerciseBodyMethod];
+
+export const UpdateWorkoutExerciseBodyMethod = {
+  NORMAL: "NORMAL",
+  DROP_SET: "DROP_SET",
+  REST_PAUSE: "REST_PAUSE",
+  BI_SET: "BI_SET",
+  PYRAMID: "PYRAMID",
+} as const;
+
 export type UpdateWorkoutExerciseBody = {
   /** @minLength 1 */
   name: string;
@@ -739,7 +939,19 @@ export type UpdateWorkoutExerciseBody = {
   reps: number;
   /** @minimum 1 */
   restTimeInSeconds: number;
+  method?: UpdateWorkoutExerciseBodyMethod;
 };
+
+export type UpdateWorkoutExercise200Method =
+  (typeof UpdateWorkoutExercise200Method)[keyof typeof UpdateWorkoutExercise200Method];
+
+export const UpdateWorkoutExercise200Method = {
+  NORMAL: "NORMAL",
+  DROP_SET: "DROP_SET",
+  REST_PAUSE: "REST_PAUSE",
+  BI_SET: "BI_SET",
+  PYRAMID: "PYRAMID",
+} as const;
 
 export type UpdateWorkoutExercise200 = {
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
@@ -749,6 +961,7 @@ export type UpdateWorkoutExercise200 = {
   sets: number;
   reps: number;
   restTimeInSeconds: number;
+  method: UpdateWorkoutExercise200Method;
 };
 
 export type UpdateWorkoutExercise401 = {
@@ -2002,6 +2215,25 @@ export const CreateStudentWorkoutPlanBodyGoal = {
   GENERAL_FITNESS: "GENERAL_FITNESS",
 } as const;
 
+export type CreateStudentWorkoutPlanBodyCategory =
+  (typeof CreateStudentWorkoutPlanBodyCategory)[keyof typeof CreateStudentWorkoutPlanBodyCategory];
+
+export const CreateStudentWorkoutPlanBodyCategory = {
+  MUSCULACAO: "MUSCULACAO",
+  CROSSFIT: "CROSSFIT",
+  CALISTENIA: "CALISTENIA",
+  FUNCIONAL: "FUNCIONAL",
+} as const;
+
+export type CreateStudentWorkoutPlanBodyLevel =
+  (typeof CreateStudentWorkoutPlanBodyLevel)[keyof typeof CreateStudentWorkoutPlanBodyLevel];
+
+export const CreateStudentWorkoutPlanBodyLevel = {
+  BEGINNER: "BEGINNER",
+  INTERMEDIATE: "INTERMEDIATE",
+  ADVANCED: "ADVANCED",
+} as const;
+
 export type CreateStudentWorkoutPlanBodyWorkoutDaysItemWeekDay =
   (typeof CreateStudentWorkoutPlanBodyWorkoutDaysItemWeekDay)[keyof typeof CreateStudentWorkoutPlanBodyWorkoutDaysItemWeekDay];
 
@@ -2015,6 +2247,17 @@ export const CreateStudentWorkoutPlanBodyWorkoutDaysItemWeekDay = {
   SUNDAY: "SUNDAY",
 } as const;
 
+export type CreateStudentWorkoutPlanBodyWorkoutDaysItemExercisesItemMethod =
+  (typeof CreateStudentWorkoutPlanBodyWorkoutDaysItemExercisesItemMethod)[keyof typeof CreateStudentWorkoutPlanBodyWorkoutDaysItemExercisesItemMethod];
+
+export const CreateStudentWorkoutPlanBodyWorkoutDaysItemExercisesItemMethod = {
+  NORMAL: "NORMAL",
+  DROP_SET: "DROP_SET",
+  REST_PAUSE: "REST_PAUSE",
+  BI_SET: "BI_SET",
+  PYRAMID: "PYRAMID",
+} as const;
+
 export type CreateStudentWorkoutPlanBodyWorkoutDaysItemExercisesItem = {
   /** @minimum 0 */
   order: number;
@@ -2026,6 +2269,7 @@ export type CreateStudentWorkoutPlanBodyWorkoutDaysItemExercisesItem = {
   reps: number;
   /** @minimum 1 */
   restTimeInSeconds: number;
+  method?: CreateStudentWorkoutPlanBodyWorkoutDaysItemExercisesItemMethod;
 };
 
 export type CreateStudentWorkoutPlanBodyWorkoutDaysItem = {
@@ -2058,6 +2302,8 @@ export type CreateStudentWorkoutPlanBodyMealsItem = {
 
 export type CreateStudentWorkoutPlanBody = {
   goal?: CreateStudentWorkoutPlanBodyGoal;
+  category?: CreateStudentWorkoutPlanBodyCategory;
+  level?: CreateStudentWorkoutPlanBodyLevel;
   /** @minimum 0 */
   dailyWaterGoalInMl: number;
   workoutDays: CreateStudentWorkoutPlanBodyWorkoutDaysItem[];
@@ -2075,6 +2321,25 @@ export const CreateStudentWorkoutPlan201Goal = {
   GENERAL_FITNESS: "GENERAL_FITNESS",
 } as const;
 
+export type CreateStudentWorkoutPlan201Category =
+  (typeof CreateStudentWorkoutPlan201Category)[keyof typeof CreateStudentWorkoutPlan201Category];
+
+export const CreateStudentWorkoutPlan201Category = {
+  MUSCULACAO: "MUSCULACAO",
+  CROSSFIT: "CROSSFIT",
+  CALISTENIA: "CALISTENIA",
+  FUNCIONAL: "FUNCIONAL",
+} as const;
+
+export type CreateStudentWorkoutPlan201Level =
+  (typeof CreateStudentWorkoutPlan201Level)[keyof typeof CreateStudentWorkoutPlan201Level];
+
+export const CreateStudentWorkoutPlan201Level = {
+  BEGINNER: "BEGINNER",
+  INTERMEDIATE: "INTERMEDIATE",
+  ADVANCED: "ADVANCED",
+} as const;
+
 export type CreateStudentWorkoutPlan201WorkoutDaysItemWeekDay =
   (typeof CreateStudentWorkoutPlan201WorkoutDaysItemWeekDay)[keyof typeof CreateStudentWorkoutPlan201WorkoutDaysItemWeekDay];
 
@@ -2088,6 +2353,17 @@ export const CreateStudentWorkoutPlan201WorkoutDaysItemWeekDay = {
   SUNDAY: "SUNDAY",
 } as const;
 
+export type CreateStudentWorkoutPlan201WorkoutDaysItemExercisesItemMethod =
+  (typeof CreateStudentWorkoutPlan201WorkoutDaysItemExercisesItemMethod)[keyof typeof CreateStudentWorkoutPlan201WorkoutDaysItemExercisesItemMethod];
+
+export const CreateStudentWorkoutPlan201WorkoutDaysItemExercisesItemMethod = {
+  NORMAL: "NORMAL",
+  DROP_SET: "DROP_SET",
+  REST_PAUSE: "REST_PAUSE",
+  BI_SET: "BI_SET",
+  PYRAMID: "PYRAMID",
+} as const;
+
 export type CreateStudentWorkoutPlan201WorkoutDaysItemExercisesItem = {
   /** @minimum 0 */
   order: number;
@@ -2099,6 +2375,7 @@ export type CreateStudentWorkoutPlan201WorkoutDaysItemExercisesItem = {
   reps: number;
   /** @minimum 1 */
   restTimeInSeconds: number;
+  method?: CreateStudentWorkoutPlan201WorkoutDaysItemExercisesItemMethod;
 };
 
 export type CreateStudentWorkoutPlan201WorkoutDaysItem = {
@@ -2135,6 +2412,8 @@ export type CreateStudentWorkoutPlan201 = {
   /** @minLength 1 */
   name: string;
   goal?: CreateStudentWorkoutPlan201Goal;
+  category?: CreateStudentWorkoutPlan201Category;
+  level?: CreateStudentWorkoutPlan201Level;
   /** @minimum 0 */
   dailyWaterGoalInMl: number;
   workoutDays: CreateStudentWorkoutPlan201WorkoutDaysItem[];
@@ -2161,6 +2440,25 @@ export type CreateStudentWorkoutPlan500 = {
   code: string;
 };
 
+export type GetStudentWorkoutPlanDetails200Category =
+  (typeof GetStudentWorkoutPlanDetails200Category)[keyof typeof GetStudentWorkoutPlanDetails200Category];
+
+export const GetStudentWorkoutPlanDetails200Category = {
+  MUSCULACAO: "MUSCULACAO",
+  CROSSFIT: "CROSSFIT",
+  CALISTENIA: "CALISTENIA",
+  FUNCIONAL: "FUNCIONAL",
+} as const;
+
+export type GetStudentWorkoutPlanDetails200Level =
+  (typeof GetStudentWorkoutPlanDetails200Level)[keyof typeof GetStudentWorkoutPlanDetails200Level];
+
+export const GetStudentWorkoutPlanDetails200Level = {
+  BEGINNER: "BEGINNER",
+  INTERMEDIATE: "INTERMEDIATE",
+  ADVANCED: "ADVANCED",
+} as const;
+
 export type GetStudentWorkoutPlanDetails200WorkoutDaysItemWeekDay =
   (typeof GetStudentWorkoutPlanDetails200WorkoutDaysItemWeekDay)[keyof typeof GetStudentWorkoutPlanDetails200WorkoutDaysItemWeekDay];
 
@@ -2174,6 +2472,18 @@ export const GetStudentWorkoutPlanDetails200WorkoutDaysItemWeekDay = {
   SUNDAY: "SUNDAY",
 } as const;
 
+export type GetStudentWorkoutPlanDetails200WorkoutDaysItemExercisesItemMethod =
+  (typeof GetStudentWorkoutPlanDetails200WorkoutDaysItemExercisesItemMethod)[keyof typeof GetStudentWorkoutPlanDetails200WorkoutDaysItemExercisesItemMethod];
+
+export const GetStudentWorkoutPlanDetails200WorkoutDaysItemExercisesItemMethod =
+  {
+    NORMAL: "NORMAL",
+    DROP_SET: "DROP_SET",
+    REST_PAUSE: "REST_PAUSE",
+    BI_SET: "BI_SET",
+    PYRAMID: "PYRAMID",
+  } as const;
+
 export type GetStudentWorkoutPlanDetails200WorkoutDaysItemExercisesItem = {
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
   id: string;
@@ -2182,6 +2492,7 @@ export type GetStudentWorkoutPlanDetails200WorkoutDaysItemExercisesItem = {
   sets: number;
   reps: number;
   restTimeInSeconds: number;
+  method: GetStudentWorkoutPlanDetails200WorkoutDaysItemExercisesItemMethod;
 };
 
 export type GetStudentWorkoutPlanDetails200WorkoutDaysItem = {
@@ -2199,6 +2510,8 @@ export type GetStudentWorkoutPlanDetails200 = {
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
   id: string;
   name: string;
+  category?: GetStudentWorkoutPlanDetails200Category;
+  level?: GetStudentWorkoutPlanDetails200Level;
   workoutDays: GetStudentWorkoutPlanDetails200WorkoutDaysItem[];
 };
 
@@ -2293,6 +2606,17 @@ export type UpdateStudentWorkoutDay500 = {
   code: string;
 };
 
+export type CreateStudentWorkoutExerciseBodyMethod =
+  (typeof CreateStudentWorkoutExerciseBodyMethod)[keyof typeof CreateStudentWorkoutExerciseBodyMethod];
+
+export const CreateStudentWorkoutExerciseBodyMethod = {
+  NORMAL: "NORMAL",
+  DROP_SET: "DROP_SET",
+  REST_PAUSE: "REST_PAUSE",
+  BI_SET: "BI_SET",
+  PYRAMID: "PYRAMID",
+} as const;
+
 export type CreateStudentWorkoutExerciseBody = {
   /** @minLength 1 */
   name: string;
@@ -2302,7 +2626,19 @@ export type CreateStudentWorkoutExerciseBody = {
   reps: number;
   /** @minimum 1 */
   restTimeInSeconds: number;
+  method?: CreateStudentWorkoutExerciseBodyMethod;
 };
+
+export type CreateStudentWorkoutExercise201Method =
+  (typeof CreateStudentWorkoutExercise201Method)[keyof typeof CreateStudentWorkoutExercise201Method];
+
+export const CreateStudentWorkoutExercise201Method = {
+  NORMAL: "NORMAL",
+  DROP_SET: "DROP_SET",
+  REST_PAUSE: "REST_PAUSE",
+  BI_SET: "BI_SET",
+  PYRAMID: "PYRAMID",
+} as const;
 
 export type CreateStudentWorkoutExercise201 = {
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
@@ -2312,6 +2648,7 @@ export type CreateStudentWorkoutExercise201 = {
   sets: number;
   reps: number;
   restTimeInSeconds: number;
+  method: CreateStudentWorkoutExercise201Method;
 };
 
 export type CreateStudentWorkoutExercise401 = {
@@ -2334,6 +2671,17 @@ export type CreateStudentWorkoutExercise500 = {
   code: string;
 };
 
+export type UpdateStudentWorkoutExerciseBodyMethod =
+  (typeof UpdateStudentWorkoutExerciseBodyMethod)[keyof typeof UpdateStudentWorkoutExerciseBodyMethod];
+
+export const UpdateStudentWorkoutExerciseBodyMethod = {
+  NORMAL: "NORMAL",
+  DROP_SET: "DROP_SET",
+  REST_PAUSE: "REST_PAUSE",
+  BI_SET: "BI_SET",
+  PYRAMID: "PYRAMID",
+} as const;
+
 export type UpdateStudentWorkoutExerciseBody = {
   /** @minLength 1 */
   name: string;
@@ -2343,7 +2691,19 @@ export type UpdateStudentWorkoutExerciseBody = {
   reps: number;
   /** @minimum 1 */
   restTimeInSeconds: number;
+  method?: UpdateStudentWorkoutExerciseBodyMethod;
 };
+
+export type UpdateStudentWorkoutExercise200Method =
+  (typeof UpdateStudentWorkoutExercise200Method)[keyof typeof UpdateStudentWorkoutExercise200Method];
+
+export const UpdateStudentWorkoutExercise200Method = {
+  NORMAL: "NORMAL",
+  DROP_SET: "DROP_SET",
+  REST_PAUSE: "REST_PAUSE",
+  BI_SET: "BI_SET",
+  PYRAMID: "PYRAMID",
+} as const;
 
 export type UpdateStudentWorkoutExercise200 = {
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
@@ -2353,6 +2713,7 @@ export type UpdateStudentWorkoutExercise200 = {
   sets: number;
   reps: number;
   restTimeInSeconds: number;
+  method: UpdateStudentWorkoutExercise200Method;
 };
 
 export type UpdateStudentWorkoutExercise401 = {
@@ -2391,6 +2752,147 @@ export type DeleteStudentWorkoutExercise404 = {
 };
 
 export type DeleteStudentWorkoutExercise500 = {
+  error: string;
+  code: string;
+};
+
+export type ListWorkoutTemplatesParams = {
+  category?: ListWorkoutTemplatesCategory;
+  level?: ListWorkoutTemplatesLevel;
+  /**
+   * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+   */
+  muscleGroupId?: string;
+};
+
+export type ListWorkoutTemplatesCategory =
+  (typeof ListWorkoutTemplatesCategory)[keyof typeof ListWorkoutTemplatesCategory];
+
+export const ListWorkoutTemplatesCategory = {
+  MUSCULACAO: "MUSCULACAO",
+  CROSSFIT: "CROSSFIT",
+  CALISTENIA: "CALISTENIA",
+  FUNCIONAL: "FUNCIONAL",
+} as const;
+
+export type ListWorkoutTemplatesLevel =
+  (typeof ListWorkoutTemplatesLevel)[keyof typeof ListWorkoutTemplatesLevel];
+
+export const ListWorkoutTemplatesLevel = {
+  BEGINNER: "BEGINNER",
+  INTERMEDIATE: "INTERMEDIATE",
+  ADVANCED: "ADVANCED",
+} as const;
+
+export type ListWorkoutTemplates200ItemCategory =
+  (typeof ListWorkoutTemplates200ItemCategory)[keyof typeof ListWorkoutTemplates200ItemCategory];
+
+export const ListWorkoutTemplates200ItemCategory = {
+  MUSCULACAO: "MUSCULACAO",
+  CROSSFIT: "CROSSFIT",
+  CALISTENIA: "CALISTENIA",
+  FUNCIONAL: "FUNCIONAL",
+} as const;
+
+export type ListWorkoutTemplates200ItemLevel =
+  (typeof ListWorkoutTemplates200ItemLevel)[keyof typeof ListWorkoutTemplates200ItemLevel];
+
+export const ListWorkoutTemplates200ItemLevel = {
+  BEGINNER: "BEGINNER",
+  INTERMEDIATE: "INTERMEDIATE",
+  ADVANCED: "ADVANCED",
+} as const;
+
+export type ListWorkoutTemplates200Item = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  name: string;
+  category: ListWorkoutTemplates200ItemCategory;
+  level: ListWorkoutTemplates200ItemLevel;
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  muscleGroupId?: string;
+  muscleGroupName?: string;
+  estimatedDurationInSeconds: number;
+  exercisesCount: number;
+};
+
+export type ListWorkoutTemplates401 = {
+  error: string;
+  code: string;
+};
+
+export type ListWorkoutTemplates500 = {
+  error: string;
+  code: string;
+};
+
+export type GetWorkoutTemplate200Category =
+  (typeof GetWorkoutTemplate200Category)[keyof typeof GetWorkoutTemplate200Category];
+
+export const GetWorkoutTemplate200Category = {
+  MUSCULACAO: "MUSCULACAO",
+  CROSSFIT: "CROSSFIT",
+  CALISTENIA: "CALISTENIA",
+  FUNCIONAL: "FUNCIONAL",
+} as const;
+
+export type GetWorkoutTemplate200Level =
+  (typeof GetWorkoutTemplate200Level)[keyof typeof GetWorkoutTemplate200Level];
+
+export const GetWorkoutTemplate200Level = {
+  BEGINNER: "BEGINNER",
+  INTERMEDIATE: "INTERMEDIATE",
+  ADVANCED: "ADVANCED",
+} as const;
+
+export type GetWorkoutTemplate200ExercisesItemMethod =
+  (typeof GetWorkoutTemplate200ExercisesItemMethod)[keyof typeof GetWorkoutTemplate200ExercisesItemMethod];
+
+export const GetWorkoutTemplate200ExercisesItemMethod = {
+  NORMAL: "NORMAL",
+  DROP_SET: "DROP_SET",
+  REST_PAUSE: "REST_PAUSE",
+  BI_SET: "BI_SET",
+  PYRAMID: "PYRAMID",
+} as const;
+
+export type GetWorkoutTemplate200ExercisesItem = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  order: number;
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  exerciseTemplateId: string;
+  name: string;
+  sets: number;
+  reps: number;
+  restTimeInSeconds: number;
+  method: GetWorkoutTemplate200ExercisesItemMethod;
+};
+
+export type GetWorkoutTemplate200 = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  name: string;
+  category: GetWorkoutTemplate200Category;
+  level: GetWorkoutTemplate200Level;
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  muscleGroupId?: string;
+  muscleGroupName?: string;
+  estimatedDurationInSeconds: number;
+  exercises: GetWorkoutTemplate200ExercisesItem[];
+};
+
+export type GetWorkoutTemplate401 = {
+  error: string;
+  code: string;
+};
+
+export type GetWorkoutTemplate404 = {
+  error: string;
+  code: string;
+};
+
+export type GetWorkoutTemplate500 = {
   error: string;
   code: string;
 };
@@ -5692,6 +6194,126 @@ export const postAi = async (
     ...options,
     method: "POST",
   });
+};
+
+/**
+ * @summary List workout templates, optionally filtered by category, level or muscle group
+ */
+export type listWorkoutTemplatesResponse200 = {
+  data: ListWorkoutTemplates200Item[];
+  status: 200;
+};
+
+export type listWorkoutTemplatesResponse401 = {
+  data: ListWorkoutTemplates401;
+  status: 401;
+};
+
+export type listWorkoutTemplatesResponse500 = {
+  data: ListWorkoutTemplates500;
+  status: 500;
+};
+
+export type listWorkoutTemplatesResponseSuccess =
+  listWorkoutTemplatesResponse200 & {
+    headers: Headers;
+  };
+export type listWorkoutTemplatesResponseError = (
+  | listWorkoutTemplatesResponse401
+  | listWorkoutTemplatesResponse500
+) & {
+  headers: Headers;
+};
+
+export type listWorkoutTemplatesResponse =
+  | listWorkoutTemplatesResponseSuccess
+  | listWorkoutTemplatesResponseError;
+
+export const getListWorkoutTemplatesUrl = (
+  params?: ListWorkoutTemplatesParams,
+) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : value.toString());
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0
+    ? `/workout-templates/?${stringifiedParams}`
+    : `/workout-templates/`;
+};
+
+export const listWorkoutTemplates = async (
+  params?: ListWorkoutTemplatesParams,
+  options?: RequestInit,
+): Promise<listWorkoutTemplatesResponse> => {
+  return customFetch<listWorkoutTemplatesResponse>(
+    getListWorkoutTemplatesUrl(params),
+    {
+      ...options,
+      method: "GET",
+    },
+  );
+};
+
+/**
+ * @summary Get a workout template with its exercises
+ */
+export type getWorkoutTemplateResponse200 = {
+  data: GetWorkoutTemplate200;
+  status: 200;
+};
+
+export type getWorkoutTemplateResponse401 = {
+  data: GetWorkoutTemplate401;
+  status: 401;
+};
+
+export type getWorkoutTemplateResponse404 = {
+  data: GetWorkoutTemplate404;
+  status: 404;
+};
+
+export type getWorkoutTemplateResponse500 = {
+  data: GetWorkoutTemplate500;
+  status: 500;
+};
+
+export type getWorkoutTemplateResponseSuccess =
+  getWorkoutTemplateResponse200 & {
+    headers: Headers;
+  };
+export type getWorkoutTemplateResponseError = (
+  | getWorkoutTemplateResponse401
+  | getWorkoutTemplateResponse404
+  | getWorkoutTemplateResponse500
+) & {
+  headers: Headers;
+};
+
+export type getWorkoutTemplateResponse =
+  | getWorkoutTemplateResponseSuccess
+  | getWorkoutTemplateResponseError;
+
+export const getGetWorkoutTemplateUrl = (workoutTemplateId: string) => {
+  return `/workout-templates/${workoutTemplateId}`;
+};
+
+export const getWorkoutTemplate = async (
+  workoutTemplateId: string,
+  options?: RequestInit,
+): Promise<getWorkoutTemplateResponse> => {
+  return customFetch<getWorkoutTemplateResponse>(
+    getGetWorkoutTemplateUrl(workoutTemplateId),
+    {
+      ...options,
+      method: "GET",
+    },
+  );
 };
 
 /**

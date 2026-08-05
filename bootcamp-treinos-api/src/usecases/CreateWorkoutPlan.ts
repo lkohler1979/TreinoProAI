@@ -1,13 +1,21 @@
 import dayjs from "dayjs";
 
 import { NotFoundError } from "../errors/index.js";
-import { WeekDay, WorkoutGoal } from "../generated/prisma/enums.js";
+import {
+  ExerciseMethod,
+  WeekDay,
+  WorkoutCategory,
+  WorkoutGoal,
+  WorkoutLevel,
+} from "../generated/prisma/enums.js";
 import { prisma } from "../lib/db.js";
 
 // Data Transfer Object t
 interface InputDto {
   userId: string;
   goal?: WorkoutGoal;
+  category?: WorkoutCategory;
+  level?: WorkoutLevel;
   dailyWaterGoalInMl: number;
   workoutDays: Array<{
     name: string;
@@ -21,6 +29,7 @@ interface InputDto {
       sets: number;
       reps: number;
       restTimeInSeconds: number;
+      method?: ExerciseMethod;
     }>;
   }>;
   meals: Array<{
@@ -39,6 +48,8 @@ interface OutputDto {
   id: string;
   name: string;
   goal?: WorkoutGoal;
+  category?: WorkoutCategory;
+  level?: WorkoutLevel;
   dailyWaterGoalInMl: number;
   workoutDays: Array<{
     name: string;
@@ -52,6 +63,7 @@ interface OutputDto {
       sets: number;
       reps: number;
       restTimeInSeconds: number;
+      method: ExerciseMethod;
     }>;
   }>;
   meals: Array<{
@@ -90,6 +102,8 @@ export class CreateWorkoutPlan {
           userId: dto.userId,
           isActive: true,
           goal: dto.goal,
+          category: dto.category,
+          level: dto.level,
           dailyWaterGoalInMl: dto.dailyWaterGoalInMl,
           workoutDays: {
             create: dto.workoutDays.map((workoutDay) => ({
@@ -105,6 +119,7 @@ export class CreateWorkoutPlan {
                   sets: exercise.sets,
                   reps: exercise.reps,
                   restTimeInSeconds: exercise.restTimeInSeconds,
+                  method: exercise.method ?? ExerciseMethod.NORMAL,
                 })),
               },
             })),
@@ -141,6 +156,8 @@ export class CreateWorkoutPlan {
         id: result.id,
         name: result.name,
         goal: result.goal ?? undefined,
+        category: result.category ?? undefined,
+        level: result.level ?? undefined,
         dailyWaterGoalInMl: dto.dailyWaterGoalInMl,
         workoutDays: result.workoutDays.map((day) => ({
           name: day.name,
@@ -154,6 +171,7 @@ export class CreateWorkoutPlan {
             sets: exercise.sets,
             reps: exercise.reps,
             restTimeInSeconds: exercise.restTimeInSeconds,
+            method: exercise.method,
           })),
         })),
         meals: result.meals.map((meal) => ({

@@ -1,5 +1,8 @@
 import { z } from "zod";
 import { WEEK_DAYS } from "@/app/_lib/week-days";
+import { EXERCISE_METHODS } from "@/app/_lib/exercise-methods";
+import { WORKOUT_CATEGORIES } from "@/app/_lib/workout-categories";
+import { WORKOUT_LEVELS } from "@/app/_lib/workout-levels";
 
 export { WEEK_DAYS, WEEK_DAY_LABELS } from "@/app/_lib/week-days";
 export { GOAL_OPTIONS } from "@/app/_lib/goals";
@@ -15,6 +18,7 @@ export const exerciseFieldSchema = z.object({
   sets: numericString(),
   reps: numericString(),
   restTimeInSeconds: numericString(),
+  method: z.enum(EXERCISE_METHODS),
 });
 
 export const workoutDayFieldSchema = z.object({
@@ -28,6 +32,8 @@ export const workoutDayFieldSchema = z.object({
 export const manualWorkoutPlanFormSchema = z
   .object({
     goal: z.string(),
+    category: z.enum(WORKOUT_CATEGORIES).or(z.literal("")),
+    level: z.enum(WORKOUT_LEVELS).or(z.literal("")),
     workoutDays: z.array(workoutDayFieldSchema),
   })
   .superRefine((values, ctx) => {

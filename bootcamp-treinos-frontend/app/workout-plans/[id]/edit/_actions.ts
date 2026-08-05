@@ -7,19 +7,10 @@ import {
   updateWorkoutDay,
   updateWorkoutExercise,
 } from "@/app/_lib/api/fetch-generated";
-
-interface WorkoutDayUpdateInput {
-  name: string;
-  isRest: boolean;
-  estimatedDurationInSeconds: number;
-}
-
-interface WorkoutExerciseInput {
-  name: string;
-  sets: number;
-  reps: number;
-  restTimeInSeconds: number;
-}
+import type {
+  WorkoutDayUpdateInput,
+  WorkoutExerciseInput,
+} from "./_lib/actions-types";
 
 export async function updateWorkoutDayAction(
   workoutPlanId: string,

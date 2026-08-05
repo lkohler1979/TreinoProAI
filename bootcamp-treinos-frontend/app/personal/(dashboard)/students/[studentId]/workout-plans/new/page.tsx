@@ -1,6 +1,10 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-import { listMuscleGroups } from "@/app/_lib/api/fetch-generated";
+import {
+  getWorkoutTemplate,
+  listMuscleGroups,
+  listWorkoutTemplates,
+} from "@/app/_lib/api/fetch-generated";
 import { ManualWorkoutPlanForm } from "@/app/workout-plans/new/_components/manual-workout-plan-form";
 import { createStudentWorkoutPlanAction } from "./_actions";
 
@@ -11,11 +15,27 @@ export default async function NewStudentWorkoutPlanPage({
 }) {
   const { studentId } = await params;
 
-  const muscleGroupsResponse = await listMuscleGroups();
+  const [muscleGroupsResponse, workoutTemplatesResponse] = await Promise.all([
+    listMuscleGroups(),
+    listWorkoutTemplates(),
+  ]);
 
   if (muscleGroupsResponse.status !== 200) {
     throw new Error("Failed to fetch muscle groups");
   }
+  if (workoutTemplatesResponse.status !== 200) {
+    throw new Error("Failed to fetch workout templates");
+  }
+
+  const workoutTemplateDetails = await Promise.all(
+    workoutTemplatesResponse.data.map(async (template) => {
+      const response = await getWorkoutTemplate(template.id);
+      if (response.status !== 200) {
+        throw new Error("Failed to fetch workout template");
+      }
+      return response.data;
+    }),
+  );
 
   return (
     <div className="flex min-h-svh flex-col bg-background pb-10">
@@ -31,6 +51,7 @@ export default async function NewStudentWorkoutPlanPage({
       <div className="px-5">
         <ManualWorkoutPlanForm
           muscleGroups={muscleGroupsResponse.data}
+          workoutTemplates={workoutTemplateDetails}
           onCreate={createStudentWorkoutPlanAction.bind(null, studentId)}
         />
       </div>

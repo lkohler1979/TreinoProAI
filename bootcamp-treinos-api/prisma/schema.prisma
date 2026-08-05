@@ -132,17 +132,19 @@ model BioimpedanceRecord {
 }
 
 model WorkoutPlan {
-  id                 String       @id @default(uuid())
+  id                 String           @id @default(uuid())
   name               String
   userId             String
-  user               User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user               User             @relation(fields: [userId], references: [id], onDelete: Cascade)
   goal               WorkoutGoal?
+  category           WorkoutCategory?
+  level              WorkoutLevel?
   workoutDays        WorkoutDay[]
   meals              Meal[]
   dailyWaterGoalInMl Int?
-  isActive           Boolean      @default(true)
-  createdAt          DateTime     @default(now()) @db.Timestamptz()
-  updatedAt          DateTime     @updatedAt @db.Timestamptz()
+  isActive           Boolean          @default(true)
+  createdAt          DateTime         @default(now()) @db.Timestamptz()
+  updatedAt          DateTime         @updatedAt @db.Timestamptz()
 }
 
 enum WorkoutGoal {
@@ -151,6 +153,27 @@ enum WorkoutGoal {
   ENDURANCE
   STRENGTH
   GENERAL_FITNESS
+}
+
+enum WorkoutCategory {
+  MUSCULACAO
+  CROSSFIT
+  CALISTENIA
+  FUNCIONAL
+}
+
+enum WorkoutLevel {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
+enum ExerciseMethod {
+  NORMAL
+  DROP_SET
+  REST_PAUSE
+  BI_SET
+  PYRAMID
 }
 
 model Meal {
@@ -173,19 +196,47 @@ model MuscleGroup {
   id                String             @id @default(uuid())
   name              String             @unique
   exerciseTemplates ExerciseTemplate[]
+  workoutTemplates  WorkoutTemplate[]
   createdAt         DateTime           @default(now()) @db.Timestamptz()
   updatedAt         DateTime           @updatedAt @db.Timestamptz()
 }
 
 model ExerciseTemplate {
-  id            String      @id @default(uuid())
-  name          String
-  muscleGroupId String
-  muscleGroup   MuscleGroup @relation(fields: [muscleGroupId], references: [id], onDelete: Cascade)
-  createdAt     DateTime    @default(now()) @db.Timestamptz()
-  updatedAt     DateTime    @updatedAt @db.Timestamptz()
+  id                       String                    @id @default(uuid())
+  name                     String
+  muscleGroupId            String
+  muscleGroup              MuscleGroup               @relation(fields: [muscleGroupId], references: [id], onDelete: Cascade)
+  workoutTemplateExercises WorkoutTemplateExercise[]
+  createdAt                DateTime                  @default(now()) @db.Timestamptz()
+  updatedAt                DateTime                  @updatedAt @db.Timestamptz()
 
   @@unique([muscleGroupId, name])
+}
+
+model WorkoutTemplate {
+  id                         String                    @id @default(uuid())
+  name                       String
+  category                   WorkoutCategory
+  level                      WorkoutLevel
+  muscleGroupId              String?
+  muscleGroup                MuscleGroup?              @relation(fields: [muscleGroupId], references: [id], onDelete: SetNull)
+  estimatedDurationInSeconds Int
+  exercises                  WorkoutTemplateExercise[]
+  createdAt                  DateTime                  @default(now()) @db.Timestamptz()
+  updatedAt                  DateTime                  @updatedAt @db.Timestamptz()
+}
+
+model WorkoutTemplateExercise {
+  id                 String           @id @default(uuid())
+  workoutTemplateId  String
+  workoutTemplate    WorkoutTemplate  @relation(fields: [workoutTemplateId], references: [id], onDelete: Cascade)
+  order              Int
+  exerciseTemplateId String
+  exerciseTemplate   ExerciseTemplate @relation(fields: [exerciseTemplateId], references: [id], onDelete: Cascade)
+  sets               Int
+  reps               Int
+  restTimeInSeconds  Int
+  method             ExerciseMethod   @default(NORMAL)
 }
 
 model WaterIntakeEntry {
@@ -230,6 +281,7 @@ model WorkoutExercise {
   sets              Int
   reps              Int
   restTimeInSeconds Int
+  method            ExerciseMethod      @default(NORMAL)
   loadInKg          Float?
   loadEntries       ExerciseLoadEntry[]
   createdAt         DateTime            @default(now()) @db.Timestamptz()

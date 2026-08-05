@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import type { GetWorkoutDay200ExercisesItem } from "@/app/_lib/api/fetch-generated";
+import { EXERCISE_METHOD_LABELS } from "@/app/_lib/exercise-methods";
 import { updateExerciseLoadAction } from "../_actions";
 import { RestTimerOverlay } from "./rest-timer-overlay";
 
@@ -77,13 +78,18 @@ export function ExerciseCard({
           <CircleHelp className="size-5 text-muted-foreground" />
         </Button>
       </div>
-      <div className="flex items-center gap-1.5">
+      <div className="flex flex-wrap items-center gap-1.5">
         <span className="rounded-full bg-muted px-2.5 py-1 font-heading text-xs font-semibold uppercase text-muted-foreground">
           {exercise.sets} séries
         </span>
         <span className="rounded-full bg-muted px-2.5 py-1 font-heading text-xs font-semibold uppercase text-muted-foreground">
           {exercise.reps} reps
         </span>
+        {exercise.method !== "NORMAL" && (
+          <span className="rounded-full bg-primary/10 px-2.5 py-1 font-heading text-xs font-semibold uppercase text-primary">
+            {EXERCISE_METHOD_LABELS[exercise.method]}
+          </span>
+        )}
         <Button
           type="button"
           variant="ghost"

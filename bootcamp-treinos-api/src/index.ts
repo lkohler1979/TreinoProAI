@@ -30,6 +30,7 @@ import { statsRoutes } from "./routes/stats.js";
 import { waterIntakeRoutes } from "./routes/water-intake.js";
 import { workoutPlanRoutes } from "./routes/workout-plan.js";
 import { workoutSessionRoutes } from "./routes/workout-session.js";
+import { workoutTemplateRoutes } from "./routes/workout-template.js";
 
 const app = Fastify(
   env.NODE_ENV === "development"
@@ -104,6 +105,7 @@ await app.register(personalTrainerRoutes, { prefix: "/personal" });
 await app.register(personalStudentRoutes, { prefix: "/personal/students" });
 await app.register(personalWorkoutPlanRoutes, { prefix: "/personal/students" });
 await app.register(aiRoutes, { prefix: "/ai" });
+await app.register(workoutTemplateRoutes, { prefix: "/workout-templates" });
 
 app.withTypeProvider<ZodTypeProvider>().route({
   method: "GET",

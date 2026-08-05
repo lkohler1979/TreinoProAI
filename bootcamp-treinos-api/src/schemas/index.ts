@@ -1,11 +1,14 @@
 import z from "zod";
 
 import {
+  ExerciseMethod,
   StudentPaymentStatus,
   SubscriptionPlanTier,
   SubscriptionStatus,
   WeekDay,
+  WorkoutCategory,
   WorkoutGoal,
+  WorkoutLevel,
 } from "../generated/prisma/enums.js";
 
 export const ErrorSchema = z.object({
@@ -86,6 +89,7 @@ export const GetWorkoutDaySchema = z.object({
       sets: z.number(),
       reps: z.number(),
       restTimeInSeconds: z.number(),
+      method: z.enum(ExerciseMethod),
       loadInKg: z.number().optional(),
     })
   ),
@@ -115,6 +119,8 @@ export const GetWorkoutPlanSchema = z.object({
   id: z.uuid(),
   name: z.string(),
   goal: z.enum(WorkoutGoal).optional(),
+  category: z.enum(WorkoutCategory).optional(),
+  level: z.enum(WorkoutLevel).optional(),
   dailyWaterGoalInMl: z.number().optional(),
   workoutDays: z.array(
     z.object({
@@ -150,6 +156,7 @@ export const CreateWorkoutExerciseBodySchema = z.object({
   sets: z.number().min(1),
   reps: z.number().min(1),
   restTimeInSeconds: z.number().min(1),
+  method: z.enum(ExerciseMethod).optional(),
 });
 
 export const UpdateWorkoutExerciseBodySchema = CreateWorkoutExerciseBodySchema;
@@ -161,11 +168,14 @@ export const WorkoutExerciseSchema = z.object({
   sets: z.number(),
   reps: z.number(),
   restTimeInSeconds: z.number(),
+  method: z.enum(ExerciseMethod),
 });
 
 export const GetWorkoutPlanDetailsSchema = z.object({
   id: z.uuid(),
   name: z.string(),
+  category: z.enum(WorkoutCategory).optional(),
+  level: z.enum(WorkoutLevel).optional(),
   workoutDays: z.array(
     z.object({
       id: z.uuid(),
@@ -191,6 +201,8 @@ export const ListWorkoutPlansSchema = z.array(
     id: z.uuid(),
     name: z.string(),
     goal: z.enum(WorkoutGoal).optional(),
+    category: z.enum(WorkoutCategory).optional(),
+    level: z.enum(WorkoutLevel).optional(),
     isActive: z.boolean(),
     workoutDays: z.array(
       z.object({
@@ -208,6 +220,7 @@ export const ListWorkoutPlansSchema = z.array(
             sets: z.number(),
             reps: z.number(),
             restTimeInSeconds: z.number(),
+            method: z.enum(ExerciseMethod),
           })
         ),
       })
@@ -327,6 +340,8 @@ export const WorkoutPlanSchema = z.object({
   id: z.uuid(),
   name: z.string().trim().min(1),
   goal: z.enum(WorkoutGoal).optional(),
+  category: z.enum(WorkoutCategory).optional(),
+  level: z.enum(WorkoutLevel).optional(),
   dailyWaterGoalInMl: z.number().min(0),
   workoutDays: z.array(
     z.object({
@@ -342,6 +357,7 @@ export const WorkoutPlanSchema = z.object({
           sets: z.number().min(1),
           reps: z.number().min(1),
           restTimeInSeconds: z.number().min(1),
+          method: z.enum(ExerciseMethod).optional(),
         })
       ),
     })
@@ -538,4 +554,45 @@ export const ActivatedSubscriptionSchema = z.object({
 
 export const CanceledSubscriptionSchema = z.object({
   status: z.enum(SubscriptionStatus),
+});
+
+export const ListWorkoutTemplatesQuerySchema = z.object({
+  category: z.enum(WorkoutCategory).optional(),
+  level: z.enum(WorkoutLevel).optional(),
+  muscleGroupId: z.uuid().optional(),
+});
+
+export const WorkoutTemplateSchema = z.object({
+  id: z.uuid(),
+  name: z.string(),
+  category: z.enum(WorkoutCategory),
+  level: z.enum(WorkoutLevel),
+  muscleGroupId: z.uuid().optional(),
+  muscleGroupName: z.string().optional(),
+  estimatedDurationInSeconds: z.number(),
+  exercisesCount: z.number(),
+});
+
+export const ListWorkoutTemplatesSchema = z.array(WorkoutTemplateSchema);
+
+export const WorkoutTemplateDetailSchema = z.object({
+  id: z.uuid(),
+  name: z.string(),
+  category: z.enum(WorkoutCategory),
+  level: z.enum(WorkoutLevel),
+  muscleGroupId: z.uuid().optional(),
+  muscleGroupName: z.string().optional(),
+  estimatedDurationInSeconds: z.number(),
+  exercises: z.array(
+    z.object({
+      id: z.uuid(),
+      order: z.number(),
+      exerciseTemplateId: z.uuid(),
+      name: z.string(),
+      sets: z.number(),
+      reps: z.number(),
+      restTimeInSeconds: z.number(),
+      method: z.enum(ExerciseMethod),
+    })
+  ),
 });

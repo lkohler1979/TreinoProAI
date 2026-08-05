@@ -1,19 +1,21 @@
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { authClient } from "@/app/_lib/auth-client";
 import { headers } from "next/headers";
 import { getHomeData, getUserTrainData } from "./_lib/api/fetch-generated";
 import dayjs from "dayjs";
-import Link from "next/link";
-import { Flame, Calendar, Dumbbell } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Flame, Calendar } from "lucide-react";
 import { BottomNav } from "./_components/bottom-nav";
+import { CategoryCard } from "./_components/category-card";
 import {
   ConsistencyTracker,
   getWeekDates,
 } from "./_components/consistency-tracker";
+import { OpenAiChatButton } from "./_components/open-ai-chat-button";
 import { WorkoutDayCard } from "./_components/workout-day-card";
 import { TipOfDay } from "./_components/tip-of-day";
 import { ShareStreakCard } from "./_components/share-streak-card";
+import { WORKOUT_CATEGORIES } from "./_lib/workout-categories";
 
 function getTipMessage(
   todayWorkoutDay: { name: string; isRest: boolean } | undefined,
@@ -52,7 +54,7 @@ export default async function Home() {
   }
 
   const missingProfile = trainData.status === 200 && !trainData.data;
-  if (missingProfile) redirect("/onboarding");
+  if (missingProfile) redirect("/profile/setup");
 
   const hasActivePlan = !!homeData.data.activeWorkoutPlanId;
   const { todayWorkoutDay, workoutStreak, consistencyByDay } = homeData.data;
@@ -162,23 +164,29 @@ export default async function Home() {
           </div>
         </>
       ) : (
-        <div className="flex flex-col gap-3 px-5 pt-6">
-          <div className="flex flex-col items-center gap-2 rounded-xl border border-border bg-card p-8 text-center">
-            <Dumbbell className="size-8 text-muted-foreground" />
+        <div className="flex flex-col gap-4 px-5 pt-6">
+          <div className="flex flex-col gap-1 text-center">
             <p className="font-heading text-base font-semibold text-foreground">
-              Você ainda não tem um treino
+              Escolha uma categoria pra começar
             </p>
             <p className="font-heading text-sm text-muted-foreground">
-              Monte seu plano com a ajuda da IA ou crie manualmente escolhendo
-              seus próprios exercícios.
+              Selecione o tipo de treino que você quer montar.
             </p>
           </div>
-          <Button asChild className="w-full rounded-xl">
-            <Link href="/onboarding">Montar com IA</Link>
-          </Button>
-          <Button asChild variant="outline" className="w-full rounded-xl">
-            <Link href="/workout-plans/new">Criar manualmente</Link>
-          </Button>
+
+          <div className="grid grid-cols-2 gap-3">
+            {WORKOUT_CATEGORIES.map((category) => (
+              <CategoryCard
+                key={category}
+                category={category}
+                href={`/workout-plans/new?category=${category}`}
+              />
+            ))}
+          </div>
+
+          <div className="flex justify-center pt-1">
+            <OpenAiChatButton />
+          </div>
         </div>
       )}
 

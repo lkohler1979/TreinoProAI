@@ -16,6 +16,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { ListMuscleGroups200Item } from "@/app/_lib/api/fetch-generated";
+import { EXERCISE_METHOD_OPTIONS, EXERCISE_METHODS } from "@/app/_lib/exercise-methods";
 import type { WorkoutPlanEditActions } from "../_lib/actions-types";
 
 const numericString = () =>
@@ -29,6 +30,7 @@ const addExerciseFormSchema = z.object({
   sets: numericString(),
   reps: numericString(),
   restTimeInSeconds: numericString(),
+  method: z.enum(EXERCISE_METHODS),
 });
 
 type AddExerciseFormValues = z.infer<typeof addExerciseFormSchema>;
@@ -57,6 +59,7 @@ export function AddExerciseForm({
       sets: "3",
       reps: "12",
       restTimeInSeconds: "60",
+      method: "NORMAL",
     },
   });
 
@@ -79,6 +82,7 @@ export function AddExerciseForm({
         sets: Number(values.sets),
         reps: Number(values.reps),
         restTimeInSeconds: Number(values.restTimeInSeconds),
+        method: values.method,
       });
       form.reset();
       setIsOpen(false);
@@ -207,6 +211,29 @@ export function AddExerciseForm({
             )}
           />
         </div>
+
+        <FormField
+          control={form.control}
+          name="method"
+          render={({ field }) => (
+            <FormItem>
+              <Select onValueChange={field.onChange} value={field.value}>
+                <FormControl>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Método" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {EXERCISE_METHOD_OPTIONS.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </FormItem>
+          )}
+        />
 
         <div className="flex justify-end gap-2">
           <Button

@@ -121,6 +121,8 @@ export const workoutPlanRoutes = async (app: FastifyInstance) => {
         const result = await createWorkoutPlan.execute({
           userId: session.user.id,
           goal: request.body.goal,
+          category: request.body.category,
+          level: request.body.level,
           dailyWaterGoalInMl: request.body.dailyWaterGoalInMl,
           workoutDays: request.body.workoutDays,
           meals: request.body.meals,
@@ -460,6 +462,7 @@ export const workoutPlanRoutes = async (app: FastifyInstance) => {
           sets: request.body.sets,
           reps: request.body.reps,
           restTimeInSeconds: request.body.restTimeInSeconds,
+          method: request.body.method,
         });
 
         return reply.status(201).send(result);
@@ -523,6 +526,7 @@ export const workoutPlanRoutes = async (app: FastifyInstance) => {
           sets: request.body.sets,
           reps: request.body.reps,
           restTimeInSeconds: request.body.restTimeInSeconds,
+          method: request.body.method,
         });
 
         return reply.status(200).send(result);

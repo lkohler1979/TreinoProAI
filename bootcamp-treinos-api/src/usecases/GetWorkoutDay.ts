@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc.js";
 
 import { NotFoundError } from "../errors/index.js";
-import { WeekDay } from "../generated/prisma/enums.js";
+import { ExerciseMethod, WeekDay } from "../generated/prisma/enums.js";
 import { prisma } from "../lib/db.js";
 
 dayjs.extend(utc);
@@ -28,6 +28,7 @@ interface OutputDto {
     sets: number;
     reps: number;
     restTimeInSeconds: number;
+    method: ExerciseMethod;
     loadInKg?: number;
   }>;
   sessions: Array<{
@@ -75,6 +76,7 @@ export class GetWorkoutDay {
         sets: exercise.sets,
         reps: exercise.reps,
         restTimeInSeconds: exercise.restTimeInSeconds,
+        method: exercise.method,
         loadInKg: exercise.loadInKg ?? undefined,
       })),
       sessions: workoutDay.sessions.map((session) => ({

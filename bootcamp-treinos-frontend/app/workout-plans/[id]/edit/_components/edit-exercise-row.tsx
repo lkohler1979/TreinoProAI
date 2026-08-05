@@ -8,7 +8,19 @@ import { Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import type { GetWorkoutPlanDetails200WorkoutDaysItemExercisesItem } from "@/app/_lib/api/fetch-generated";
+import {
+  EXERCISE_METHOD_LABELS,
+  EXERCISE_METHOD_OPTIONS,
+  EXERCISE_METHODS,
+} from "@/app/_lib/exercise-methods";
 import type { WorkoutPlanEditActions } from "../_lib/actions-types";
 
 const numericString = () =>
@@ -20,6 +32,7 @@ const exerciseFormSchema = z.object({
   sets: numericString(),
   reps: numericString(),
   restTimeInSeconds: numericString(),
+  method: z.enum(EXERCISE_METHODS),
 });
 
 type ExerciseFormValues = z.infer<typeof exerciseFormSchema>;
@@ -46,6 +59,7 @@ export function EditExerciseRow({
       sets: String(exercise.sets),
       reps: String(exercise.reps),
       restTimeInSeconds: String(exercise.restTimeInSeconds),
+      method: exercise.method,
     },
   });
 
@@ -60,6 +74,7 @@ export function EditExerciseRow({
           sets: Number(values.sets),
           reps: Number(values.reps),
           restTimeInSeconds: Number(values.restTimeInSeconds),
+          method: values.method,
         },
       );
       setIsEditing(false);
@@ -126,6 +141,28 @@ export function EditExerciseRow({
               )}
             />
           </div>
+          <FormField
+            control={form.control}
+            name="method"
+            render={({ field }) => (
+              <FormItem>
+                <Select onValueChange={field.onChange} value={field.value}>
+                  <FormControl>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Método" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {EXERCISE_METHOD_OPTIONS.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </FormItem>
+            )}
+          />
           <div className="flex justify-end gap-2">
             <Button
               type="button"
@@ -152,6 +189,8 @@ export function EditExerciseRow({
         </span>
         <span className="font-heading text-xs text-muted-foreground">
           {exercise.sets}x{exercise.reps} · {exercise.restTimeInSeconds}s descanso
+          {exercise.method !== "NORMAL" &&
+            ` · ${EXERCISE_METHOD_LABELS[exercise.method]}`}
         </span>
       </div>
       <div className="flex items-center gap-1">

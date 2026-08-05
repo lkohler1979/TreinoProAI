@@ -18,6 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { ListMuscleGroups200Item } from "@/app/_lib/api/fetch-generated";
+import { EXERCISE_METHOD_OPTIONS } from "@/app/_lib/exercise-methods";
 import type { ManualWorkoutPlanFormValues } from "../_lib/schema";
 
 interface ExerciseFieldsRowProps {
@@ -42,6 +43,8 @@ export function ExerciseFieldsRow({
   const repsName = `workoutDays.${dayIndex}.exercises.${exerciseIndex}.reps` as const;
   const restTimeInSecondsName =
     `workoutDays.${dayIndex}.exercises.${exerciseIndex}.restTimeInSeconds` as const;
+  const methodName =
+    `workoutDays.${dayIndex}.exercises.${exerciseIndex}.method` as const;
 
   const selectedMuscleGroupId = useWatch({
     control,
@@ -176,6 +179,29 @@ export function ExerciseFieldsRow({
           )}
         />
       </div>
+
+      <FormField
+        control={control}
+        name={methodName}
+        render={({ field }) => (
+          <FormItem>
+            <Select onValueChange={field.onChange} value={field.value}>
+              <FormControl>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Método" />
+                </SelectTrigger>
+              </FormControl>
+              <SelectContent>
+                {EXERCISE_METHOD_OPTIONS.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </FormItem>
+        )}
+      />
     </div>
   );
 }
